@@ -1,0 +1,10 @@
+{% extends "layout.html" %} {% block content %}
+
+<ul>
+    <li>
+        {{ usuario.email }} - {{ usuario.first_name }} - {{ usuario.last_name }} - {{ usuario.password }} - {{ usuario.created_at }} -{{ usuario.activo }}
+    </li>
+</ul>
+
+
+{% endblock %}
