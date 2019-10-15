@@ -1,7 +1,8 @@
 from flaskps import app
 from flaskps.db import get_db
-from flask import render_template
+from flask import render_template, flash, redirect
 from flaskps.models.usuario import Usuario
+from flaskps.forms import LoginForm
 
 
 @app.route("/")
@@ -10,9 +11,13 @@ def home():
     return render_template('home.html')
 
 
-@app.route("/login")
+@app.route("/login", methods=['GET', 'POST'])
 def login():
-    return render_template("login.html")
+    form = LoginForm()
+    if form.validate_on_submit():
+        print(form.email.data)
+        return redirect("/home")
+    return render_template("login.html", title='Iniciar Sesión', form=form)
 
 
 # prueba
