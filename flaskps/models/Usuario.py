@@ -1,11 +1,9 @@
 from datetime import datetime
-from flask_login import UserMixin
-
 
 class Usuario(object):
     
     db = None
-    
+
     def __init__(self, email, username, password, first_name, last_name):
         self.email = email
         self.username = username
@@ -33,19 +31,26 @@ class Usuario(object):
         """
 
         cursor = self.db.cursor()
-        cursor.execute(sql, (user.email, user.username, user.password, user.activo, user.updated_at, user.created_at, user.first_name, user.last_name))
+        cursor.execute(sql, (user.email, 
+                             user.username, 
+                             user.password, 
+                             user.activo, 
+                             user.updated_at, 
+                             user.created_at, 
+                             user.first_name, 
+                             user.last_name))
         self.db.commit()
 
         return True
 
-    # @classmethod
-    # def find_by_email_and_pass(self, email, password):
-    #     sql = """
-    #         SELECT * FROM users AS u
-    #         WHERE u.email = %s AND u.password = %s
-    #     """
+    @classmethod
+    def find_by_email_and_pass(self, email, password):
+        sql = """
+            SELECT * FROM usuario u
+            WHERE u.email = %s AND u.password = %s
+        """
 
-    #     cursor = self.db.cursor()
-    #     cursor.execute(sql, (email, password))
+        cursor = self.db.cursor()
+        cursor.execute(sql, (email, password))
 
-    #     return cursor.fetchone()
+        return cursor.fetchone()
