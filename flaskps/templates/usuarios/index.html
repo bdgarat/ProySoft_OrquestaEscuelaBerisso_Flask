@@ -1,0 +1,35 @@
+{% extends "layout.html" %} {% block content %}
+
+<div class="jumbotron">
+    <h2 class="display-4">Administración de Estudiantes</h1>
+
+    <hr class="my-4">
+
+    <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Email</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Operaciones</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for u in usuarios %}
+          <tr>
+            <th scope="row">{{ u.email }}</th>
+            <td>{{ u.first_name }}</td>
+            <td>{{ u.last_name }}</td>
+            <td>
+                Activar / Bloquear
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    
+</div>
+
+
+
+{% endblock %}

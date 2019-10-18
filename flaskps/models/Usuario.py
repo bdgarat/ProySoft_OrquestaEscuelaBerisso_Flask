@@ -24,6 +24,21 @@ class Usuario(object):
         return cursor.fetchall()
 
     @classmethod
+    def get_usuarios_por_rol(self, id_rol):
+        sql = """
+            SELECT u.id, u.email, u.first_name, u.last_name FROM usuario u
+            INNER JOIN usuario_tiene_rol ur ON (u.id = ur.usuario_id)
+            INNER JOIN rol r ON (ur.rol_id = r.id)
+            WHERE r.id = %s
+        """
+        
+        cursor = self.db.cursor()
+        cursor.execute(sql, (id_rol))
+
+        return cursor.fetchall()
+
+
+    @classmethod
     def insert(self, user):
         sql = """
             INSERT INTO usuario (email, username, password, activo, updated_at, created_at, first_name, last_name)

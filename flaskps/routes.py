@@ -3,7 +3,7 @@ from flaskps.db import get_db
 from flask import render_template, flash, redirect
 from flaskps.models.Usuario import Usuario
 from flaskps.forms import LoginForm
-from flaskps.resources import login
+from flaskps.resources import login, usuario
 
 @app.route("/")
 @app.route("/home")
@@ -15,6 +15,9 @@ app.add_url_rule("/login", 'iniciar_sesion', login.login)
 app.add_url_rule("/login", 'autenticar', login.authenticate, methods=['POST'])
 app.add_url_rule("/logout", 'cerrar_sesion', login.logout)
 
+
+# Estudiantes
+app.add_url_rule("/estudiantes", 'estudiantes_index', usuario.index)
 
 
 
