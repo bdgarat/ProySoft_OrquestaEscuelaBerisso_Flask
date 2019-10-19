@@ -1,11 +1,14 @@
 from flask import Flask, render_template
 from flaskps.config import Config
-from flask_login import LoginManager
+from flask_session import Session
 
 # Configuración inicial de la app
 app = Flask(__name__)
 app.config.from_object(Config)
 
+#Server Side session
+app.config['SESSION_TYPE'] = 'filesystem'
+Session(app)
 
 # Session manager
 # login_manager = LoginManager()

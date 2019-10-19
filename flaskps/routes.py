@@ -14,6 +14,7 @@ def home():
 app.add_url_rule("/login", 'iniciar_sesion', login.login)
 app.add_url_rule("/login", 'autenticar', login.authenticate, methods=['POST'])
 app.add_url_rule("/logout", 'cerrar_sesion', login.logout)
+app.add_url_rule("/islogged", 'esta_logueado', login.isLogged)
 
 
 # Estudiantes
