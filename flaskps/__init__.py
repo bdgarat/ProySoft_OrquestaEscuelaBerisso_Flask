@@ -10,9 +10,14 @@ app.config.from_object(Config)
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
-# Session manager
-# login_manager = LoginManager()
-# login_manager.init_app(app)
-# login_manager.login_view = "login"
 
-from flaskps import routes
+@app.route("/")
+@app.route("/home")
+def home():
+    return render_template('home.html')
+
+
+from flaskps.routes import auth, usuario
+app.register_blueprint(auth.mod)
+app.register_blueprint(usuario.mod)
+

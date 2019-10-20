@@ -24,16 +24,16 @@ class Usuario(object):
         return cursor.fetchall()
 
     @classmethod
-    def get_usuarios_por_rol(self, id_rol):
+    def get_usuarios_por_rol(self, rol):
         sql = """
             SELECT u.id, u.email, u.first_name, u.last_name FROM usuario u
             INNER JOIN usuario_tiene_rol ur ON (u.id = ur.usuario_id)
             INNER JOIN rol r ON (ur.rol_id = r.id)
-            WHERE r.id = %s
+            WHERE r.nombre = %s
         """
         
         cursor = self.db.cursor()
-        cursor.execute(sql, (id_rol))
+        cursor.execute(sql, (rol))
 
         return cursor.fetchall()
 
