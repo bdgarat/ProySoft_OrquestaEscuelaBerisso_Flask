@@ -18,7 +18,8 @@ footer {
 
 main {
     margin-top: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 30px !important;
+    padding-bottom: 30px !important;
 }
 
 .btn-primary {
@@ -29,4 +30,22 @@ main {
 .btn-primary:hover {
     background-color: #1a91a1;
     border-color: #1a91a1;
+}
+
+
+/* LOGO DEL FORM */
+
+.img_form {
+    background-color: #343a40 !important;
+    width: 100px;
+    height: 150px;
+    ;
+}
+
+
+/* forms */
+
+form {
+    width: 50%;
+    margin: auto;
 }

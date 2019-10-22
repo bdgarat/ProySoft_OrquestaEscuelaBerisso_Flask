@@ -57,6 +57,35 @@ class Usuario(object):
         self.db.commit()
 
         return True
+    
+    @classmethod
+    def agregar_rol(self, rol, usuario):
+        
+        cursor = self.db.cursor()
+        
+        sql = """
+            SELECT id FROM rol where nombre=%s
+        """
+
+        cursor.execute(sql, (rol))
+        id_rol = cursor.fetchone()['id']
+        
+        sql = """
+            SELECT id FROM usuario where username=%s
+        """
+
+        cursor.execute(sql, (usuario.username))
+        id_usuario = cursor.fetchone()['id']
+        
+        sql = """
+            INSERT INTO usuario_tiene_rol (usuario_id, rol_id)
+            VALUES (%s, %s)
+        """
+        cursor.execute(sql, (id_usuario, id_rol))
+
+        self.db.commit()
+
+        return True
 
     @classmethod
     def find_by_email_and_pass(self, email, password):
@@ -69,3 +98,18 @@ class Usuario(object):
         cursor.execute(sql, (email, password))
 
         return cursor.fetchone()
+    
+    @classmethod
+    def existe(self, username):
+        sql = """
+            SELECT * FROM usuario
+            WHERE username = %s
+        """
+
+        cursor = self.db.cursor()
+        cursor.execute(sql, (username))
+        
+        if cursor.fetchone():
+            return True
+
+        return False

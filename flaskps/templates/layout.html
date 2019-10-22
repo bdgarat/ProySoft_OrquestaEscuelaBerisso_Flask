@@ -28,23 +28,26 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link" href="/login">Iniciar Sesión</a>
+                {% if session['user'] == null %}
+                <a class="nav-item nav-link" href="/login">Iniciar Sesión</a> {% else %}
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Administración
-                    </a>
+                                Administración
+                                </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="/index/estudiante">Estudiantes</a>
-                      <a class="dropdown-item" href="/index/docente">Docentes</a>
-                      <a class="dropdown-item" href="/index/preceptor">Preceptores</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Configuración de Sistema</a>
+                        <a class="dropdown-item" href="/index/estudiante">Estudiantes</a>
+                        <a class="dropdown-item" href="/index/docente">Docentes</a>
+                        <a class="dropdown-item" href="/index/preceptor">Preceptores</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Configuración de Sistema</a>
+                        <a class="dropdown-item" href="/registrar">Registrar usuario</a>
                     </div>
                 </div>
-            
+                <a class="nav-item nav-link" href="/logout">Cerrar sesión</a> {% endif %}
+
             </div>
         </div>
-        
+
     </nav>
     <!-- End Navbar -->
 
@@ -53,20 +56,9 @@
             {% block content %}{% endblock %}
 
         </section>
-        
-        <!-- Mostrar mensajes guardados en flash -->
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
     </main>
 
-    
+
 
 
     <!-- Footer -->

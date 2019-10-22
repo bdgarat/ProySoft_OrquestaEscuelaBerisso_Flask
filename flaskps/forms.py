@@ -7,3 +7,18 @@ class LoginForm(FlaskForm):
     password = PasswordField('Contraseña', validators=[DataRequired()], render_kw={"class": "form-control"})
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Iniciar sesión', render_kw={"class": "btn btn-lg btn-primary btn-block"})
+    
+    
+
+class SignUpForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired()], render_kw={"class": "form-control"})
+    username = StringField('Nombre de usuario', validators=[DataRequired()], render_kw={"class": "form-control"})
+    password = PasswordField('Contraseña', validators=[DataRequired()], render_kw={"class": "form-control"})
+    first_name = StringField('Nombre', validators=[DataRequired()], render_kw={"class": "form-control"})
+    last_name = StringField('Apellido', validators=[DataRequired()], render_kw={"class": "form-control"})
+    es_admin = BooleanField('Administrador', render_kw={"class": "col"})
+    es_preceptor = BooleanField('Preceptor', render_kw={"class": "col"})
+    es_docente = BooleanField('Docente', render_kw={"class": "col"})
+    es_estudiante = BooleanField('Estudiante', render_kw={"class": "col"})
+    submit = SubmitField('Registrar usuario', render_kw={"class": "btn btn-lg btn-primary btn-block pb-10"})
+    

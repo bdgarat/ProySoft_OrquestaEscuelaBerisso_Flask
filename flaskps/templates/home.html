@@ -1,7 +1,18 @@
 {% extends "layout.html" %} {% block content %}
 
 <div class="jumbotron">
-    <h1 class="display-4">Hello, world!</h1>
+    <!-- Mostrar mensajes guardados en flash -->
+    {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Nota:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+
+    {% endfor %} {% endif %} {% endwith %}
+    <h1 class="display-4">Escuela Orquesta de Berisso</h1>
 
     <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
 

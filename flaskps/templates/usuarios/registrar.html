@@ -1,0 +1,50 @@
+{% extends "layout.html" %} {% block content %}
+
+<form action="" method="post" class="form-signin" novalidate>
+
+    <div class="text-center">
+        <img class="mb-4 img_form rounded-lg" src="static/images/OEBerisso_logo.png" alt="Logo de la Orquesta Escuela de Berisso">
+        <h1 class="h3 mb-3 font-weight-normal">Registrar usuario</h1>
+
+    </div>
+
+    <!-- Mostrar mensajes guardados en flash -->
+    {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Nota:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+
+    {% endfor %} {% endif %} {% endwith %} {{ form.hidden_tag() }}
+
+    <p>
+        {{ form.email.label }}:<br> {{ form.email(size=32) }}
+    </p>
+    <p>
+        {{ form.username.label }}:<br> {{ form.username(size=32) }}
+    </p>
+    <p>
+        {{ form.password.label }}:<br> {{ form.password(size=32) }}
+    </p>
+    <p>
+        {{ form.first_name.label }}:<br> {{ form.first_name() }}
+    </p>
+    <p>
+        {{ form.last_name.label }}:<br> {{ form.last_name() }}
+    </p>
+    <h4 class="mt-4">Agregar roles:</h4>
+    <div class="form row justify-content-md-center">
+
+        <p>{{ form.es_admin() }} {{ form.es_admin.label }}</p>
+        <p>{{ form.es_preceptor() }} {{ form.es_preceptor.label }}</p>
+        <p>{{ form.es_docente() }} {{ form.es_docente.label }}</p>
+        <p>{{ form.es_estudiante() }} {{ form.es_estudiante.label }}</p>
+    </div>
+
+    <p>{{ form.submit() }}</p>
+</form>
+
+{% endblock %}

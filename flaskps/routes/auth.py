@@ -24,10 +24,11 @@ def login():
             return redirect("/login")
 
         # crear la sesion
-        session['user'] = user['email']   
+        session['user'] = user  
+        # session['permisos'] = Usuario.get_permisos(user)
         
         flash("La sesión se inició correctamente.")
-        return redirect("/home")
+        return render_template("home.html")
 
     return render_template("login.html", title='Iniciar Sesión', form=form)
 
