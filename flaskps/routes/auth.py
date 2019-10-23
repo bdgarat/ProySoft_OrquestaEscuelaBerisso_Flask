@@ -28,7 +28,8 @@ def login():
         # session['permisos'] = Usuario.get_permisos(user)
         
         flash("La sesión se inició correctamente.")
-        return render_template("home.html")
+        config = Usuario.get_config()
+        return render_template("home.html", config=config)
 
     return render_template("login.html", title='Iniciar Sesión', form=form)
 
@@ -42,4 +43,6 @@ def logout():
     session.clear()
     flash("La sesión se cerró correctamente.")
 
-    return redirect("/home")
+    Usuario.db = get_db()
+    config = Usuario.get_config()
+    return render_template("home.html", config=config)

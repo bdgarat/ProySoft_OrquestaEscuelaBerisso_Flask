@@ -49,3 +49,8 @@ form {
     width: 50%;
     margin: auto;
 }
+
+div#textarea {
+    margin: auto;
+    width: 100%;
+}

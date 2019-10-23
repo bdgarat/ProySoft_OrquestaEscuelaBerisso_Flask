@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
 from wtforms.validators import DataRequired
 
 class LoginForm(FlaskForm):
@@ -7,6 +7,15 @@ class LoginForm(FlaskForm):
     password = PasswordField('Contraseña', validators=[DataRequired()], render_kw={"class": "form-control"})
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Iniciar sesión', render_kw={"class": "btn btn-lg btn-primary btn-block"})
+    
+class ConfigForm(FlaskForm):
+    
+    titulo = StringField('Titulo del sitio', render_kw={"class": "form-control"})
+    descripcion = StringField('Descripcion', render_kw={"class": "form-control"})   
+    contacto = StringField('Información de contacto', render_kw={"class": "form-control"})   
+    paginacion = IntegerField('Cantidad de elementos por página', render_kw={"class": "form-control"})
+    sitio_habilitado = BooleanField('Habilitar sitio')   
+    submit = SubmitField('Guardar cambios', render_kw={"class": "btn btn-lg btn-primary btn-block"})
     
     
 

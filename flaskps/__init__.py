@@ -1,6 +1,8 @@
 from flask import Flask, render_template
+from flaskps.db import get_db
 from flaskps.config import Config
 from flask_session import Session
+from flaskps.models.Usuario import Usuario
 
 # Configuración inicial de la app
 app = Flask(__name__)
@@ -14,7 +16,9 @@ Session(app)
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('home.html')
+    Usuario.db = get_db()
+    config = Usuario.get_config()
+    return render_template('home.html', config=config)
 
 
 from flaskps.routes import auth, usuario

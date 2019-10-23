@@ -1,0 +1,44 @@
+{% extends "layout.html" %} {% block content %}
+
+<form action="" method="post" class="form-signin" novalidate>
+
+    <div class="text-center">
+        <img class="mb-4 img_form rounded-lg" src="static/images/OEBerisso_logo.png" alt="Logo de la Orquesta Escuela de Berisso">
+        <h1 class="h3 mb-3 font-weight-normal">Configuracion del sistema</h1>
+
+    </div>
+
+    <!-- Mostrar mensajes guardados en flash -->
+    {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Nota:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+
+    {% endfor %} {% endif %} {% endwith %} {{ form.hidden_tag() }}
+
+    <p>
+        {{ form.titulo.label }}:<br> {{ form.titulo() }}
+    </p>
+    <p>
+        {{ form.descripcion.label }}:<br> {{ form.descripcion() }}
+    </p>
+    <p>
+        {{ form.contacto.label }}:<br> {{ form.contacto() }}
+    </p>
+    <p>
+        {{ form.paginacion.label }}:<br> {{ form.paginacion() }}
+    </p>
+
+    <div class="form row justify-content-md-center">
+
+        <p>{{ form.sitio_habilitado() }} {{ form.sitio_habilitado.label }}</p>
+    </div>
+
+    <p>{{ form.submit() }}</p>
+</form>
+
+{% endblock %}
