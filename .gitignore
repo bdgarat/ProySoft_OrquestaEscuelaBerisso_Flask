@@ -75,3 +75,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# session
+flask_session/
+flask_session/*

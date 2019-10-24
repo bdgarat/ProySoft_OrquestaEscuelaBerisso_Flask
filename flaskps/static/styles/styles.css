@@ -54,3 +54,20 @@ div#textarea {
     margin: auto;
     width: 100%;
 }
+
+/* Tablas */
+.paginador {
+    display: -webkit-inline-box!important;
+}
+
+.page-link{
+    background-color: #343a40;
+    border-color: #343a40;
+    color: #fff;
+}
+
+.page-link:hover {
+    background-color: #1a91a1;
+    border-color: #1a91a1;
+    color: #fff;
+}
