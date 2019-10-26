@@ -14,6 +14,7 @@ class Usuario(object):
         self.created_at = datetime.now()
         self.updated_at = self.created_at
         
+    # RECUPERAR TODOS LOS USUARIOS
 
     @classmethod
     def all(self):
@@ -22,7 +23,19 @@ class Usuario(object):
         cursor.execute(sql)
 
         return cursor.fetchall()
+    
+    # RECUPERAR UN USUARIO DADO UN ID
+    
+    @classmethod
+    def get_user(self, id):
+        sql = 'SELECT * FROM usuario where borrado_logico = 0 and id = %s'
+        cursor = self.db.cursor()
+        cursor.execute(sql, (id))
 
+        return cursor.fetchone()
+
+    # RECUPERAR TODOS LOS USUARIOS POR ROL
+    
     @classmethod
     def get_usuarios_por_rol(self, rol):
         sql = """
@@ -36,8 +49,41 @@ class Usuario(object):
         cursor.execute(sql, (rol))
 
         return cursor.fetchall()
+    
+     # ENOCONTRAR USUARIO DADO UN EMAIL Y CONTRASEÑA
+    
+    @classmethod
+    def find_by_email_and_pass(self, email, password):
+        sql = """
+            SELECT * FROM usuario u
+            WHERE u.email = %s AND u.password = %s
+        """
 
+        cursor = self.db.cursor()
+        cursor.execute(sql, (email, password))
 
+        return cursor.fetchone()
+    
+    # VER SI EXISTE UN USUARIO SEGUN UN USERNAME
+    
+    @classmethod
+    def existe(self, username):
+        sql = """
+            SELECT * FROM usuario
+            WHERE username = %s
+        """
+
+        cursor = self.db.cursor()
+        cursor.execute(sql, (username))
+        
+        if cursor.fetchone():
+            return True
+
+        return False
+    
+
+    # INSERTAR USUARIO
+    
     @classmethod
     def insert(self, user):
         sql = """
@@ -57,6 +103,8 @@ class Usuario(object):
         self.db.commit()
 
         return True
+    
+    # AGREGAR ROL A UN USUARIO
     
     @classmethod
     def agregar_rol(self, rol, usuario):
@@ -86,31 +134,22 @@ class Usuario(object):
         self.db.commit()
 
         return True
-
-    @classmethod
-    def find_by_email_and_pass(self, email, password):
-        sql = """
-            SELECT * FROM usuario u
-            WHERE u.email = %s AND u.password = %s
-        """
-
-        cursor = self.db.cursor()
-        cursor.execute(sql, (email, password))
-
-        return cursor.fetchone()
     
+    
+    # ACTIVAR / DESACTIVAR UN USUARIO
     @classmethod
-    def existe(self, username):
-        sql = """
-            SELECT * FROM usuario
-            WHERE username = %s
-        """
-
+    def activar(self, id_usuario):
         cursor = self.db.cursor()
-        cursor.execute(sql, (username))
         
-        if cursor.fetchone():
-            return True
+        sql = """
+            UPDATE usuario 
+            SET activo = not activo
+            WHERE id = %s
+        """
 
-        return False
-    
+        cursor.execute(sql, (id_usuario))
+        self.db.commit()
+
+        return True
+
+   

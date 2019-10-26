@@ -9,16 +9,22 @@
     </div>
 
     <!-- Mostrar mensajes guardados en flash -->
-    {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+    {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error == 1%}
 
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+    </div>
+    {% elif exito == 1 %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
         <strong>Nota:</strong> {{ message }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+                    <span aria-hidden="true">&times;</span>
+                </button>
     </div>
-
-    {% endfor %} {% endif %} {% endwith %} {{ form.hidden_tag() }}
+    {% endif %}{% endfor %} {% endif %} {% endwith %} {{ form.hidden_tag() }}
 
     <p>
         {{ form.titulo.label }}:<br> {{ form.titulo() }}

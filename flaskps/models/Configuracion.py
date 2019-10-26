@@ -37,3 +37,18 @@ class Configuracion(object):
         config_actual = cursor.fetchone()
 
         return config_actual
+    
+    
+    @classmethod
+    def get_sitio_habilitado(self):
+        
+        sql = """
+            SELECT sitio_habilitado
+            FROM config
+            WHERE id = 1
+        """
+        
+        cursor = self.db.cursor()
+        cursor.execute(sql)
+        return cursor.fetchone()
+        
