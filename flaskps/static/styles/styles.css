@@ -55,12 +55,14 @@ div#textarea {
     width: 100%;
 }
 
+
 /* Tablas */
+
 .paginador {
     display: -webkit-inline-box!important;
 }
 
-.page-link{
+.page-link {
     background-color: #343a40;
     border-color: #343a40;
     color: #fff;
@@ -70,4 +72,14 @@ div#textarea {
     background-color: #1a91a1;
     border-color: #1a91a1;
     color: #fff;
+}
+
+.eliminar {
+    background-color: hsl(352, 96%, 56%) !important;
+    border-color: hsl(352, 96%, 56%) !important;
+}
+
+.eliminar:hover {
+    background-color: #db1f38 !important;
+    border-color: #db1f38 !important;
 }

@@ -22,26 +22,26 @@
                     <td>{{ u.last_name }}</td>
                     <td>
                         {% if u.activo %}
-                        <button class="btn btn-primary">Desactivar</button> 
-                        {% else %}
-                        <button class="btn btn-primary">Activar</button> 
-                        {% endif %}
+                        <button class="btn btn-primary" title="Desactivar usuario">Desactivar</button> {% else %}
+                        <button class="btn btn-primary" title="Activar usuario">Activar</button> {% endif %}
 
-                        <button class="btn btn-primary">Ver Perfil</button>
+                        <button class="btn btn-primary" title="Ver perfil del usuario">Ver Perfil</button>
+                        <button class="btn btn-primary" title="Editar usuario">Editar</button>
+                        <button class="btn btn-primary eliminar" title="Eliminar usuario">Eliminar</button>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
 
-            
+
         </table>
         <div class="text-center" aria-label="Páginas de la tabla">
             <ul class="pagination paginador">
-              <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+                <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
             </ul>
         </div>
 </div>

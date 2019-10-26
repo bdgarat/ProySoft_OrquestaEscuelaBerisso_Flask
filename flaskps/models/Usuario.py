@@ -17,7 +17,7 @@ class Usuario(object):
 
     @classmethod
     def all(self):
-        sql = 'SELECT * FROM usuario'
+        sql = 'SELECT * FROM usuario where borrado_logico = 0'
         cursor = self.db.cursor()
         cursor.execute(sql)
 
@@ -29,7 +29,7 @@ class Usuario(object):
             SELECT u.id, u.email, u.first_name, u.last_name, u.activo FROM usuario u
             INNER JOIN usuario_tiene_rol ur ON (u.id = ur.usuario_id)
             INNER JOIN rol r ON (ur.rol_id = r.id)
-            WHERE r.nombre = %s
+            WHERE r.nombre = %s AND u.borrado_logico = 0
         """
         
         cursor = self.db.cursor()
@@ -114,31 +114,3 @@ class Usuario(object):
 
         return False
     
-    @classmethod
-    def get_config(self):
-        sql = """
-            SELECT * FROM config
-        """
-
-        cursor = self.db.cursor()
-        cursor.execute(sql)
-        
-        config_actual = cursor.fetchone()
-
-        return config_actual
-    
-    @classmethod
-    def set_config(self, config):
-        sql = """
-            UPDATE config
-            SET titulo = %s, descripcion = %s, contacto=%s, paginacion = %s, sitio_habilitado = %s
-            WHERE id=1
-        """
-
-        cursor = self.db.cursor()
-        cursor.execute(sql, (config.titulo, config.descripcion, config.contacto, config.paginacion, config.sitio_habilitado))
-        self.db.commit()
-        
-        config_actual = cursor.fetchone()
-
-        return config_actual
