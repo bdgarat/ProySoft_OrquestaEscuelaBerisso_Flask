@@ -5,19 +5,43 @@ from flaskps.models.Usuario import Usuario
 from flaskps.models.Configuracion import Configuracion
 from flaskps.helpers.auth import authenticated
 from flaskps.forms import SignUpForm
+from flask_paginate import Pagination, get_page_parameter
 
 
 mod = Blueprint('usuario', __name__)
 
-
 # LISTADOS
 @mod.route("/index/<rol>")
 def index(rol):
+    # Setear variables
+    Configuracion.db = get_db()
+    per_page = Configuracion.get_paginacion()['paginacion']
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+    offset = (page - 1) * per_page
 
     Usuario.db = get_db()
-    usuarios = Usuario.get_usuarios_por_rol(rol)
+    
+    # Total registros
+    total = Usuario.get_usuarios_por_rol(rol)
+    total = len(total)
 
-    return render_template('usuarios/index.html', usuarios=usuarios, rol=rol)
+    # Consulta usando offset y limit
+    usuarios = Usuario.get_usuarios_por_rol_paginados(rol, per_page, offset)
+
+    pagination = Pagination(page=page, 
+                            per_page=per_page, 
+                            total=total, 
+                            record_name='usuarios',
+                            css_framework='bootstrap4')
+    
+    # Setear el titulo
+    titulo = get_titulo(rol)
+    
+    return render_template('usuarios/index.html', 
+                            pagination=pagination, 
+                            usuarios=usuarios, 
+                            rol=rol,
+                            titulo=titulo)
 
 
 @mod.route("/registrar", methods=['GET', 'POST'])
@@ -74,3 +98,15 @@ def activar(id_usuario, rol):
     
     flash("Se guardaron los cambios con éxito")
     return redirect("/index/"+rol)
+
+
+
+# ------------------------------------------------
+def get_titulo(rol):
+    switcher = {
+        'estudiante': "Estudiantes",
+        'docente': "Docentes",
+        'preceptor': "Preceptores",
+        'admin': "Administradores"
+    }
+    return switcher.get(rol, "Rol invalido")

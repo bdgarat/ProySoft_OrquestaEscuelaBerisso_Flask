@@ -51,4 +51,16 @@ class Configuracion(object):
         cursor = self.db.cursor()
         cursor.execute(sql)
         return cursor.fetchone()
+    
+    @classmethod
+    def get_paginacion(self):
         
+        sql = """
+            SELECT paginacion
+            FROM config
+            WHERE id = 1
+        """
+        
+        cursor = self.db.cursor()
+        cursor.execute(sql)
+        return cursor.fetchone()

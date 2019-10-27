@@ -75,6 +75,18 @@ div#textarea {
     color: #fff;
 }
 
+.page-item, .disabled {
+    background-color: #1a91a1;
+    border-color: #1a91a1;
+    color: #fff;
+}
+
+.page-item, .active {
+    background-color: #1a91a1;
+    border-color: #1a91a1;
+    color: #fff;
+}
+
 .eliminar {
     background-color: hsl(352, 96%, 56%) !important;
     border-color: hsl(352, 96%, 56%) !important;

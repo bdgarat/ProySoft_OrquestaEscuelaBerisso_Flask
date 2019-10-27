@@ -15,7 +15,6 @@ class Usuario(object):
         self.updated_at = self.created_at
         
     # RECUPERAR TODOS LOS USUARIOS
-
     @classmethod
     def all(self):
         sql = 'SELECT * FROM usuario where borrado_logico = 0'
@@ -23,6 +22,7 @@ class Usuario(object):
         cursor.execute(sql)
 
         return cursor.fetchall()
+    
     
     # RECUPERAR UN USUARIO DADO UN ID
     
@@ -35,7 +35,6 @@ class Usuario(object):
         return cursor.fetchone()
 
     # RECUPERAR TODOS LOS USUARIOS POR ROL
-    
     @classmethod
     def get_usuarios_por_rol(self, rol):
         sql = """
@@ -50,6 +49,23 @@ class Usuario(object):
 
         return cursor.fetchall()
     
+    # RECUPERAR TODOS LOS USUARIOS POR ROL Y PAGINADOS
+    @classmethod
+    def get_usuarios_por_rol_paginados(self, rol, limit, offset = 1):
+        sql = """
+            SELECT u.id, u.email, u.first_name, u.last_name, u.activo FROM usuario u
+            INNER JOIN usuario_tiene_rol ur ON (u.id = ur.usuario_id)
+            INNER JOIN rol r ON (ur.rol_id = r.id)
+            WHERE r.nombre = %s AND u.borrado_logico = 0 
+            LIMIT %s OFFSET %s
+        """
+        
+        cursor = self.db.cursor()
+        cursor.execute(sql, (rol, limit, offset))
+
+        return cursor.fetchall()
+
+
      # ENOCONTRAR USUARIO DADO UN EMAIL Y CONTRASEÑA
     
     @classmethod
