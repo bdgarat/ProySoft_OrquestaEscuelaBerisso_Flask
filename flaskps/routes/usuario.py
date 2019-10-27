@@ -4,7 +4,7 @@ from flask import render_template, flash, redirect, session, abort, request
 from flaskps.models.Usuario import Usuario
 from flaskps.models.Configuracion import Configuracion
 from flaskps.helpers.auth import authenticated
-from flaskps.forms import SignUpForm
+from flaskps.forms import SignUpForm, BusquedaForm
 from flask_paginate import Pagination, get_page_parameter
 
 
@@ -13,7 +13,17 @@ mod = Blueprint('usuario', __name__)
 # LISTADOS
 @mod.route("/index/<rol>")
 def index(rol):
-    # Setear variables
+    form = BusquedaForm()
+
+    search = False
+    termino = request.args.get('termino')
+    if termino:
+        search = True
+
+    # seteo el value del input si vino con algo
+    form.termino.data = termino
+    
+    # Setear variables de paginacion
     Configuracion.db = get_db()
     per_page = Configuracion.get_paginacion()['paginacion']
     page = request.args.get(get_page_parameter(), type=int, default=1)
@@ -21,16 +31,23 @@ def index(rol):
 
     Usuario.db = get_db()
     
-    # Total registros
-    total = Usuario.get_usuarios_por_rol(rol)
+    if search:
+        # Total registros
+        total = Usuario.get_usuarios_por_rol(rol, termino)
+        # Consulta usando offset y limit
+        usuarios = Usuario.get_usuarios_por_rol_paginados(rol, per_page, offset, termino)
+    else:
+        # Total registros
+        total = Usuario.get_usuarios_por_rol(rol)
+        # Consulta usando offset y limit
+        usuarios = Usuario.get_usuarios_por_rol_paginados(rol, per_page, offset)
+
     total = len(total)
-
-    # Consulta usando offset y limit
-    usuarios = Usuario.get_usuarios_por_rol_paginados(rol, per_page, offset)
-
     pagination = Pagination(page=page, 
                             per_page=per_page, 
-                            total=total, 
+                            total=total,
+                            search=search,
+                            found=total,
                             record_name='usuarios',
                             css_framework='bootstrap4')
     
@@ -41,7 +58,8 @@ def index(rol):
                             pagination=pagination, 
                             usuarios=usuarios, 
                             rol=rol,
-                            titulo=titulo)
+                            titulo=titulo,
+                            form=form)
 
 
 @mod.route("/registrar", methods=['GET', 'POST'])

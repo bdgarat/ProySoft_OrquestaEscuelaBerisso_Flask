@@ -16,11 +16,21 @@
 
         <table class="table text-center">
             
-            {{ pagination.info }}
+            
+            <form class="form-inline my-2 my-lg-0" method="get">
+                <p>
+                    {{ form.termino.label }}:<br> {{ form.termino(size=32) }}
+                </p>
+                <p>{{ form.submit() }}</p>
+            </form>
             <br>    
+
+            {{ pagination.info }}
+            <br>
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Email</th>
+                    <th scope="col">Username</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Apellido</th>
                     <th scope="col">Operaciones</th>
@@ -30,6 +40,7 @@
                 {% for u in usuarios %}
                 <tr>
                     <th scope="row">{{ u.email }}</th>
+                    <td>{{ u.username }}</td>
                     <td>{{ u.first_name }}</td>
                     <td>{{ u.last_name }}</td>
                     <td>
