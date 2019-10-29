@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 26-10-2019 a las 21:48:41
+-- Tiempo de generación: 29-10-2019 a las 18:30:31
 -- Versión del servidor: 10.4.6-MariaDB
 -- Versión de PHP: 7.3.9
 
@@ -141,7 +141,26 @@ INSERT INTO `rol_tiene_permiso` (`rol_id`, `permiso_id`) VALUES
 (1, 19),
 (1, 20),
 (1, 21),
-(1, 22);
+(1, 22),
+(2, 1),
+(2, 2),
+(2, 3),
+(2, 4),
+(2, 5),
+(2, 6),
+(2, 7),
+(2, 8),
+(2, 9),
+(2, 10),
+(2, 11),
+(2, 15),
+(3, 1),
+(3, 2),
+(3, 3),
+(3, 4),
+(3, 5),
+(3, 6),
+(3, 10);
 
 -- --------------------------------------------------------
 
