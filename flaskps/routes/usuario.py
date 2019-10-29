@@ -13,6 +13,9 @@ mod = Blueprint('usuario', __name__)
 # LISTADOS
 @mod.route("/index/<rol>")
 def index(rol):
+    if not authenticated(session):
+        return redirect("/home")
+
     form = BusquedaForm()
 
     search = False
@@ -64,6 +67,9 @@ def index(rol):
 
 @mod.route("/registrar", methods=['GET', 'POST'])
 def registrar():
+    if not authenticated(session):
+        return redirect("/home")
+
     form = SignUpForm()
     # para manejar los mensajes flash
     error=0
@@ -110,7 +116,9 @@ def registrar():
 
 @mod.route("/activar/<id_usuario>/<rol>")
 def activar(id_usuario, rol):
-    
+    if not authenticated(session):
+        return redirect("/home")
+        
     Usuario.db = get_db()
     Usuario.activar(id_usuario)
     

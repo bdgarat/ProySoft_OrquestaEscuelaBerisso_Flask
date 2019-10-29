@@ -10,10 +10,16 @@ mod = Blueprint('configuracion', __name__)
 
 @mod.route("/mantenimiento")
 def mantenimiento():
+    if not authenticated(session):
+        return redirect("/home")
+
     return render_template("mantenimiento.html")
 
 @mod.route("/config", methods=['GET', 'POST'])
 def config():
+    if not authenticated(session):
+        return redirect("/home")
+        
     form = ConfigForm()
     Configuracion.db = get_db()   
     config_actual = Configuracion.get_config()

@@ -25,9 +25,11 @@ def login():
             return redirect("/login")
 
         # crear la sesion
-        session['user'] = user  
-        # session['permisos'] = Usuario.get_permisos(user)
-        
+        session['user'] = user
+        session['permisos'] = Usuario.get_permisos(user['id_rol'])
+       
+
+        Configuracion.db = get_db()
         config = Configuracion.get_config()
         return render_template("home.html", config=config)
 

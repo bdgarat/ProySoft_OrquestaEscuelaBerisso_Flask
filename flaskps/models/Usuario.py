@@ -25,7 +25,6 @@ class Usuario(object):
     
     
     # RECUPERAR UN USUARIO DADO UN ID
-    
     @classmethod
     def get_user(self, id):
         sql = 'SELECT * FROM usuario where borrado_logico = 0 and id = %s'
@@ -33,6 +32,23 @@ class Usuario(object):
         cursor.execute(sql, (id))
 
         return cursor.fetchone()
+    
+    # RECUPERAR LOS PERMISOS DE UN USUARIO DADO UN ID ROL
+    @classmethod
+    def get_permisos(self, id_rol):
+        sql = """
+                SELECT p.nombre 
+                FROM rol r
+                INNER JOIN rol_tiene_permiso rp ON (r.id = rp.rol_id)
+                INNER JOIN permiso p ON (p.id = rp.permiso_id) 
+                WHERE r.id = %s
+            """
+        cursor = self.db.cursor()
+        cursor.execute(sql, (id_rol))
+
+        return cursor.fetchall()
+
+
 
     # RECUPERAR TODOS LOS USUARIOS POR ROL
     @classmethod
@@ -92,7 +108,10 @@ class Usuario(object):
     @classmethod
     def find_by_email_and_pass(self, email, password):
         sql = """
-            SELECT * FROM usuario u
+            SELECT u.id, u.email, u.password, u.username, r.id AS id_rol, r.nombre 
+            FROM usuario u
+            INNER JOIN usuario_tiene_rol ur ON (u.id = ur.usuario_id)
+            INNER JOIN rol r ON (ur.rol_id = r.id)
             WHERE u.email = %s AND u.password = %s
         """
 
