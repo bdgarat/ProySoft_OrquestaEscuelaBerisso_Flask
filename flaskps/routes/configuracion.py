@@ -8,18 +8,18 @@ from flaskps.forms import ConfigForm
 
 mod = Blueprint('configuracion', __name__)
 
-@mod.route("/mantenimiento")
-def mantenimiento():
+@mod.before_request
+def before_request():
     if not authenticated(session):
         return redirect("/home")
 
+
+@mod.route("/mantenimiento")
+def mantenimiento():
     return render_template("mantenimiento.html")
 
 @mod.route("/config", methods=['GET', 'POST'])
 def config():
-    if not authenticated(session):
-        return redirect("/home")
-        
     form = ConfigForm()
     Configuracion.db = get_db()   
     config_actual = Configuracion.get_config()
