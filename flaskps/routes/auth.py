@@ -19,15 +19,28 @@ def login():
         Usuario.db = get_db()
         
         user = Usuario.find_by_email_and_pass(form.email.data, form.password.data)
-        
+        print(len(user))
+
         if not user:
             flash("Usuario o clave incorrecto.")
             return redirect("/login")
 
-        # crear la sesion
-        session['user'] = user
-        session['permisos'] = Usuario.get_permisos(user['id_rol'])
-       
+        # crear la sesion, datos del usuario
+        session['user'] = user[0]
+        
+        # crear lista con todos los permisos del usuario, contemplando mas de un rol
+        permisos = []
+        for tupla in user:
+            tupla_permisos = Usuario.get_permisos(tupla['id_rol'])
+            for p in tupla_permisos:
+                permisos.append(p['nombre'])
+
+        # eliminar permisos repetidos
+        permisos = set(permisos)    
+
+        # cargar lista de permisos del usuario
+        session['permisos'] = permisos
+        
 
         Configuracion.db = get_db()
         config = Configuracion.get_config()
@@ -40,8 +53,10 @@ def login():
 def logout():
     if not authenticated(session):
         return redirect("/login")
+    
     # eliminar sesion
     del session['user']
+    del session['permisos']
     session.clear()
     flash("La sesión se cerró correctamente.")
 

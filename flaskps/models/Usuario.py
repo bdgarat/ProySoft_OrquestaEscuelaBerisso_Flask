@@ -118,7 +118,7 @@ class Usuario(object):
         cursor = self.db.cursor()
         cursor.execute(sql, (email, password))
 
-        return cursor.fetchone()
+        return cursor.fetchall()
     
     # VER SI EXISTE UN USUARIO SEGUN UN USERNAME
     
