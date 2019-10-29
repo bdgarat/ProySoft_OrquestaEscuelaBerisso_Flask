@@ -12,6 +12,10 @@ mod = Blueprint('configuracion', __name__)
 def before_request():
     if not authenticated(session):
         return redirect("/home")
+    # Reviso que tenga permiso para ver config
+    if ( 'config_index' ) not in session['permisos']:
+        flash('No tiene permiso para ver la configuración del sistema')
+        return redirect('/home')
 
 
 @mod.route("/mantenimiento")

@@ -19,6 +19,12 @@ def before_request():
 # LISTADOS
 @mod.route("/index/<rol>")
 def index(rol):
+
+    # Reviso que tenga permiso para acceder al listado del rol de la url
+    if ( rol+'_index' ) not in session['permisos']:
+        flash('No tiene permiso para visualizar el listado de ' + get_titulo(rol) )
+        return redirect('/home')    
+
     form = BusquedaForm()
 
     search = False
@@ -116,6 +122,12 @@ def registrar():
 
 @mod.route("/activar/<id_usuario>/<rol>")
 def activar(id_usuario, rol):
+    
+    # Reviso que tenga permiso para actualizar rol de la url 
+    if ( rol+'_update' ) not in session['permisos']:
+        flash('No tiene permiso para actualizar este tipo de usuario')
+        return redirect('/index/' + rol)
+
     Usuario.db = get_db()
     Usuario.activar(id_usuario)
     

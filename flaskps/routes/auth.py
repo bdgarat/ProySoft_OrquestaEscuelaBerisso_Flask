@@ -40,7 +40,6 @@ def login():
 
         # cargar lista de permisos del usuario
         session['permisos'] = permisos
-        
 
         Configuracion.db = get_db()
         config = Configuracion.get_config()
