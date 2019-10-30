@@ -155,26 +155,12 @@ def editar(id_usuario, rol):
     Usuario.db = get_db()
     usuario = Usuario.get_user(id_usuario)
     
-    # seteo el form con los valores del usuario
-    form.email.data = usuario['email']
-    form.username.data = usuario['username']
-    form.first_name.data = usuario['first_name']
-    form.last_name.data = usuario['last_name']
-    
     if request.method == 'POST':
         
         if form.validate_on_submit():          
                 
-            ok = Usuario.editar(id_usuario, form.email.data)
+            ok = Usuario.editar(id_usuario, form.email.data,form.username.data, form.first_name.data, form.last_name.data)
             print(ok)
-            
-            usuario = Usuario.get_user(id_usuario)
-    
-            # vuelvo a setear el form con los valores actualizados del usuario
-            form.email.data = usuario['email']
-            form.username.data = usuario['username']
-            form.first_name.data = usuario['first_name']
-            form.last_name.data = usuario['last_name']
             
             flash("Usuario editado correctamente.")
             exito = 1
@@ -182,6 +168,14 @@ def editar(id_usuario, rol):
         else: 
             flash("Debe completar todos los campos.")
             error = 1
+            
+    usuario = Usuario.get_user(id_usuario)
+    
+    # vuelvo a setear el form con los valores actualizados del usuario
+    form.email.data = usuario['email']
+    form.username.data = usuario['username']
+    form.first_name.data = usuario['first_name']
+    form.last_name.data = usuario['last_name']
                 
     return render_template("usuarios/editar.html", form=form, error=error, exito=exito)
 

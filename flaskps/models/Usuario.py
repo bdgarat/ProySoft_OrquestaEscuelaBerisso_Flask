@@ -211,18 +211,18 @@ class Usuario(object):
     
     # EDITAR UN USUARIO
     @classmethod
-    def editar(self, id_usuario, email):
+    def editar(self, id_usuario, email, username, first_name, last_name):
         cursor = self.db.cursor()
         
-        # updated_at = datetime.now()
+        updated_at = datetime.now()
         
         sql = """
             UPDATE usuario 
-            SET email = %s
+            SET email = %s, username = %s, first_name = %s, last_name = %s, updated_at = %s
             WHERE id = %s
         """
 
-        o = cursor.execute(sql, (email, id_usuario))
+        o = cursor.execute(sql, (email, username, first_name, last_name, updated_at, id_usuario))
         self.db.commit()
 
         return o
