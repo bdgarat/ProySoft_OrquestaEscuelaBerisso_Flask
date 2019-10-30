@@ -2,7 +2,7 @@
 
 <div class="jumbotron">
     <h2 class="display-4">Administración de {{ titulo }}</h1>
-        
+
         <hr class="my-4"> {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
 
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -15,19 +15,21 @@
         {% endfor %} {% endif %} {% endwith %}
 
         <table class="table text-center">
-            
-            
+
+
             <form class="form-inline my-2 my-lg-0" method="get">
-                <p>
-                    {{ form.termino.label }}:<br> {{ form.termino(size=32) }}
-                </p>
-                <p>{{ form.submit() }}</p>
+                {{ form.termino.label }}:
+                <div class="row">
+                    <div class="col">{{ form.termino(size=32) }}</div>
+
+                    <div class="col">{{ form.submit() }}</div>
+                </div>
             </form>
-            <br>    
-            
-            
+            <br>
+
+
             <p>Total de usuarios: <strong>{{ pagination.total }}</strong></p>
-            
+
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Email</th>
@@ -50,7 +52,7 @@
                         <button type="button" onclick="location.href='/activar/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Activar usuario">Activar</button> {% endif %}
 
                         <button type="button" class="btn btn-primary" title="Ver perfil del usuario">Ver Perfil</button>
-                        <button type="button" class="btn btn-primary" title="Editar usuario">Editar</button>
+                        <button type="button" onclick="location.href='/editar/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Editar usuario">Editar</button>
                         <button type="button" class="btn btn-primary eliminar" title="Eliminar usuario">Eliminar</button>
                     </td>
                 </tr>
@@ -59,7 +61,7 @@
 
         </table>
         <div class="text-center" aria-label="Páginas de la tabla">
-                {{ pagination.links }}
+            {{ pagination.links }}
         </div>
 </div>
 

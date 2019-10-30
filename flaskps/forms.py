@@ -8,8 +8,7 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Iniciar sesión', render_kw={"class": "btn btn-lg btn-primary btn-block"})
     
-class ConfigForm(FlaskForm):
-    
+class ConfigForm(FlaskForm):   
     titulo = StringField('Titulo del sitio', render_kw={"class": "form-control"})
     descripcion = StringField('Descripcion', render_kw={"class": "form-control"})   
     contacto = StringField('Información de contacto', render_kw={"class": "form-control"})   
@@ -28,6 +27,13 @@ class SignUpForm(FlaskForm):
     es_docente = BooleanField('Docente', render_kw={"class": "col"})
     es_estudiante = BooleanField('Estudiante', render_kw={"class": "col"})
     submit = SubmitField('Registrar usuario', render_kw={"class": "btn btn-lg btn-primary btn-block pb-10"})
+    
+class EditarForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired()], render_kw={"class": "form-control"})
+    username = StringField('Nombre de usuario', validators=[DataRequired()], render_kw={"class": "form-control"})
+    first_name = StringField('Nombre', validators=[DataRequired()], render_kw={"class": "form-control"})
+    last_name = StringField('Apellido', validators=[DataRequired()], render_kw={"class": "form-control"})
+    submit = SubmitField('Editar usuario', render_kw={"class": "btn btn-lg btn-primary btn-block pb-10"})
     
 class BusquedaForm(FlaskForm):
     termino = StringField('Buscar por nombre de usuario', render_kw={"class": "form-control"})

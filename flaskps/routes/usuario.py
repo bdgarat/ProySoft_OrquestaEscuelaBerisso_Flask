@@ -4,7 +4,7 @@ from flask import render_template, flash, redirect, session, abort, request
 from flaskps.models.Usuario import Usuario
 from flaskps.models.Configuracion import Configuracion
 from flaskps.helpers.auth import authenticated
-from flaskps.forms import SignUpForm, BusquedaForm
+from flaskps.forms import SignUpForm, BusquedaForm, EditarForm
 from flask_paginate import Pagination, get_page_parameter
 
 
@@ -120,6 +120,8 @@ def registrar():
     return render_template("usuarios/registrar.html", form=form, error=error, exito=exito)
 
 
+#  ACTIVAR/DESACTIVAR USUARIO
+
 @mod.route("/activar/<id_usuario>/<rol>")
 def activar(id_usuario, rol):
     
@@ -134,6 +136,54 @@ def activar(id_usuario, rol):
     flash("Se guardaron los cambios con éxito")
     return redirect("/index/"+rol)
 
+#  EDITAR USUARIO
+
+
+@mod.route("/editar/<id_usuario>/<rol>", methods=['GET', 'POST'])
+def editar(id_usuario, rol):
+    
+    # Reviso que tenga permiso para editar rol de la url 
+    if ( rol+'_update' ) not in session['permisos']:
+        flash('No tiene permiso para editar este tipo de usuario')
+        return redirect('/index/' + rol)
+    
+
+    form = EditarForm()
+    # para manejar los mensajes flash
+    error=0
+    exito=0
+    Usuario.db = get_db()
+    usuario = Usuario.get_user(id_usuario)
+    
+    # seteo el form con los valores del usuario
+    form.email.data = usuario['email']
+    form.username.data = usuario['username']
+    form.first_name.data = usuario['first_name']
+    form.last_name.data = usuario['last_name']
+    
+    if request.method == 'POST':
+        
+        if form.validate_on_submit():          
+                
+            ok = Usuario.editar(id_usuario, form.email.data)
+            print(ok)
+            
+            usuario = Usuario.get_user(id_usuario)
+    
+            # vuelvo a setear el form con los valores actualizados del usuario
+            form.email.data = usuario['email']
+            form.username.data = usuario['username']
+            form.first_name.data = usuario['first_name']
+            form.last_name.data = usuario['last_name']
+            
+            flash("Usuario editado correctamente.")
+            exito = 1
+                
+        else: 
+            flash("Debe completar todos los campos.")
+            error = 1
+                
+    return render_template("usuarios/editar.html", form=form, error=error, exito=exito)
 
 
 # ------------------------------------------------

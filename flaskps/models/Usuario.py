@@ -207,5 +207,24 @@ class Usuario(object):
         self.db.commit()
 
         return True
+    
+    
+    # EDITAR UN USUARIO
+    @classmethod
+    def editar(self, id_usuario, email):
+        cursor = self.db.cursor()
+        
+        # updated_at = datetime.now()
+        
+        sql = """
+            UPDATE usuario 
+            SET email = %s
+            WHERE id = %s
+        """
+
+        o = cursor.execute(sql, (email, id_usuario))
+        self.db.commit()
+
+        return o
 
    
