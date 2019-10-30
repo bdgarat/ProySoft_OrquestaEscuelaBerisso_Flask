@@ -79,7 +79,7 @@ def index(rol):
 def registrar():
     
     # Reviso que tenga permiso
-    if not Usuario.tengo_permiso_registrar(session['permisos']):
+    if session['user']['nombre_rol'] != 'admin':
         flash("Usted no tiene permiso para realizar esta operacón")
         return redirect("/home")
     else:     
@@ -142,6 +142,10 @@ def registrar():
 @mod.route("/activar/<id_usuario>/<rol>")
 def activar(id_usuario, rol):
     
+    if int(id_usuario) == session['user']['id']:
+        flash('No se puede modificar a sí mismo!')
+        return redirect('/index/' + rol)
+    
     # Reviso que tenga permiso
     permiso = rol+'_update'
     if not Usuario.tengo_permiso(session['permisos'], permiso):
@@ -160,6 +164,10 @@ def activar(id_usuario, rol):
 @mod.route("/editar/<id_usuario>/<rol>", methods=['GET', 'POST'])
 def editar(id_usuario, rol):
     
+    if int(id_usuario) == session['user']['id']:
+        flash('No se puede modificar a sí mismo!')
+        return redirect('/index/' + rol)
+
     # Reviso que tenga permiso
     permiso = rol+'_update'
     if not Usuario.tengo_permiso(session['permisos'], permiso):
@@ -177,10 +185,32 @@ def editar(id_usuario, rol):
     if request.method == 'POST':
         
         if form.validate_on_submit():          
-                
-            ok = Usuario.editar(id_usuario, form.email.data,form.username.data, form.first_name.data, form.last_name.data)
-            print(ok)
+
+            Usuario.editar(id_usuario, form.email.data,form.username.data, form.first_name.data, form.last_name.data)
+            usuario = Usuario(usuario['email'], usuario['username'], usuario['password'], usuario['first_name'], usuario['last_name'])
+            # chequeo qué permisos se le otorgaron al usuario        
+            if (form.es_admin.data):
+                usuario.agregar_rol('admin', usuario)
+            else:
+                usuario.quitar_rol('admin', usuario)    
             
+            if (form.es_preceptor.data):
+                usuario.agregar_rol('preceptor', usuario)
+            else:
+                usuario.quitar_rol('preceptor', usuario)
+
+            if (form.es_docente.data):
+                usuario.agregar_rol('docente', usuario)
+            else:
+                usuario.quitar_rol('docente', usuario)
+
+            if (form.es_estudiante.data):
+                usuario.agregar_rol('estudiante', usuario)
+            else:
+                usuario.quitar_rol('estudiante', usuario)    
+
+            # vuelvo a consultar por los valores del usuario
+            usuario = Usuario.get_user(id_usuario)    
             flash("Usuario editado correctamente.")
             exito = 1
                 
@@ -188,14 +218,27 @@ def editar(id_usuario, rol):
             flash("Debe completar todos los campos.")
             error = 1
             
-    usuario = Usuario.get_user(id_usuario)
-    
     # vuelvo a setear el form con los valores actualizados del usuario
     form.email.data = usuario['email']
     form.username.data = usuario['username']
     form.first_name.data = usuario['first_name']
     form.last_name.data = usuario['last_name']
-                
+   
+    # obtengo roles del usuario y seteo los checkbox
+    tuplas_roles = Usuario.get_roles(usuario['id'])
+    roles = []
+    for t in tuplas_roles:
+        roles.append(t['nombre'])
+    if 'admin' in roles:
+        form.es_admin.data = 1
+    if 'preceptor' in roles:
+        form.es_preceptor.data = 1
+    if 'docente' in roles:
+        form.es_docente.data = 1
+    if 'estudiante' in roles:
+        form.es_estudiante.data = 1
+
+
     return render_template("usuarios/editar.html", form=form, error=error, exito=exito)
 
 
@@ -204,6 +247,10 @@ def editar(id_usuario, rol):
 @mod.route("/eliminar/<id_usuario>/<rol>")
 def eliminar(id_usuario, rol):
     
+    if int(id_usuario) == session['user']['id']:
+        flash('No se puede eliminar a sí mismo!')
+        return redirect('/index/' + rol)
+
     # Reviso que tenga permiso
     permiso = rol+'_destroy'
     if not Usuario.tengo_permiso(session['permisos'], permiso):

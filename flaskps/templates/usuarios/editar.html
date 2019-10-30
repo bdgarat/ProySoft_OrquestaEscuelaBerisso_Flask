@@ -1,12 +1,11 @@
 {% extends "layout.html" %} {% block content %}
 
 
-<form action="" method="post" class="form-signin" novalidate>
+<form action="" method="post" class="form-signin">
 
     <div class="text-center">
-        <img class="mb-4 img_form rounded-lg" src="static/images/OEBerisso_logo.png" alt="Logo de la Orquesta Escuela de Berisso">
+        <img class="mb-4 img_form rounded-lg" src="/static/images/OEBerisso_logo.png" alt="Logo de la Orquesta Escuela de Berisso">
         <h1 class="h3 mb-3 font-weight-normal">Editar usuario</h1>
-
     </div>
 
     <!-- Mostrar mensajes guardados en flash -->
@@ -22,7 +21,7 @@
     {% elif exito == 1 %}
 
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Error:</strong> {{ message }}
+        <strong>Éxito:</strong> {{ message }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -42,6 +41,16 @@
     <p>
         {{ form.last_name.label }}:<br> {{ form.last_name() }}
     </p>
+
+    {% if session['user']['nombre_rol'] == "admin" %}
+    <h4 class="mt-4">Agregar o quitar roles:</h4>
+    <div class="form row justify-content-md-center">
+        <p>{{ form.es_admin() }} {{ form.es_admin.label }}</p>
+        <p>{{ form.es_preceptor() }} {{ form.es_preceptor.label }}</p>
+        <p>{{ form.es_docente() }} {{ form.es_docente.label }}</p>
+        <p>{{ form.es_estudiante() }} {{ form.es_estudiante.label }}</p>
+    </div>
+    {% endif %}
 
     <p>{{ form.submit() }}</p>
 </form>

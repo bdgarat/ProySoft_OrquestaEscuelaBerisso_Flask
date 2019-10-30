@@ -20,9 +20,10 @@
 
     <p>{{ config.contacto }}</p>
 
-    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+    {% if session['user'] == null %}
+    <a class="btn btn-primary btn-lg" href="/login" role="button">Iniciar sesión</a>
+    {% endif %}
 </div>
-
 
 
 {% endblock %}

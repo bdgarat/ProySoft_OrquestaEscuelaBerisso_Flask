@@ -5,14 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Escuela Orquesta de Berisso</title>
+    <title>Orquesta Escuela de Berisso</title>
 
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- estilos -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
-
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 {% block body %}
@@ -33,21 +34,40 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 {% if session['user'] == null %}
-                <a class="nav-item nav-link" href="/login">Iniciar Sesión</a> {% else %}
+                <a class="nav-item nav-link" href="/login">Iniciar Sesión</a> 
+                {% else %}
+                <!-- el problema es cuando hay mas de un rol -->
+                <!-- {% if ("estudiante_index" or "docente_index" or "prepector_index") in session['permisos'] or session['user']['nombre_rol'] == "admin" %} -->
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Administración
                                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% if "estudiante_index" in session['permisos'] %}
                         <a class="dropdown-item" href="/index/estudiante">Estudiantes</a>
+                        {% endif %}
+
+                        {% if "docente_index" in session['permisos'] %}
                         <a class="dropdown-item" href="/index/docente">Docentes</a>
+                        {% endif %}
+                     
+                        {% if "preceptor_index" in session['permisos'] %}
                         <a class="dropdown-item" href="/index/preceptor">Preceptores</a>
+                        {% endif %}
+                     
+                        {% if "admin_index" in session['permisos'] %}
                         <a class="dropdown-item" href="/index/admin">Administradores</a>
+                        {% endif %}
+                        
+                        {% if session['user']['nombre_rol'] == "admin" %}
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/config">Configuración de Sistema</a>
                         <a class="dropdown-item" href="/registrar">Registrar usuario</a>
+                        {% endif %}
                     </div>
                 </div>
+                <!-- {% endif %} -->
+                <a class="nav-item nav-link" href=""> {{ session['user']['last_name'] }}, {{ session['user']['first_name'] }}</a>
                 <a class="nav-item nav-link" href="/logout">Cerrar sesión</a> {% endif %}
 
             </div>
@@ -71,8 +91,10 @@
 
     {% block footer %}
     <footer class="footer py-3">
-        <div class="container">
-            <span class="text-muted">Place sticky footer content here.</span>
+        <div class="container text-center">
+            <a href="#" class="fa fa-facebook social m-1"></a>
+            <a href="#" class="fa fa-globe social m-1"></a>
+            <a href="#" class="fa fa-twitter social m-1"></a>
         </div>
     </footer>
     {% endblock %}

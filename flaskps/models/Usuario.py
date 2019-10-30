@@ -103,12 +103,11 @@ class Usuario(object):
         return cursor.fetchall()
 
 
-     # ENOCONTRAR USUARIO DADO UN EMAIL Y CONTRASEÑA
-    
+    # ENOCONTRAR USUARIO DADO UN EMAIL Y CONTRASEÑA
     @classmethod
     def find_by_email_and_pass(self, email, password):
         sql = """
-            SELECT u.id, u.email, u.password, u.username, r.id AS id_rol, r.nombre 
+            SELECT u.id, u.email, u.password, u.username, u.first_name, u.last_name, r.id AS id_rol, r.nombre AS nombre_rol
             FROM usuario u
             INNER JOIN usuario_tiene_rol ur ON (u.id = ur.usuario_id)
             INNER JOIN rol r ON (ur.rol_id = r.id)
@@ -120,8 +119,34 @@ class Usuario(object):
 
         return cursor.fetchall()
     
-    # VER SI EXISTE UN USUARIO SEGUN UN USERNAME
     
+    # OBTENER ROLES DE UN USUARIO DADO UN ID
+    @classmethod
+    def get_roles(self, id_usuario):
+        sql = """
+            SELECT r.nombre
+            FROM rol r
+            INNER JOIN usuario_tiene_rol ur ON (r.id = ur.rol_id)
+            INNER JOIN usuario u ON (ur.usuario_id = u.id)
+            WHERE u.id = %s
+        """
+        cursor = self.db.cursor()
+        cursor.execute(sql, (id_usuario))
+
+        return cursor.fetchall()
+
+    # OBTENER ROLES DE LA DB
+    @classmethod
+    def all_roles(self):
+        sql = """
+            SELECT r.nombre
+            FROM rol r
+        """
+        cursor = self.db.cursor()
+        cursor.execute(sql)
+        return cursor.fetchall()
+
+    # VER SI EXISTE UN USUARIO SEGUN UN USERNAME
     @classmethod
     def existe(self, username):
         sql = """
@@ -139,7 +164,6 @@ class Usuario(object):
     
 
     # INSERTAR USUARIO
-    
     @classmethod
     def insert(self, user):
         sql = """
@@ -161,7 +185,6 @@ class Usuario(object):
         return True
     
     # AGREGAR ROL A UN USUARIO
-    
     @classmethod
     def agregar_rol(self, rol, usuario):
         
@@ -182,11 +205,53 @@ class Usuario(object):
         id_usuario = cursor.fetchone()['id']
         
         sql = """
+            SELECT *
+            FROM usuario_tiene_rol
+            WHERE usuario_id = %s AND rol_id = %s
+        """
+        cursor.execute(sql, (id_usuario, id_rol))
+        existe = cursor.fetchone()
+        
+        if existe:
+            return False
+
+        sql = """
             INSERT INTO usuario_tiene_rol (usuario_id, rol_id)
             VALUES (%s, %s)
         """
         cursor.execute(sql, (id_usuario, id_rol))
 
+        self.db.commit()
+
+        return True
+    
+    # QUITAR ROL A UN USUARIO
+    @classmethod
+    def quitar_rol(self, rol, usuario):
+        
+        cursor = self.db.cursor()
+        
+        sql = """
+            SELECT id FROM rol where nombre=%s
+        """
+
+        cursor.execute(sql, (rol))
+        id_rol = cursor.fetchone()['id']
+        
+        sql = """
+            SELECT id FROM usuario where username=%s
+        """
+
+        cursor.execute(sql, (usuario.username))
+        id_usuario = cursor.fetchone()['id']
+        
+        sql = """
+            DELETE 
+            FROM usuario_tiene_rol 
+            WHERE usuario_id = %s AND rol_id = %s
+        """
+
+        cursor.execute(sql, (id_usuario, id_rol))
         self.db.commit()
 
         return True
