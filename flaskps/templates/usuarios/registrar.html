@@ -47,10 +47,15 @@
     <h4 class="mt-4">Agregar roles:</h4>
     <div class="form row justify-content-md-center">
 
+        {% if puedo_admin %}
         <p>{{ form.es_admin() }} {{ form.es_admin.label }}</p>
+        {% endif %} {% if puedo_preceptor %}
         <p>{{ form.es_preceptor() }} {{ form.es_preceptor.label }}</p>
+        {% endif %} {% if puedo_docente %}
         <p>{{ form.es_docente() }} {{ form.es_docente.label }}</p>
+        {% endif %} {% if puedo_estudiante %}
         <p>{{ form.es_estudiante() }} {{ form.es_estudiante.label }}</p>
+        {% endif %}
     </div>
 
     <p>{{ form.submit() }}</p>

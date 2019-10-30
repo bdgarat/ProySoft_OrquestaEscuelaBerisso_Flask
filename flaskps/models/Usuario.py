@@ -226,5 +226,40 @@ class Usuario(object):
         self.db.commit()
 
         return o
+    
+    
+    # ELIMINAR UN USUARIO
+    @classmethod
+    def eliminar(self, id_usuario):
+        cursor = self.db.cursor()
+        
+        updated_at = datetime.now()
+        
+        sql = """
+            UPDATE usuario 
+            SET borrado_logico = 1, updated_at = %s
+            WHERE id = %s
+        """
+
+        o = cursor.execute(sql, (updated_at, id_usuario))
+        self.db.commit()
+
+        return o
+    
+    
+    #   CHEQUEO SI TENGO UN PERMISO
+    @classmethod
+    def tengo_permiso_registrar(self, permisos):
+        if (( 'estudiante_new' in permisos) or ( 'preceptor_new' in permisos) or ( 'docente_new' in permisos) or ( 'admin_new' in permisos) ):
+            return True
+        return False 
+    
+    
+    # CHEQUEO SI TENGO ALGUN PERMISO PARA REGISTRAR USUARIOS
+    @classmethod
+    def tengo_permiso(self, permisos, permiso):
+        if ( permiso ) not in permisos:
+            return False
+        return True
 
    

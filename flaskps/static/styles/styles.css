@@ -14,6 +14,7 @@ footer {
     bottom: 0;
     background-color: #343a40;
     width: 100%;
+    z-index: 100;
 }
 
 main {
@@ -75,13 +76,15 @@ ul {
     color: #fff;
 }
 
-.page-item, .disabled {
+.page-item,
+.disabled {
     background-color: #1a91a1;
     border-color: #1a91a1;
     color: #fff;
 }
 
-.page-item, .active {
+.page-item,
+.active {
     background-color: #1a91a1;
     border-color: #1a91a1;
     color: #fff;
