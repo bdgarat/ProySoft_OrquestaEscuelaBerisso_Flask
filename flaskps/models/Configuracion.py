@@ -29,13 +29,12 @@ class Configuracion(object):
             SET titulo = %s, descripcion = %s, contacto=%s, paginacion = %s, sitio_habilitado = %s
             WHERE id=1
         """
-
         cursor = self.db.cursor()
         cursor.execute(sql, (config.titulo, config.descripcion, config.contacto, config.paginacion, config.sitio_habilitado))
         self.db.commit()
         
         config_actual = cursor.fetchone()
-
+       
         return config_actual
     
     
