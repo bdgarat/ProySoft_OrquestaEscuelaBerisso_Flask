@@ -264,6 +264,29 @@ def eliminar(id_usuario, rol):
     
     return redirect('/index/' + rol)
 
+# SHOW USUARIO
+
+@mod.route("/show/<id_usuario>/<rol>")
+def show(id_usuario, rol):
+    
+    # Reviso que tenga permiso
+    permiso = rol+'_show'
+    if not Usuario.tengo_permiso(session['permisos'], permiso) and int(id_usuario) != session['user']['id']:
+        flash('No tiene permiso para ver el detalle de éste tipo de usuario')
+        return redirect('/index/' + rol)
+
+    else:
+        Usuario.db = get_db()
+        usuario = Usuario.get_user(id_usuario)       
+        
+        # obtengo roles del usuario y seteo los checkbox
+        tuplas_roles = Usuario.get_roles(usuario['id'])
+        roles = []
+        for t in tuplas_roles:
+            roles.append(t['nombre'])
+
+        return render_template("usuarios/show.html", usuario=usuario, roles=roles)
+
 
 # ------------------------------------------------
 def get_titulo(rol):

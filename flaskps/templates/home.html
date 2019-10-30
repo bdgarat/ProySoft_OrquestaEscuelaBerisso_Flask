@@ -1,5 +1,7 @@
 {% extends "layout.html" %} {% block content %}
 
+
+
 <div class="jumbotron">
     <!-- Mostrar mensajes guardados en flash -->
     {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
@@ -12,13 +14,13 @@
     </div>
 
     {% endfor %} {% endif %} {% endwith %}
-    <h1 class="display-4">{{ config.titulo }}</h1>
 
+    <h3>Sobre nosotros</h3>
     <p class="lead">{{ config.descripcion }}</p>
 
     <hr class="my-4">
 
-    <p>{{ config.contacto }}</p>
+    <p class="text-center"><strong>Contacto: </strong>{{ config.contacto }}</p>
 
     {% if session['user'] == null %}
     <a class="btn btn-primary btn-lg" href="/login" role="button">Iniciar sesión</a>

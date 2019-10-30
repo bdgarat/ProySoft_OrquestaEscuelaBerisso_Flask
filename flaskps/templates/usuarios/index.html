@@ -1,5 +1,5 @@
 {% extends "layout.html" %} {% block content %}
-
+{% block carrusel %}{% endblock %}
 <div class="jumbotron">
     <h2 class="display-4">Administración de {{ titulo }}</h1>
 
@@ -60,7 +60,7 @@
                         {% endif %}
 
                         {% if rol+"_show" in session['permisos'] %}
-                        <button type="button" class="btn btn-primary" title="Ver perfil del usuario" role="button">Ver Perfil</button>
+                        <button type="button" onclick="location.href='/show/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Ver perfil del usuario" role="button">Ver Perfil</button>
                         <!-- poner el 'onkeypress' para la accesibilidad :/ -->
                         {% endif %}
                         

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 29-10-2019 a las 18:30:31
+-- Tiempo de generación: 31-10-2019 a las 00:29:10
 -- Versión del servidor: 10.4.6-MariaDB
 -- Versión de PHP: 7.3.9
 
@@ -42,7 +42,7 @@ CREATE TABLE `config` (
 --
 
 INSERT INTO `config` (`id`, `titulo`, `descripcion`, `contacto`, `paginacion`, `sitio_habilitado`) VALUES
-(1, 'Orquesta Escuela de Berisso', 'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas \"Letraset\", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.', 'Teléfono: 2216598741 // 4578996', 3, 1);
+(1, 'Orquesta Escuela de Berisso', 'La Orquesta Escuela de Berisso comenzó a funcionar en septiembre del 2005 en el barrio de El Carmen de la localidad de Berisso bajo la dirección del Mtro. Juan Carlos Herrero, orientada especialmente a la atención de chicos en situación de vulnerabilidad socio-cultural.\r\nDesde sus 20 alumnos iniciales fue creciendo hasta atender actualmente una matrícula de aproximadamente 530 chicos, distribuidos en los 15 núcleos que la conforman y dirigida a una franja etaria de 5 a 23 años, cubriendo en su accionar a la casi totalidad de los barrios de Berisso más los espacios cedidos por el Club Español y el Teatro Argentino', 'contacto@contacto.com', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -187,9 +187,9 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`id`, `email`, `username`, `password`, `activo`, `updated_at`, `created_at`, `first_name`, `last_name`, `borrado_logico`) VALUES
 (1, 'admin@test.com', 'admin_principal', '123456', 1, '2019-10-23 20:40:44', '2019-10-23 20:40:44', 'Admin', 'Admin', 0),
-(2, 'test1@test.com', 'test1', '123456', 1, '2019-10-23 20:50:05', '2019-10-23 20:50:05', 'Estudiante1', 'Estudiante1', 0),
+(2, 'test1@test.com', 'test1', '123456', 1, '2019-10-30 17:33:53', '2019-10-23 20:50:05', 'Estudiante1', 'Estudiante1', 0),
 (3, 'test2@test.com', 'test2', '123456', 1, '2019-10-23 20:50:34', '2019-10-23 20:50:34', 'Estudiante2', 'Estudiante2', 0),
-(4, 'test3@test.com', 'test3', '123456', 1, '2019-10-23 20:50:54', '2019-10-23 20:50:54', 'Estudiante3', 'Estudiante3', 0),
+(4, 'test3@test.com', 'test3', '123456', 1, '2019-10-30 16:24:29', '2019-10-23 20:50:54', 'Estudiante3', 'Estudiante3', 0),
 (5, 'test4@test.com', 'test4', '123456', 1, '2019-10-23 20:51:08', '2019-10-23 20:51:08', 'Estudiante4', 'Estudiante4', 0),
 (6, 'test5@test.com', 'test5', '123456', 1, '2019-10-23 20:51:28', '2019-10-23 20:51:28', 'Estudiante5', 'Estudiante5', 0),
 (7, 'test6@test.com', 'test6', '123456', 1, '2019-10-23 20:52:01', '2019-10-23 20:52:01', 'Preceptor1', 'Preceptor1', 0),
@@ -202,8 +202,9 @@ INSERT INTO `usuario` (`id`, `email`, `username`, `password`, `activo`, `updated
 (14, 'test13@test.com', 'test13', '123456', 1, '2019-10-23 20:56:26', '2019-10-23 20:56:26', 'Preceptor y Docente 1', 'Preceptor y Docente 1', 0),
 (15, 'test14@test.com', 'test14', '123456', 1, '2019-10-23 20:56:45', '2019-10-23 20:56:45', 'Preceptor y Docente 2', 'Preceptor y Docente 2', 0),
 (16, 'test15@test.com', 'test15', '123456', 1, '2019-10-23 20:57:10', '2019-10-23 20:57:10', 'Estudiante y Docente 1', 'Estudiante y Docente 1', 0),
-(17, 'test16@test.com', 'test16', '123456', 1, '2019-10-23 20:57:26', '2019-10-23 20:57:26', 'Estudiante y Docente 2', 'Estudiante y Docente 2', 0),
-(18, 'test17@test.com', 'test17', '123456', 1, '2019-10-23 20:58:07', '2019-10-23 20:58:07', 'Admin y Preceptor 1', 'Admin y Preceptor 1', 0);
+(17, 'test16@test.com', 'test16', '123456', 1, '2019-10-30 15:52:23', '2019-10-23 20:57:26', 'Estudiante y Docente 2', 'Estudiante y Docente 2', 0),
+(18, 'test17@test.com', 'test17', '123456', 1, '2019-10-23 20:58:07', '2019-10-23 20:58:07', 'Admin y Preceptor 1', 'Admin y Preceptor 1', 0),
+(19, 'test19@test.com', 'test19', '123456', 1, '2019-10-30 16:17:54', '2019-10-30 15:55:23', 'PreceptorPrueba', 'PreceptorPrueba', 0);
 
 -- --------------------------------------------------------
 
@@ -222,7 +223,6 @@ CREATE TABLE `usuario_tiene_rol` (
 
 INSERT INTO `usuario_tiene_rol` (`usuario_id`, `rol_id`) VALUES
 (1, 1),
-(2, 4),
 (3, 4),
 (4, 4),
 (5, 4),
@@ -243,7 +243,9 @@ INSERT INTO `usuario_tiene_rol` (`usuario_id`, `rol_id`) VALUES
 (17, 3),
 (17, 4),
 (18, 1),
-(18, 2);
+(18, 2),
+(19, 2),
+(2, 4);
 
 --
 -- Índices para tablas volcadas
@@ -299,7 +301,7 @@ ALTER TABLE `rol`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

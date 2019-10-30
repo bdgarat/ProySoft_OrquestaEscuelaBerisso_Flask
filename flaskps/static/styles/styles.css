@@ -9,6 +9,11 @@ OSCURO (PRIMARIO) #343a40 */
                         
 ========================================================================= */
 
+section.main{
+    margin-bottom: 5% !important;
+    padding-bottom: 5% !important;
+}
+
 footer {
     position: fixed;
     bottom: 0;
@@ -34,6 +39,10 @@ main {
     border-color: #1a91a1;
 }
 
+
+.jumbotron{
+    padding-top: 2rem;
+}
 
 /* LOGO DEL FORM */
 
@@ -100,6 +109,14 @@ ul {
     border-color: #db1f38 !important;
 }
 
+/* CARRUSEL */
+
+.carru{
+    height: 700px;
+}
+
+
+
 
 /* =======================================================================
 
@@ -129,9 +146,6 @@ img.mantenimiento {
 
 .social {
     text-decoration: none !important;
-}
-
-.fa {
     padding: 15px;
     width: 60px;
     text-align: center;
@@ -147,3 +161,18 @@ img.mantenimiento {
 .fa:hover {
     opacity: 0.7;
   } */
+
+
+/* =======================================================================
+
+                        SHOW USUARIO
+                        
+========================================================================= */
+
+div.list-group{
+    background-color: #e9ecef !important;
+}
+
+li.list-group-item{
+    background-color: #e9ecef !important;
+}

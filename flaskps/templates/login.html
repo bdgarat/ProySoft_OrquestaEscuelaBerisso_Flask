@@ -1,14 +1,14 @@
 {% extends "layout.html" %} {% block content %}
 
+{% block carrusel %}{% endblock %}
 
-
-<form action="" method="post" class="form-signin">
+<form action="" method="post" class="form-signin jumbotron">
 
     <div class="text-center">
-        <img class="mb-4 img_form rounded-lg" src="/static/images/OEBerisso_logo.png" alt="Logo de la Orquesta Escuela de Berisso" style="height: 32px; width: 32px">
+        <img class="mb-4 img_form rounded-lg" src="static/images/OEBerisso_logo.png" alt="Logo de la Orquesta Escuela de Berisso">
         <h1 class="h3 mb-3 font-weight-normal">Iniciar sesión</h1>
-    </div>
 
+    </div>
     <!-- Mostrar mensajes guardados en flash -->
     {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
 
@@ -26,6 +26,7 @@
         {{ form.password.label }}<br> {{ form.password(size=32) }}
     </p>
     <p>{{ form.submit() }}</p>
+    <a href="/home" class="btn btn-lg btn-primary btn-block">Volver</a>
 </form>
 
 {% endblock %}
