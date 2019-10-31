@@ -1,6 +1,5 @@
-{% extends "layout.html" %} {% block content %}
-{% block carrusel %}{% endblock %}
-<form action="" method="post" class="form-signin" novalidate>
+{% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
+<form action="" method="post" class="form-signin jumbotron" novalidate>
 
     <div class="text-center">
         <img class="mb-4 img_form rounded-lg" src="static/images/OEBerisso_logo.png" alt="Logo de la Orquesta Escuela de Berisso">
@@ -44,7 +43,11 @@
         <p>{{ form.sitio_habilitado() }} {{ form.sitio_habilitado.label }}</p>
     </div>
 
-    <p>{{ form.submit() }}</p>
+    <div class="row">
+        <p class="col">{{ form.submit() }}</p>
+        <a href="/home" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a>
+
+    </div>
 </form>
 
 {% endblock %}

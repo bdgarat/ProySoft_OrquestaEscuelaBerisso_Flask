@@ -1,5 +1,4 @@
-{% extends "layout.html" %} {% block content %}
-{% block carrusel %}{% endblock %}
+{% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 <form action="" method="post" class="form-signin mb-20 jumbotron">
 
     <div class="text-center">
@@ -57,9 +56,10 @@
         <p>{{ form.es_estudiante() }} {{ form.es_estudiante.label }}</p>
         {% endif %}
     </div>
-
-    <p>{{ form.submit() }}</p>
-    <a href="/home" class="btn btn-lg btn-primary btn-block">Volver</a>
+    <div class="row">
+        <p class="col">{{ form.submit() }}</p>
+        <a href="/home" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a>
+    </div>
 </form>
 
 

@@ -1,5 +1,4 @@
-{% extends "layout.html" %} {% block content %}
-{% block carrusel %}{% endblock %}
+{% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 <div class="jumbotron">
     <h2 class="display-4">Administración de {{ titulo }}</h1>
 
@@ -47,23 +46,20 @@
                     <td headers="nombre">{{ u.first_name }}</td>
                     <td headers="apellido">{{ u.last_name }}</td>
                     <td headers="operaciones">
-                        
-                        {% if rol+"_update" in session['permisos'] and u.id != session['user']['id'] %}
-                        {% if u.activo %}
+
+                        {% if rol+"_update" in session['permisos'] and u.id != session['user']['id'] %} {% if u.activo %}
                         <button type="button" onclick="location.href='/activar/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Desactivar usuario" onkeypress="location.href='/activar/{{ u.id }}/{{ rol }}'" role="button">Desactivar</button> {% else
                         %}
                         <button type="button" onclick="location.href='/activar/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Activar usuario" onkeypress="location.href='/activar/{{ u.id }}/{{ rol }}'" role="button">Activar</button> {% endif %}
-                        <button type="button" onclick="location.href='/editar/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Editar usuario" role="button">Editar</button>
+                        <button type="button" onclick="location.href='/editar/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Editar usuario" role="button"><i class="fa fa-edit"></i></button>
                         <!-- poner el 'onkeypress' para la accesibilidad :/ -->
-                        <button type="button" onclick="location.href='/eliminar/{{ u.id }}/{{ rol }}'" class="btn btn-primary eliminar" title="Eliminar usuario" role="button">Eliminar</button>
+                        {% endif %} {% if rol+"_show" in session['permisos'] %}
+                        <button type="button" onclick="location.href='/show/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Ver perfil del usuario" role="button"><i class="fa fa-user-circle"></i></button>
                         <!-- poner el 'onkeypress' para la accesibilidad :/ -->
                         {% endif %}
+                        <!-- poner el 'onkeypress' para la accesibilidad :/ -->
+                        <button type="button" onclick="location.href='/eliminar/{{ u.id }}/{{ rol }}'" class="btn btn-primary eliminar" title="Eliminar usuario" role="button"><i class="fa fa-trash"></i></button>
 
-                        {% if rol+"_show" in session['permisos'] %}
-                        <button type="button" onclick="location.href='/show/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Ver perfil del usuario" role="button">Ver Perfil</button>
-                        <!-- poner el 'onkeypress' para la accesibilidad :/ -->
-                        {% endif %}
-                        
 
                     </td>
                 </tr>

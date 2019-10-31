@@ -20,11 +20,10 @@
 
     <hr class="my-4">
 
-    <p class="text-center"><strong>Contacto: </strong>{{ config.contacto }}</p>
+    <p class="text-center"><strong><i class="fa fa-envelope"></i> Contacto: </strong>{{ config.contacto }}</p>
 
     {% if session['user'] == null %}
-    <a class="btn btn-primary btn-lg" href="/login" role="button">Iniciar sesión</a>
-    {% endif %}
+    <a class="btn btn-primary btn-lg" href="/login" role="button">Iniciar sesión</a> {% endif %}
 </div>
 
 
