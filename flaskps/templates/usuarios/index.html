@@ -1,5 +1,5 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
-<div class="jumbotron">
+<div class="jumbotron animated fadeIn">
     <h2 class="display-4">Administración de {{ titulo }}</h1>
 
         <hr class="my-4"> {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
@@ -48,9 +48,8 @@
                     <td headers="operaciones">
 
                         {% if rol+"_update" in session['permisos'] and u.id != session['user']['id'] %} {% if u.activo %}
-                        <button type="button" onclick="location.href='/activar/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Desactivar usuario" onkeypress="location.href='/activar/{{ u.id }}/{{ rol }}'" role="button">Desactivar</button> {% else
-                        %}
-                        <button type="button" onclick="location.href='/activar/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Activar usuario" onkeypress="location.href='/activar/{{ u.id }}/{{ rol }}'" role="button">Activar</button> {% endif %}
+                        <button type="button" data-toggle="modal" data-target="#modalDesactivar" class="btn btn-primary" title="Desactivar usuario" onkeypress="location.href='/activar/{{ u.id }}/{{ rol }}'" role="button">Desactivar</button> {% else %}
+                        <button type="button" data-toggle="modal" data-target="#modalActivar" class="btn btn-primary" title="Activar usuario" onkeypress="location.href='/activar/{{ u.id }}/{{ rol }}'" role="button">Activar</button> {% endif %}
                         <button type="button" onclick="location.href='/editar/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Editar usuario" role="button"><i class="fa fa-edit"></i></button>
                         <!-- poner el 'onkeypress' para la accesibilidad :/ -->
                         {% endif %} {% if rol+"_show" in session['permisos'] %}
@@ -58,8 +57,63 @@
                         <!-- poner el 'onkeypress' para la accesibilidad :/ -->
                         {% endif %}
                         <!-- poner el 'onkeypress' para la accesibilidad :/ -->
-                        <button type="button" onclick="location.href='/eliminar/{{ u.id }}/{{ rol }}'" class="btn btn-primary eliminar" title="Eliminar usuario" role="button"><i class="fa fa-trash"></i></button>
+                        {% if rol+"_destroy" in session['permisos'] and u.id != session['user']['id'] %}
+                        <button type="button" data-toggle="modal" data-target="#modalEliminar" class="btn btn-primary eliminar" title="Eliminar usuario" role="button"><i class="fa fa-trash"></i></button> {% endif %}
 
+
+                        <div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="Confirmar eliminacion de usuario" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">¿Estás seguro que querés eliminar el usuario {{ u.username }}?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Se eliminará del listado y no se podrá volver atrás.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                        <button type="button" onclick="location.href='/eliminar/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Eliminar usuario">Eliminar usuario</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="modalDesactivar" tabindex="-1" role="dialog" aria-labelledby="Confirmar desactivación de usuario" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">¿Estás seguro que querés desactivar al usuario {{ u.username }}?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                        <button type="button" onclick="location.href='/activar/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Desactivar usuario">Desactivar usuario</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="modalActivar" tabindex="-1" role="dialog" aria-labelledby="Confirmar activación de usuario" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">¿Estás seguro que querés activar al usuario {{ u.username }}?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                        <button type="button" onclick="location.href='/activar/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Activar usuario">Activar usuario</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </td>
                 </tr>

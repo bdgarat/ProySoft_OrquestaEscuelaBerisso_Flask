@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
     <!-- Add icon library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- animate css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/animate.css') }}">
 </head>
 
 {% block body %}
@@ -76,7 +78,7 @@
 
     <!-- CARRUSEL -->
     {% block carrusel %}
-    <div id="carrusel" class="carru">
+    <div id="carrusel" class="carru animated fadeIn">
         <div id="demo" class="carru carousel slide" data-ride="carousel">
 
             <ol class="carousel-indicators">
@@ -133,7 +135,7 @@
 
     {% block footer %}
     <footer class="footer py-3">
-        <div class="container text-center">
+        <div class="container text-center animated fadeIn">
             <a title="Perfil de Facebook de Orquesta Escuela de Berisso" target="_blank" href="https://www.facebook.com/OrquestaEscuelaBerisso" class="fa fa-facebook social m-1"></a>
             <a title="Página web de Orquesta Escuela de Berisso" target="_blank" href="http://www.oeberisso.com.ar" class="fa fa-globe social m-1"></a>
             <a title="Perfil de Twitter de Orquesta Escuela de Berisso" target="_blank" href="https://twitter.com/oeberisso?lang=es" class="fa fa-twitter social m-1"></a>

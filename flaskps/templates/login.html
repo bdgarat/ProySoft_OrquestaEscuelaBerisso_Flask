@@ -1,8 +1,6 @@
-{% extends "layout.html" %} {% block content %}
+{% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 
-{% block carrusel %}{% endblock %}
-
-<form action="" method="post" class="form-signin jumbotron">
+<form action="" method="post" class="form-signin jumbotron animated fadeInRight fast">
 
     <div class="text-center">
         <img class="mb-4 img_form rounded-lg" src="static/images/OEBerisso_logo.png" alt="Logo de la Orquesta Escuela de Berisso">
@@ -25,8 +23,10 @@
     <p>
         {{ form.password.label }}<br> {{ form.password(size=32) }}
     </p>
-    <p>{{ form.submit() }}</p>
-    <a href="/home" class="btn btn-lg btn-primary btn-block">Volver</a>
+    <div class="row">
+        <p class="col">{{ form.submit() }}</p>
+        <a href="/home" class="col btn btn-lg btn-primary btn-block boton_registrar">Volver</a>
+    </div>
 </form>
 
 {% endblock %}
