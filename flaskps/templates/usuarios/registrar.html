@@ -1,5 +1,5 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
-<form action="" method="post" class="form-signin mb-20 jumbotron animated fadeIn">
+<form action="" method="post" class="form-signin mb-20 jumbotron animated fadeIn" novalidate>
 
     <div class="text-center">
         <img class="mb-4 img_form rounded-lg" src="static/images/OEBerisso_logo.png" alt="Logo de la Orquesta Escuela de Berisso">
@@ -16,11 +16,10 @@
                 <span aria-hidden="true">&times;</span>
             </button>
     </div>
-
     {% elif exito == 1 %}
 
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Error:</strong> {{ message }}
+        <strong>Nota:</strong> {{ message }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>

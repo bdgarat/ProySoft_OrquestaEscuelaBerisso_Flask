@@ -30,11 +30,16 @@ def index(rol):
 
     search = False
     termino = request.args.get('termino')
-    if termino:
+    busqueda_activos = request.args.get('activos')
+    busqueda_inactivos = request.args.get('inactivos')
+    
+    if termino or busqueda_activos or busqueda_inactivos:
         search = True
 
     # seteo el value del input si vino con algo
     form.termino.data = termino
+    form.activos.data = busqueda_activos
+    form.inactivos.data = busqueda_inactivos
     
     # Setear variables de paginacion
     Configuracion.db = get_db()
@@ -46,9 +51,9 @@ def index(rol):
     
     if search:
         # Total registros
-        total = Usuario.get_usuarios_por_rol(rol, termino)
+        total = Usuario.get_usuarios_por_rol(rol, termino, busqueda_activos, busqueda_inactivos)
         # Consulta usando offset y limit
-        usuarios = Usuario.get_usuarios_por_rol_paginados(rol, per_page, offset, termino)
+        usuarios = Usuario.get_usuarios_por_rol_paginados(rol, per_page, offset, termino, busqueda_activos, busqueda_inactivos)
     else:
         # Total registros
         total = Usuario.get_usuarios_por_rol(rol)
@@ -123,7 +128,7 @@ def registrar():
                     error = 1
                     
             else: 
-                flash("Debe completar todos los campos.")
+                flash("Debe completar todos los campos y el email ingresado debe ser válido.")
                 error = 1
                 
                 

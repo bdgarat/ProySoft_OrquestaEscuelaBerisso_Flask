@@ -1,6 +1,6 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 
-<form action="" method="post" class="form-signin jumbotron animated fadeInRight fast">
+<form action="" method="post" class="form-signin jumbotron animated fadeInRight fast" novalidate>
 
     <div class="text-center">
         <img class="mb-4 img_form rounded-lg" src="static/images/OEBerisso_logo.png" alt="Logo de la Orquesta Escuela de Berisso">
@@ -8,15 +8,15 @@
 
     </div>
     <!-- Mostrar mensajes guardados en flash -->
-    {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+    {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}{% if error==1 %}
 
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>Nota: </strong> {{ message }}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error: </strong> {{ message }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
     </div>
-    {% endfor %} {% endif %} {% endwith %} {{ form.hidden_tag() }} {{ form.hidden_tag() }}
+    {% endif %}{% endfor %} {% endif %} {% endwith %} {{ form.hidden_tag() }} {{ form.hidden_tag() }}
     <p>
         {{ form.email.label }}<br> {{ form.email(size=32) }}
     </p>

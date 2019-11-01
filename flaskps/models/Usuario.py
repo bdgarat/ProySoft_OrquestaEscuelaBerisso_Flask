@@ -52,7 +52,8 @@ class Usuario(object):
 
     # RECUPERAR TODOS LOS USUARIOS POR ROL
     @classmethod
-    def get_usuarios_por_rol(self, rol, termino = None):
+    def get_usuarios_por_rol(self, rol, termino = None, activo = None, inactivo = None):
+        params = [rol]
         sql = """
             SELECT u.id, u.username FROM usuario u
             INNER JOIN usuario_tiene_rol ur ON (u.id = ur.usuario_id)
@@ -62,11 +63,13 @@ class Usuario(object):
         if termino != None:
             termino = '%'+termino+'%'
             sql = sql + """ AND u.username LIKE %s """
-        
-        if termino != None:
-            params = (rol, termino)
-        else:
-            params = (rol)
+            params.append(termino)
+            
+        if activo != None:
+            sql = sql + """ AND u.activo = true """
+            
+        if inactivo != None:
+            sql = sql + """ AND u.activo = false """
 
         cursor = self.db.cursor()
         cursor.execute(sql, params)
@@ -75,7 +78,7 @@ class Usuario(object):
     
     # RECUPERAR TODOS LOS USUARIOS POR ROL Y PAGINADOS
     @classmethod
-    def get_usuarios_por_rol_paginados(self, rol, limit, offset = 1, termino = None):
+    def get_usuarios_por_rol_paginados(self, rol, limit, offset = 1, termino = None, activo = None, inactivo = None):
         
         sql = """
             SELECT u.id, u.email, u.username, u.first_name, u.last_name, u.activo FROM usuario u
@@ -87,6 +90,14 @@ class Usuario(object):
         if termino != None:
             termino = '%'+termino+'%'
             sql = sql + """ AND u.username LIKE %s """
+            
+        if activo != None:
+            sql = sql + """ AND u.activo = true """
+            print("es activo")
+            
+        if inactivo != None:
+            sql = sql + """ AND u.activo = false """
+            print("es inactivo")
 
         sql = sql + """
                     LIMIT %s OFFSET %s

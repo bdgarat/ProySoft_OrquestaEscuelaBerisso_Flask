@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
-from wtforms.validators import DataRequired
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, RadioField
+from wtforms.validators import DataRequired, Email
+from wtforms.fields.html5 import EmailField
+
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()], render_kw={"class": "form-control"})
@@ -17,7 +19,7 @@ class ConfigForm(FlaskForm):
     submit = SubmitField('Guardar cambios', render_kw={"class": "btn btn-lg btn-primary btn-block"})
     
 class SignUpForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired()], render_kw={"class": "form-control"})
+    email = EmailField('Email', validators=[DataRequired(), Email("Ingrese un email válido")], render_kw={"class": "form-control"})
     username = StringField('Nombre de usuario', validators=[DataRequired()], render_kw={"class": "form-control"})
     password = PasswordField('Contraseña', validators=[DataRequired()], render_kw={"class": "form-control"})
     first_name = StringField('Nombre', validators=[DataRequired()], render_kw={"class": "form-control"})
@@ -29,7 +31,7 @@ class SignUpForm(FlaskForm):
     submit = SubmitField('Registrar usuario', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
     
 class EditarForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired()], render_kw={"class": "form-control"})
+    email = EmailField('Email', validators=[DataRequired(), Email("Ingrese un email válido")], render_kw={"class": "form-control"})
     username = StringField('Nombre de usuario', validators=[DataRequired()], render_kw={"class": "form-control"})
     first_name = StringField('Nombre', validators=[DataRequired()], render_kw={"class": "form-control"})
     last_name = StringField('Apellido', validators=[DataRequired()], render_kw={"class": "form-control"})
@@ -42,3 +44,5 @@ class EditarForm(FlaskForm):
 class BusquedaForm(FlaskForm):
     termino = StringField('Buscar por nombre de usuario', render_kw={"class": "form-control"})
     submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary pb-20"})
+    activos = BooleanField('Usuarios activos')
+    inactivos = BooleanField('Usuarios inactivos')
