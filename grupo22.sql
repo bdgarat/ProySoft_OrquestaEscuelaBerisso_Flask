@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 31-10-2019 a las 00:29:10
+-- Tiempo de generación: 02-11-2019 a las 19:23:55
 -- Versión del servidor: 10.4.6-MariaDB
 -- Versión de PHP: 7.3.9
 
@@ -43,6 +43,23 @@ CREATE TABLE `config` (
 
 INSERT INTO `config` (`id`, `titulo`, `descripcion`, `contacto`, `paginacion`, `sitio_habilitado`) VALUES
 (1, 'Orquesta Escuela de Berisso', 'La Orquesta Escuela de Berisso comenzó a funcionar en septiembre del 2005 en el barrio de El Carmen de la localidad de Berisso bajo la dirección del Mtro. Juan Carlos Herrero, orientada especialmente a la atención de chicos en situación de vulnerabilidad socio-cultural.\r\nDesde sus 20 alumnos iniciales fue creciendo hasta atender actualmente una matrícula de aproximadamente 530 chicos, distribuidos en los 15 núcleos que la conforman y dirigida a una franja etaria de 5 a 23 años, cubriendo en su accionar a la casi totalidad de los barrios de Berisso más los espacios cedidos por el Club Español y el Teatro Argentino', 'contacto@contacto.com', 3, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `estudiante`
+--
+
+CREATE TABLE `estudiante` (
+  `id` int(11) NOT NULL,
+  `email` varchar(255) COLLATE utf8_spanish_ci NOT NULL,
+  `first_name` varchar(255) COLLATE utf8_spanish_ci NOT NULL,
+  `last_name` varchar(255) COLLATE utf8_spanish_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `birth_date` date NOT NULL,
+  `borrado_logico` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -101,8 +118,7 @@ CREATE TABLE `rol` (
 INSERT INTO `rol` (`id`, `nombre`) VALUES
 (1, 'admin'),
 (2, 'preceptor'),
-(3, 'docente'),
-(4, 'estudiante');
+(3, 'docente');
 
 -- --------------------------------------------------------
 
@@ -187,11 +203,6 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`id`, `email`, `username`, `password`, `activo`, `updated_at`, `created_at`, `first_name`, `last_name`, `borrado_logico`) VALUES
 (1, 'admin@test.com', 'admin_principal', '123456', 1, '2019-10-23 20:40:44', '2019-10-23 20:40:44', 'Admin', 'Admin', 0),
-(2, 'test1@test.com', 'test1', '123456', 1, '2019-10-30 17:33:53', '2019-10-23 20:50:05', 'Estudiante1', 'Estudiante1', 0),
-(3, 'test2@test.com', 'test2', '123456', 1, '2019-10-23 20:50:34', '2019-10-23 20:50:34', 'Estudiante2', 'Estudiante2', 0),
-(4, 'test3@test.com', 'test3', '123456', 1, '2019-10-30 16:24:29', '2019-10-23 20:50:54', 'Estudiante3', 'Estudiante3', 0),
-(5, 'test4@test.com', 'test4', '123456', 1, '2019-10-23 20:51:08', '2019-10-23 20:51:08', 'Estudiante4', 'Estudiante4', 0),
-(6, 'test5@test.com', 'test5', '123456', 1, '2019-10-23 20:51:28', '2019-10-23 20:51:28', 'Estudiante5', 'Estudiante5', 0),
 (7, 'test6@test.com', 'test6', '123456', 1, '2019-10-23 20:52:01', '2019-10-23 20:52:01', 'Preceptor1', 'Preceptor1', 0),
 (8, 'test7@test.com', 'test7', '123456', 1, '2019-10-23 20:52:13', '2019-10-23 20:52:13', 'Preceptor2', 'Preceptor2', 0),
 (9, 'test8@test.com', 'test8', '123456', 1, '2019-10-23 20:54:18', '2019-10-23 20:54:18', 'Preceptor3', 'Preceptor3', 0),
@@ -201,8 +212,6 @@ INSERT INTO `usuario` (`id`, `email`, `username`, `password`, `activo`, `updated
 (13, 'test12@test.com', 'test12', '123456', 1, '2019-10-23 20:55:34', '2019-10-23 20:55:34', 'Docente4', 'Docente4', 0),
 (14, 'test13@test.com', 'test13', '123456', 1, '2019-10-23 20:56:26', '2019-10-23 20:56:26', 'Preceptor y Docente 1', 'Preceptor y Docente 1', 0),
 (15, 'test14@test.com', 'test14', '123456', 1, '2019-10-23 20:56:45', '2019-10-23 20:56:45', 'Preceptor y Docente 2', 'Preceptor y Docente 2', 0),
-(16, 'test15@test.com', 'test15', '123456', 1, '2019-10-23 20:57:10', '2019-10-23 20:57:10', 'Estudiante y Docente 1', 'Estudiante y Docente 1', 0),
-(17, 'test16@test.com', 'test16', '123456', 1, '2019-10-30 15:52:23', '2019-10-23 20:57:26', 'Estudiante y Docente 2', 'Estudiante y Docente 2', 0),
 (18, 'test17@test.com', 'test17', '123456', 1, '2019-10-23 20:58:07', '2019-10-23 20:58:07', 'Admin y Preceptor 1', 'Admin y Preceptor 1', 0),
 (19, 'test19@test.com', 'test19', '123456', 1, '2019-10-30 16:17:54', '2019-10-30 15:55:23', 'PreceptorPrueba', 'PreceptorPrueba', 0);
 
@@ -223,10 +232,6 @@ CREATE TABLE `usuario_tiene_rol` (
 
 INSERT INTO `usuario_tiene_rol` (`usuario_id`, `rol_id`) VALUES
 (1, 1),
-(3, 4),
-(4, 4),
-(5, 4),
-(6, 4),
 (7, 2),
 (8, 2),
 (9, 2),
@@ -239,13 +244,10 @@ INSERT INTO `usuario_tiene_rol` (`usuario_id`, `rol_id`) VALUES
 (15, 2),
 (15, 3),
 (16, 3),
-(16, 4),
 (17, 3),
-(17, 4),
 (18, 1),
 (18, 2),
-(19, 2),
-(2, 4);
+(19, 2);
 
 --
 -- Índices para tablas volcadas
@@ -255,6 +257,12 @@ INSERT INTO `usuario_tiene_rol` (`usuario_id`, `rol_id`) VALUES
 -- Indices de la tabla `config`
 --
 ALTER TABLE `config`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `estudiante`
+--
+ALTER TABLE `estudiante`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -284,6 +292,12 @@ ALTER TABLE `usuario`
 --
 ALTER TABLE `config`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `estudiante`
+--
+ALTER TABLE `estudiante`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `permiso`

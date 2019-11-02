@@ -3,7 +3,7 @@
 
     <div class="text-center">
         <img class="mb-4 img_form rounded-lg" src="static/images/OEBerisso_logo.png" alt="Logo de la Orquesta Escuela de Berisso">
-        <h1 class="h3 mb-3 font-weight-normal">Registrar usuario</h1>
+        <h1 class="h3 mb-3 font-weight-normal">Registrar estudiante</h1>
 
     </div>
 
@@ -31,28 +31,16 @@
         {{ form.email.label }}:<br> {{ form.email(size=32) }}
     </p>
     <p>
-        {{ form.username.label }}:<br> {{ form.username(size=32) }}
-    </p>
-    <p>
-        {{ form.password.label }}:<br> {{ form.password(size=32) }}
-    </p>
-    <p>
         {{ form.first_name.label }}:<br> {{ form.first_name() }}
     </p>
     <p>
         {{ form.last_name.label }}:<br> {{ form.last_name() }}
     </p>
-    <h4 class="mt-4">Agregar roles:</h4>
-    <div class="form row justify-content-md-center">
 
-        {% if puedo_admin %}
-        <p>{{ form.es_admin() }} {{ form.es_admin.label }}</p>
-        {% endif %} {% if puedo_preceptor %}
-        <p>{{ form.es_preceptor() }} {{ form.es_preceptor.label }}</p>
-        {% endif %} {% if puedo_docente %}
-        <p>{{ form.es_docente() }} {{ form.es_docente.label }}</p>
-        {% endif %}
-    </div>
+    <p>
+        {{ form.birth_date.label }}:<br> {{ form.birth_date() }}
+    </p>
+
     <div class="row">
         <p class="col">{{ form.submit() }}</p>
         <a href="/home" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a>

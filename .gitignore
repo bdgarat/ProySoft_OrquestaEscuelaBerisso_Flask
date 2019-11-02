@@ -49,6 +49,9 @@ typings/
 __pycache__
 migrations/
 *.db
+__pycache__/
+*.py[cod]
+*$py.class
 
 # Optional REPL history
 .node_repl_history

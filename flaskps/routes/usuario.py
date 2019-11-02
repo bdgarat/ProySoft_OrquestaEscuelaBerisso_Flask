@@ -2,9 +2,10 @@ from flask import Blueprint
 from flaskps.db import get_db
 from flask import render_template, flash, redirect, session, abort, request
 from flaskps.models.Usuario import Usuario
+from flaskps.models.Estudiante import Estudiante
 from flaskps.models.Configuracion import Configuracion
 from flaskps.helpers.auth import authenticated
-from flaskps.forms import SignUpForm, BusquedaForm, EditarForm
+from flaskps.forms import SignUpForm, SignUpEstudianteForm, BusquedaForm, EditarForm
 from flask_paginate import Pagination, get_page_parameter
 
 
@@ -122,9 +123,6 @@ def registrar():
                         
                     if (form.es_docente.data):
                         usuario.agregar_rol('docente', usuario)
-                        
-                    if (form.es_estudiante.data):
-                        usuario.agregar_rol('estudiante', usuario)
                     
                     flash("Usuario registrado correctamente.")
                     exito = 1
@@ -139,13 +137,55 @@ def registrar():
                 
                 
         # para mostrar los checkbox según los roles que puedo agregar
-        puedo_estudiante = Usuario.tengo_permiso(session['permisos'], 'estudiante_new')
         puedo_docente = Usuario.tengo_permiso( session['permisos'], 'docente_new')
         puedo_preceptor = Usuario.tengo_permiso(session['permisos'], 'preceptor_new')
         puedo_admin = Usuario.tengo_permiso(session['permisos'], 'admin_new')
 
                 
-        return render_template("usuarios/registrar.html", form=form, error=error, exito=exito, puedo_admin=puedo_admin, puedo_docente=puedo_docente, puedo_estudiante=puedo_estudiante, puedo_preceptor=puedo_preceptor)
+        return render_template("usuarios/registrar.html", form=form, error=error, exito=exito, puedo_admin=puedo_admin, puedo_docente=puedo_docente, puedo_preceptor=puedo_preceptor)
+
+
+# REGISTRAR ESTUDIANTE
+
+@mod.route("/registrar_estudiante", methods=['GET', 'POST'])
+def registrar_estudiante():
+    
+    # Reviso que tenga permiso
+    if session['user']['nombre_rol'] != 'admin':
+        flash("Usted no tiene permiso para realizar esta operacón")
+        return redirect("/home")
+    else:     
+    
+        form = SignUpEstudianteForm()
+        
+        # para manejar los mensajes flash
+        error=0
+        exito=0
+        
+        
+        if request.method == 'POST':
+            
+            if form.validate_on_submit():
+                Estudiante.db = get_db()
+                
+                if not Estudiante.existe(form.email.data):
+                    
+                    estudiante = Estudiante(form.email.data, form.first_name.data, form.last_name.data, form.birth_date.data)
+                    Estudiante.insert(estudiante)
+                    
+                    flash("Estudiante registrado correctamente.")
+                    exito = 1
+                    
+                else:
+                    flash("Error al registrar: Ya existe un estudiante registrado con ese email.")
+                    error = 1
+                    
+            else: 
+                flash("Debe completar todos los campos y el email ingresado debe ser válido.")
+                error = 1
+
+                
+        return render_template("estudiantes/registrar.html", form=form, error=error, exito=exito)
 
 
 #  ACTIVAR/DESACTIVAR USUARIO
