@@ -65,11 +65,13 @@ class Usuario(object):
             sql = sql + """ AND u.username LIKE %s """
             params.append(termino)
             
-        if activo != None:
-            sql = sql + """ AND u.activo = true """
-            
-        if inactivo != None:
-            sql = sql + """ AND u.activo = false """
+        if not (activo != None and inactivo != None):          
+                
+            if activo != None:
+                sql = sql + """ AND u.activo = true """
+                
+            if inactivo != None:
+                sql = sql + """ AND u.activo = false """
 
         cursor = self.db.cursor()
         cursor.execute(sql, params)
@@ -91,13 +93,15 @@ class Usuario(object):
             termino = '%'+termino+'%'
             sql = sql + """ AND u.username LIKE %s """
             
-        if activo != None:
-            sql = sql + """ AND u.activo = true """
-            print("es activo")
+        if not (activo != None and inactivo != None):
             
-        if inactivo != None:
-            sql = sql + """ AND u.activo = false """
-            print("es inactivo")
+            if activo != None:
+                sql = sql + """ AND u.activo = true """
+                print("es activo")
+                
+            if inactivo != None:
+                sql = sql + """ AND u.activo = false """
+                print("es inactivo")
 
         sql = sql + """
                     LIMIT %s OFFSET %s

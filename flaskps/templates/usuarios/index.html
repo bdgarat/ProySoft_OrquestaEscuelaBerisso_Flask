@@ -2,7 +2,7 @@
 <div class="jumbotron">
     <h2 class="display-4 animated fadeIn">Administración de {{ titulo }}</h1>
 
-        <hr class="my-4"> {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+        <hr class="my-4"> {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error_busqueda != 1%}
 
         <div class="alert alert-warning alert-dismissible fade show animated fadeIn" role="alert">
             <strong>Nota:</strong> {{ message }}
@@ -11,7 +11,7 @@
                 </button>
         </div>
 
-        {% endfor %} {% endif %} {% endwith %}
+        {% endif %}{% endfor %} {% endif %} {% endwith %}
 
 
         <table class="table text-center" summary="Tabla con los usuarios registrados">
@@ -68,6 +68,16 @@
         <div class="text-center animated fadeIn" aria-label="Páginas de la tabla">
             {{ pagination.links }}
         </div>
+        {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error_busqueda == 1%}
+
+        <div class="alert alert-warning alert-dismissible fade show animated fadeIn" role="alert">
+            <strong>Nota:</strong> {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        </div>
+
+        {% endif %}{% endfor %} {% endif %} {% endwith %}
 </div>
 
 

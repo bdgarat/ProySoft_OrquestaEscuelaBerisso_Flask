@@ -27,6 +27,7 @@ def index(rol):
         return redirect('/home')    
 
     form = BusquedaForm()
+    error_busqueda = 0
 
     search = False
     termino = request.args.get('termino')
@@ -61,6 +62,10 @@ def index(rol):
         usuarios = Usuario.get_usuarios_por_rol_paginados(rol, per_page, offset)
 
     total = len(total)
+    if (total == 0 and search == True):
+        flash("La búsqueda no obtuvo resultados.")
+        error_busqueda = 1
+        
     pagination = Pagination(page=page, 
                             per_page=per_page, 
                             total=total,
@@ -77,7 +82,8 @@ def index(rol):
                             usuarios=usuarios, 
                             rol=rol,
                             titulo=titulo,
-                            form=form)
+                            form=form, 
+                            error_busqueda=error_busqueda)
 
 
 @mod.route("/registrar", methods=['GET', 'POST'])
