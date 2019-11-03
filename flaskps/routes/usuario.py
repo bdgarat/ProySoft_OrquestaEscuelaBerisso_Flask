@@ -5,7 +5,7 @@ from flaskps.models.Usuario import Usuario
 from flaskps.models.Estudiante import Estudiante
 from flaskps.models.Configuracion import Configuracion
 from flaskps.helpers.auth import authenticated
-from flaskps.forms import SignUpForm, SignUpEstudianteForm, BusquedaForm, EditarForm
+from flaskps.forms import SignUpForm, SignUpEstudianteForm, BusquedaUsuarioForm, EditarForm
 from flask_paginate import Pagination, get_page_parameter
 
 
@@ -18,82 +18,79 @@ def before_request():
         return redirect("/home")
 
 # LISTADOS
-@mod.route("/index/<rol>")
-def index(rol):
+# @mod.route("/index/<rol>")
+# def index(rol):
 
-    # Reviso que tenga permiso
-    permiso = rol+'_index'
-    if not Usuario.tengo_permiso(session['permisos'], permiso):
-        flash('No tiene permiso para visualizar el listado de ' + get_titulo(rol) )
-        return redirect('/home')    
+#     # Reviso que tenga permiso
+#     # tengo que chequear que tenga permisos de index ?????????????  
 
-    form = BusquedaForm()
-    error_busqueda = 0
+#     form = BusquedaUsuarioForm()
+#     error_busqueda = 0
 
-    search = False
-    termino = request.args.get('termino')
-    busqueda_activos = request.args.get('activos')
-    busqueda_inactivos = request.args.get('inactivos')
+#     search = False
+#     termino = request.args.get('termino')
+#     busqueda_activos = request.args.get('activos')
+#     busqueda_inactivos = request.args.get('inactivos')
     
-    if termino or busqueda_activos or busqueda_inactivos:
-        search = True
+#     if termino or busqueda_activos or busqueda_inactivos:
+#         search = True
 
-    # seteo el value del input si vino con algo
-    form.termino.data = termino
-    form.activos.data = busqueda_activos
-    form.inactivos.data = busqueda_inactivos
+#     # seteo el value del input si vino con algo
+#     form.termino.data = termino
+#     form.activos.data = busqueda_activos
+#     form.inactivos.data = busqueda_inactivos
     
-    # Setear variables de paginacion
-    Configuracion.db = get_db()
-    per_page = Configuracion.get_paginacion()['paginacion']
-    page = request.args.get(get_page_parameter(), type=int, default=1)
-    offset = (page - 1) * per_page
+#     # Setear variables de paginacion
+#     Configuracion.db = get_db()
+#     per_page = Configuracion.get_paginacion()['paginacion']
+#     page = request.args.get(get_page_parameter(), type=int, default=1)
+#     offset = (page - 1) * per_page
 
-    Usuario.db = get_db()
+#     Usuario.db = get_db()
     
-    if search:
-        # Total registros
-        total = Usuario.get_usuarios_por_rol(rol, termino, busqueda_activos, busqueda_inactivos)
-        # Consulta usando offset y limit
-        usuarios = Usuario.get_usuarios_por_rol_paginados(rol, per_page, offset, termino, busqueda_activos, busqueda_inactivos)
-    else:
-        # Total registros
-        total = Usuario.get_usuarios_por_rol(rol)
-        # Consulta usando offset y limit
-        usuarios = Usuario.get_usuarios_por_rol_paginados(rol, per_page, offset)
+#     if search:
+#         # Total registros
+#         total = Usuario.get_usuarios_por_rol(rol, termino, busqueda_activos, busqueda_inactivos)
+#         # Consulta usando offset y limit
+#         usuarios = Usuario.get_usuarios_por_rol_paginados(rol, per_page, offset, termino, busqueda_activos, busqueda_inactivos)
+#     else:
+#         # Total registros
+#         total = Usuario.get_usuarios_por_rol(rol)
+#         # Consulta usando offset y limit
+#         usuarios = Usuario.get_usuarios_por_rol_paginados(rol, per_page, offset)
 
-    total = len(total)
-    if (total == 0 and search == True):
-        flash("La búsqueda no obtuvo resultados.")
-        error_busqueda = 1
+#     total = len(total)
+#     if (total == 0 and search == True):
+#         flash("La búsqueda no obtuvo resultados.")
+#         error_busqueda = 1
         
-    pagination = Pagination(page=page, 
-                            per_page=per_page, 
-                            total=total,
-                            search=search,
-                            found=total,
-                            record_name='usuarios',
-                            css_framework='bootstrap4')
+#     pagination = Pagination(page=page, 
+#                             per_page=per_page, 
+#                             total=total,
+#                             search=search,
+#                             found=total,
+#                             record_name='usuarios',
+#                             css_framework='bootstrap4')
     
-    # Setear el titulo
-    titulo = get_titulo(rol)
+#     # Setear el titulo
+#     titulo = get_titulo(rol)
     
-    return render_template('usuarios/index.html', 
-                            pagination=pagination, 
-                            usuarios=usuarios, 
-                            rol=rol,
-                            titulo=titulo,
-                            form=form, 
-                            error_busqueda=error_busqueda)
+#     return render_template('usuarios/index.html', 
+#                             pagination=pagination, 
+#                             usuarios=usuarios, 
+#                             rol=rol,
+#                             titulo=titulo,
+#                             form=form, 
+#                             error_busqueda=error_busqueda)
 
 
 @mod.route("/registrar", methods=['GET', 'POST'])
 def registrar():
     
     # Reviso que tenga permiso
-    if session['user']['nombre_rol'] != 'admin':
-        flash("Usted no tiene permiso para realizar esta operacón")
-        return redirect("/home")
+    if not Usuario.tengo_permiso_registrar(session['permisos']):
+        flash('No tiene permiso para registrar usuarios. ')
+        return redirect('/home')  
     else:     
     
         form = SignUpForm()
@@ -150,11 +147,11 @@ def registrar():
 @mod.route("/registrar_estudiante", methods=['GET', 'POST'])
 def registrar_estudiante():
     
-    # Reviso que tenga permiso
-    if session['user']['nombre_rol'] != 'admin':
-        flash("Usted no tiene permiso para realizar esta operacón")
-        return redirect("/home")
-    else:     
+   # Reviso que tenga permiso
+    if not Usuario.tengo_permiso(session['permisos'], 'estudiante_new'):
+        flash('No tiene permiso para registrar estudiantes. ')
+        return redirect('/home')  
+    else:  
     
         form = SignUpEstudianteForm()
         
@@ -170,7 +167,7 @@ def registrar_estudiante():
                 
                 if not Estudiante.existe(form.email.data):
                     
-                    estudiante = Estudiante(form.email.data, form.first_name.data, form.last_name.data, form.birth_date.data)
+                    estudiante = Estudiante(form.email.data, form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.nivel.data, form.domicilio.data, form.genero.data, form.escuela.data, form.tipo_doc.data, form.numero.data, form.tel.data, form.barrio.data)
                     Estudiante.insert(estudiante)
                     
                     flash("Estudiante registrado correctamente.")

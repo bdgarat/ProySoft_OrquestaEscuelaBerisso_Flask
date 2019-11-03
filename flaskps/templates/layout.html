@@ -46,14 +46,13 @@
 
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% if "estudiante_index" in session['permisos'] %}
-                        <a class="dropdown-item" href="/index/estudiante">Estudiantes</a> {% endif %} {% if "docente_index" in session['permisos'] %}
-                        <a class="dropdown-item" href="/index/docente">Docentes</a> {% endif %} {% if "preceptor_index" in session['permisos'] %}
-                        <a class="dropdown-item" href="/index/preceptor">Preceptores</a> {% endif %} {% if "admin_index" in session['permisos'] %}
-                        <a class="dropdown-item" href="/index/admin">Administradores</a> {% endif %} {% if session['user']['nombre_rol'] == "admin" %}
+                        <a class="dropdown-item" href="/index/estudiante">Listado de estudiantes</a> {% endif %} {% if session['user']['nombre_rol'] == "admin" %}
+                        <a class="dropdown-item">Listado de usuarios</a> {% endif %} {% if session['user']['nombre_rol'] == "admin" %}
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/config">Configuración de Sistema</a>
                         <a class="dropdown-item" href="/registrar">Registrar usuario</a> {% endif %} {% if "estudiante_new" in session['permisos'] %}
                         <a class="dropdown-item" href="/registrar_estudiante">Registrar estudiante</a> {% endif %}
+
                     </div>
                 </div>
                 <!-- {% endif %} -->
