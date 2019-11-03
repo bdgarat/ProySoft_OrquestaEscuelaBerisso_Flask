@@ -76,3 +76,40 @@ def index_estudiante():
                             estudiantes=estudiantes,
                             form=form, 
                             error_busqueda=error_busqueda)
+    
+    
+# REGISTRAR ESTUDIANTE
+
+@mod.route("/registrar_estudiante", methods=['GET', 'POST'])
+def registrar_estudiante():
+    
+   # Reviso que tenga permiso
+    if not Usuario.tengo_permiso(session['permisos'], 'estudiante_new'):
+        flash('No tiene permiso para registrar estudiantes. ')
+        return redirect('/home')  
+    else:  
+    
+        form = SignUpEstudianteForm()
+        
+        # para manejar los mensajes flash
+        error=0
+        exito=0
+        
+        
+        if request.method == 'POST':
+            
+            if form.validate_on_submit():
+                Estudiante.db = get_db()
+                    
+                estudiante = Estudiante(form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.nivel.data, form.domicilio.data, form.genero.data, form.escuela.data, form.tipo_doc.data, form.numero.data, form.tel.data, form.barrio.data)
+                Estudiante.insert(estudiante)
+                
+                flash("Estudiante registrado correctamente.")
+                exito = 1
+                    
+            else: 
+                flash("Debe completar todos los campos.")
+                error = 1
+
+                
+        return render_template("estudiantes/registrar.html", form=form, error=error, exito=exito)

@@ -4,8 +4,7 @@ class Estudiante(object):
     
     db = None
 
-    def __init__(self, email, apellido, nombre, fecha_nac, localidad_id, nivel_id, domicilio, genero_id, escuela_id, tipo_doc_id, numero, tel, barrio_id):
-        self.email = email
+    def __init__(self, apellido, nombre, fecha_nac, localidad_id, nivel_id, domicilio, genero_id, escuela_id, tipo_doc_id, numero, tel, barrio_id):
         self.apellido = apellido
         self.nombre = nombre
         self.fecha_nac = fecha_nac
@@ -39,33 +38,17 @@ class Estudiante(object):
 
         return cursor.fetchone()
     
-    # VER SI EXISTE UN ESTUDIANTE SEGUN UN EMAIL
-    @classmethod
-    def existe(self, email):
-        sql = """
-            SELECT * FROM estudiante
-            WHERE email = %s
-        """
-
-        cursor = self.db.cursor()
-        cursor.execute(sql, (email))
-        
-        if cursor.fetchone():
-            return True
-
-        return False
-    
     
     # INSERTAR ESTUDIANTE
     @classmethod
     def insert(self, estudiante):
         sql = """
-            INSERT INTO estudiante (email, apellido, nombre, fecha_nac, localidad_id, nivel_id, domicilio, genero_id, escuela_id, tipo_doc_id, numero, tel, barrio_id)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO estudiante (apellido, nombre, fecha_nac, localidad_id, nivel_id, domicilio, genero_id, escuela_id, tipo_doc_id, numero, tel, barrio_id)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
 
         cursor = self.db.cursor()
-        cursor.execute(sql, (estudiante.email,
+        cursor.execute(sql, (
                              estudiante.apellido, 
                              estudiante.nombre, 
                              estudiante.fecha_nac, 

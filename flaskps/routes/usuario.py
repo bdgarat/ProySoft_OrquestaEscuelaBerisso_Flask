@@ -142,49 +142,6 @@ def registrar():
         return render_template("usuarios/registrar.html", form=form, error=error, exito=exito, puedo_admin=puedo_admin, puedo_docente=puedo_docente, puedo_preceptor=puedo_preceptor)
 
 
-# REGISTRAR ESTUDIANTE
-
-@mod.route("/registrar_estudiante", methods=['GET', 'POST'])
-def registrar_estudiante():
-    
-   # Reviso que tenga permiso
-    if not Usuario.tengo_permiso(session['permisos'], 'estudiante_new'):
-        flash('No tiene permiso para registrar estudiantes. ')
-        return redirect('/home')  
-    else:  
-    
-        form = SignUpEstudianteForm()
-        
-        # para manejar los mensajes flash
-        error=0
-        exito=0
-        
-        
-        if request.method == 'POST':
-            
-            if form.validate_on_submit():
-                Estudiante.db = get_db()
-                
-                if not Estudiante.existe(form.email.data):
-                    
-                    estudiante = Estudiante(form.email.data, form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.nivel.data, form.domicilio.data, form.genero.data, form.escuela.data, form.tipo_doc.data, form.numero.data, form.tel.data, form.barrio.data)
-                    Estudiante.insert(estudiante)
-                    
-                    flash("Estudiante registrado correctamente.")
-                    exito = 1
-                    
-                else:
-                    flash("Error al registrar: Ya existe un estudiante registrado con ese email.")
-                    error = 1
-                    
-            else: 
-                flash("Debe completar todos los campos y el email ingresado debe ser válido.")
-                error = 1
-
-                
-        return render_template("estudiantes/registrar.html", form=form, error=error, exito=exito)
-
-
 #  ACTIVAR/DESACTIVAR USUARIO
 
 @mod.route("/activar/<id_usuario>/<rol>")

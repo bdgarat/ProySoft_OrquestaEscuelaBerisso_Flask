@@ -31,7 +31,6 @@ class SignUpForm(FlaskForm):
     submit = SubmitField('Registrar usuario', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
     
 class SignUpEstudianteForm(FlaskForm):
-    email = EmailField('Email', validators=[DataRequired(), Email("Ingrese un email válido")], render_kw={"class": "form-control"})
     nombre = StringField('Nombre', validators=[DataRequired()], render_kw={"class": "form-control"})
     apellido = StringField('Apellido', validators=[DataRequired()], render_kw={"class": "form-control"})
     fecha_nac = DateField('Fecha de nacimiento', validators=[DataRequired()], render_kw={"class": "form-control"})
