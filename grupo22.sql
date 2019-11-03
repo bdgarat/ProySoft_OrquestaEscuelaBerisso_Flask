@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 03-11-2019 a las 23:37:20
+-- Tiempo de generación: 04-11-2019 a las 00:56:06
 -- Versión del servidor: 10.4.6-MariaDB
 -- Versión de PHP: 7.3.9
 
@@ -348,10 +348,10 @@ CREATE TABLE `estudiante` (
   `genero_id` int(11) NOT NULL,
   `escuela_id` int(11) NOT NULL,
   `tipo_doc_id` int(11) NOT NULL,
-  `numero` int(11) NOT NULL,
+  `numero` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
   `tel` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `barrio_id` int(11) NOT NULL,
-  `borrado_logico` int(11) NOT NULL
+  `borrado_logico` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -931,7 +931,7 @@ ALTER TABLE `escuela`
 -- AUTO_INCREMENT de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `genero`
