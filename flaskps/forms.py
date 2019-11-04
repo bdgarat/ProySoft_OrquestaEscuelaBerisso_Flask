@@ -27,7 +27,6 @@ class SignUpForm(FlaskForm):
     es_admin = BooleanField('Administrador', render_kw={"class": "col"})
     es_preceptor = BooleanField('Preceptor', render_kw={"class": "col"})
     es_docente = BooleanField('Docente', render_kw={"class": "col"})
-    es_estudiante = BooleanField('Estudiante', render_kw={"class": "col"})
     submit = SubmitField('Registrar usuario', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
     
 class SignUpEstudianteForm(FlaskForm):
@@ -56,14 +55,7 @@ class EditarForm(FlaskForm):
     submit = SubmitField('Editar usuario', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
     
 class BusquedaUsuarioForm(FlaskForm):
-    rol = SelectField('Buscar por rol', choices=[
-                                            ('0', 'Seleccionar rol'),
-                                            ('admin', 'Administradores'), 
-                                            ('preceptor', 'Preceptores'), 
-                                            ('docente', 'Docentes')
-                                        ],
-                                        default= '0',
-                                        render_kw={"class": "form-control"})
+    rol = SelectField('Buscar por rol', render_kw={"class": "form-control"})
     termino = StringField('Buscar por nombre de usuario', render_kw={"class": "form-control"})
     activos = BooleanField('Usuarios activos')
     inactivos = BooleanField('Usuarios inactivos')

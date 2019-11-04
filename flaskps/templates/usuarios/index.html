@@ -60,18 +60,19 @@
                         {% if u.id != session['user']['id'] %} 
                         
                         {% if u.activo %}
-                        <button type="button" onclick="location.href='/activar/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Desactivar usuario" role="button">Desactivar</button> 
+                        <button type="button" onclick="location.href='/activar/{{ u.id }}'" class="btn btn-primary" title="Desactivar usuario" role="button">Desactivar</button> 
                         {% else %}
-                        <button type="button" onclick="location.href='/activar/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Activar usuario" role="button">Activar</button> 
+                        <button type="button" onclick="location.href='/activar/{{ u.id }}'" class="btn btn-primary" title="Activar usuario" role="button">Activar</button> 
                         {% endif %}
-                        <button type="button" onclick="location.href='/editar/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Editar usuario" role="button"><i class="fa fa-edit"></i></button> 
+
+                        <button type="button" onclick="location.href='/editar/{{ u.id }}'" class="btn btn-primary" title="Editar usuario" role="button"><i class="fa fa-edit"></i></button> 
                         {% endif %} 
                         
                         
-                        <button type="button" onclick="location.href='/show/{{ u.id }}/{{ rol }}'" class="btn btn-primary" title="Ver perfil del usuario" role="button"><i class="fa fa-user-circle"></i></button> 
+                        <button type="button" onclick="location.href='/show/{{ u.id }}'" class="btn btn-primary" title="Ver perfil del usuario" role="button"><i class="fa fa-user-circle"></i></button> 
                 
                         {% if u.id != session['user']['id'] %}
-                        <button type="button" onclick="location.href='/eliminar/{{ u.id }}/{{ rol }}'" class="btn btn-primary eliminar" title="Eliminar usuario" role="button"><i class="fa fa-trash"></i></button> 
+                        <button type="button" onclick="location.href='/eliminar/{{ u.id }}'" class="btn btn-primary eliminar" title="Eliminar usuario" role="button"><i class="fa fa-trash"></i></button> 
                         {% endif %}
 
                     </td>

@@ -69,7 +69,7 @@ class Usuario(object):
             """
             params.append(rol)
 
-        if termino != '':
+        if termino != '' and termino != None:
             termino = '%'+termino+'%'
             sql = sql + """ AND u.username LIKE %s """
             params.append(termino)
@@ -106,7 +106,7 @@ class Usuario(object):
             """
             params.append(rol)
 
-        if termino != '':
+        if termino != '' and termino != None:
             termino = '%'+termino+'%'
             sql = sql + """ AND u.username LIKE %s """
             params.append(termino)

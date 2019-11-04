@@ -26,7 +26,15 @@ def index():
         flash('No tiene permiso para administrar usuarios.')
         return redirect('/home') 
 
+    Usuario.db = get_db()
     form = BusquedaUsuarioForm()
+    
+    # Armo la lista de opciones del select
+    roles = [('0', 'Seleccionar rol')]
+    for r in Usuario.all_roles():
+        roles.append( (r['nombre'], r['nombre']) )
+    form.rol.choices = roles
+    
     error_busqueda = 0
 
     search = False
@@ -51,11 +59,17 @@ def index():
     offset = (page - 1) * per_page
 
     
-    # Total registros
-    Usuario.db = get_db()
-    total = Usuario.get_usuarios(rol, termino, busqueda_activos, busqueda_inactivos)
-    # Consulta usando offset y limit
-    usuarios = Usuario.get_usuarios_paginados(per_page, offset, rol, termino, busqueda_activos, busqueda_inactivos)
+    
+    if search:
+        # Total registros
+        total = Usuario.get_usuarios(rol, termino, busqueda_activos, busqueda_inactivos)
+        # Consulta usando offset y limit
+        usuarios = Usuario.get_usuarios_paginados(per_page, offset, rol, termino, busqueda_activos, busqueda_inactivos)
+    else:
+        # Total registros
+        total = Usuario.get_usuarios()
+        # Consulta usando offset y limit
+        usuarios = Usuario.get_usuarios_paginados(per_page, offset)
     
     total = len(total)
     if (total == 0 and search == True):
@@ -79,7 +93,7 @@ def index():
 
 
 
-
+# REGISTRAR USUARIO
 @mod.route("/registrar", methods=['GET', 'POST'])
 def registrar():
     
@@ -139,41 +153,37 @@ def registrar():
 
 
 #  ACTIVAR/DESACTIVAR USUARIO
-
-@mod.route("/activar/<id_usuario>/<rol>")
-def activar(id_usuario, rol):
+@mod.route("/activar/<id_usuario>")
+def activar(id_usuario):
     
     if int(id_usuario) == session['user']['id']:
         flash('No se puede modificar a sí mismo!')
-        return redirect('/index/' + rol)
+        return redirect('/index/usuarios')
     
     # Reviso que tenga permiso
-    permiso = rol+'_update'
-    if not Usuario.tengo_permiso(session['permisos'], permiso):
-        flash('No tiene permiso para actualizar este tipo de usuario')
-        return redirect('/index/' + rol)
+    if 'admin' not in session['roles']:
+        flash('No tiene permiso para activar / desactivar usuarios')
+        return redirect('/index/usuarios')
 
     Usuario.db = get_db()
     Usuario.activar(id_usuario)
     
     flash("Se guardaron los cambios con éxito")
-    return redirect("/index/"+rol)
+    return redirect("/index/usuarios")
+
 
 #  EDITAR USUARIO
-
-
-@mod.route("/editar/<id_usuario>/<rol>", methods=['GET', 'POST'])
-def editar(id_usuario, rol):
+@mod.route("/editar/<id_usuario>", methods=['GET', 'POST'])
+def editar(id_usuario):
     
     if int(id_usuario) == session['user']['id']:
         flash('No se puede modificar a sí mismo!')
-        return redirect('/index/' + rol)
+        return redirect('/index/usuarios')
 
     # Reviso que tenga permiso
-    permiso = rol+'_update'
-    if not Usuario.tengo_permiso(session['permisos'], permiso):
-        flash('No tiene permiso para actualizar este tipo de usuario')
-        return redirect('/index/' + rol)
+    if 'admin' not in session['roles']:
+        flash('No tiene permiso para editar usuarios')
+        return redirect('/index/usuarios')
     
 
     form = EditarForm()
@@ -203,12 +213,7 @@ def editar(id_usuario, rol):
             if (form.es_docente.data):
                 usuario.agregar_rol('docente', usuario)
             else:
-                usuario.quitar_rol('docente', usuario)
-
-            if (form.es_estudiante.data):
-                usuario.agregar_rol('estudiante', usuario)
-            else:
-                usuario.quitar_rol('estudiante', usuario)    
+                usuario.quitar_rol('docente', usuario)   
 
             # vuelvo a consultar por los valores del usuario
             usuario = Usuario.get_user(id_usuario)    
@@ -236,8 +241,6 @@ def editar(id_usuario, rol):
         form.es_preceptor.data = 1
     if 'docente' in roles:
         form.es_docente.data = 1
-    if 'estudiante' in roles:
-        form.es_estudiante.data = 1
 
 
     return render_template("usuarios/editar.html", form=form, error=error, exito=exito)

@@ -23,7 +23,7 @@ def before_request():
 def index_estudiante():
 
     # Reviso que tenga permiso
-    if not Usuario.tengo_permiso(session['permisos'], 'estudiante_index'):
+    if 'estudiante_index' not in session['permisos']:
         flash('No tiene permiso para visualizar el listado de estudiantes' )
         return redirect('/home')    
 
@@ -84,7 +84,7 @@ def index_estudiante():
 def registrar_estudiante():
     
    # Reviso que tenga permiso
-    if not Usuario.tengo_permiso(session['permisos'], 'estudiante_new'):
+    if 'estudiante_new' not in session['permisos']:
         flash('No tiene permiso para registrar estudiantes. ')
         return redirect('/home')  
     else:  
