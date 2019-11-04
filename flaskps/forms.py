@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Email
 from wtforms.fields.html5 import EmailField, DateField
 
@@ -56,10 +56,18 @@ class EditarForm(FlaskForm):
     submit = SubmitField('Editar usuario', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
     
 class BusquedaUsuarioForm(FlaskForm):
+    rol = SelectField('Buscar por rol', choices=[
+                                            ('0', 'Seleccionar rol'),
+                                            ('admin', 'Administradores'), 
+                                            ('preceptor', 'Preceptores'), 
+                                            ('docente', 'Docentes')
+                                        ],
+                                        default= '0',
+                                        render_kw={"class": "form-control"})
     termino = StringField('Buscar por nombre de usuario', render_kw={"class": "form-control"})
-    submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary pb-20"})
     activos = BooleanField('Usuarios activos')
     inactivos = BooleanField('Usuarios inactivos')
+    submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary pb-20"})
     
 class BusquedaEstudianteForm(FlaskForm):
     termino = StringField('Buscar por nombre o apellido', render_kw={"class": "form-control"})

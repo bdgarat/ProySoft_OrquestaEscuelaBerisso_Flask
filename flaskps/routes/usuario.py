@@ -18,70 +18,66 @@ def before_request():
         return redirect("/home")
 
 # LISTADOS
-# @mod.route("/index/<rol>")
-# def index(rol):
+@mod.route("/index/usuarios")
+def index():
 
-#     # Reviso que tenga permiso
-#     # tengo que chequear que tenga permisos de index ?????????????  
+    # Reviso que tenga permiso
+    if 'admin' not in session['roles']:
+        flash('No tiene permiso para administrar usuarios.')
+        return redirect('/home') 
 
-#     form = BusquedaUsuarioForm()
-#     error_busqueda = 0
+    form = BusquedaUsuarioForm()
+    error_busqueda = 0
 
-#     search = False
-#     termino = request.args.get('termino')
-#     busqueda_activos = request.args.get('activos')
-#     busqueda_inactivos = request.args.get('inactivos')
+    search = False
+    rol = request.args.get('rol')
+    termino = request.args.get('termino')
+    busqueda_activos = request.args.get('activos')
+    busqueda_inactivos = request.args.get('inactivos')
     
-#     if termino or busqueda_activos or busqueda_inactivos:
-#         search = True
+    if termino or busqueda_activos or busqueda_inactivos or rol:
+        search = True
 
-#     # seteo el value del input si vino con algo
-#     form.termino.data = termino
-#     form.activos.data = busqueda_activos
-#     form.inactivos.data = busqueda_inactivos
+    # seteo el value del input si vino con algo
+    form.rol.data = rol
+    form.termino.data = termino
+    form.activos.data = busqueda_activos
+    form.inactivos.data = busqueda_inactivos
     
-#     # Setear variables de paginacion
-#     Configuracion.db = get_db()
-#     per_page = Configuracion.get_paginacion()['paginacion']
-#     page = request.args.get(get_page_parameter(), type=int, default=1)
-#     offset = (page - 1) * per_page
+    # Setear variables de paginacion
+    Configuracion.db = get_db()
+    per_page = Configuracion.get_paginacion()['paginacion']
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+    offset = (page - 1) * per_page
 
-#     Usuario.db = get_db()
     
-#     if search:
-#         # Total registros
-#         total = Usuario.get_usuarios_por_rol(rol, termino, busqueda_activos, busqueda_inactivos)
-#         # Consulta usando offset y limit
-#         usuarios = Usuario.get_usuarios_por_rol_paginados(rol, per_page, offset, termino, busqueda_activos, busqueda_inactivos)
-#     else:
-#         # Total registros
-#         total = Usuario.get_usuarios_por_rol(rol)
-#         # Consulta usando offset y limit
-#         usuarios = Usuario.get_usuarios_por_rol_paginados(rol, per_page, offset)
-
-#     total = len(total)
-#     if (total == 0 and search == True):
-#         flash("La búsqueda no obtuvo resultados.")
-#         error_busqueda = 1
+    # Total registros
+    Usuario.db = get_db()
+    total = Usuario.get_usuarios(rol, termino, busqueda_activos, busqueda_inactivos)
+    # Consulta usando offset y limit
+    usuarios = Usuario.get_usuarios_paginados(per_page, offset, rol, termino, busqueda_activos, busqueda_inactivos)
+    
+    total = len(total)
+    if (total == 0 and search == True):
+        flash("La búsqueda no obtuvo resultados.")
+        error_busqueda = 1
         
-#     pagination = Pagination(page=page, 
-#                             per_page=per_page, 
-#                             total=total,
-#                             search=search,
-#                             found=total,
-#                             record_name='usuarios',
-#                             css_framework='bootstrap4')
+    pagination = Pagination(page=page, 
+                            per_page=per_page, 
+                            total=total,
+                            search=search,
+                            found=total,
+                            record_name='usuarios',
+                            css_framework='bootstrap4')
     
-#     # Setear el titulo
-#     titulo = get_titulo(rol)
-    
-#     return render_template('usuarios/index.html', 
-#                             pagination=pagination, 
-#                             usuarios=usuarios, 
-#                             rol=rol,
-#                             titulo=titulo,
-#                             form=form, 
-#                             error_busqueda=error_busqueda)
+    return render_template('usuarios/index.html', 
+                            pagination=pagination, 
+                            usuarios=usuarios, 
+                            form=form, 
+                            error_busqueda=error_busqueda)
+
+
+
 
 
 @mod.route("/registrar", methods=['GET', 'POST'])

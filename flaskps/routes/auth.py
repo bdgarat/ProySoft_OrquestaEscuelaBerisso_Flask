@@ -22,8 +22,7 @@ def login():
             Usuario.db = get_db()
             
             user = Usuario.find_by_email_and_pass(form.email.data, form.password.data)
-            print(len(user))
-
+            
             if not user:
                 flash("Usuario o clave incorrecto.")
                 error=1
@@ -31,19 +30,10 @@ def login():
 
             # crear la sesion, datos del usuario
             session['user'] = user[0]
-            
-            # crear lista con todos los permisos del usuario, contemplando mas de un rol
-            permisos = []
-            for tupla in user:
-                tupla_permisos = Usuario.get_permisos(tupla['id_rol'])
-                for p in tupla_permisos:
-                    permisos.append(p['nombre'])
-
-            # eliminar permisos repetidos
-            permisos = set(permisos)    
-
+            # cargar los roles del usuario
+            session['roles'] = get_roles(user[0]['id'])
             # cargar lista de permisos del usuario
-            session['permisos'] = permisos
+            session['permisos'] = get_permisos(user)
 
             Configuracion.db = get_db()
             config = Configuracion.get_config()
@@ -61,6 +51,7 @@ def logout():
     
     # eliminar sesion
     del session['user']
+    del session['roles']
     del session['permisos']
     session.clear()
     flash("La sesión se cerró correctamente.")
@@ -68,3 +59,24 @@ def logout():
     Configuracion.db = get_db()
     config = Configuracion.get_config()
     return render_template("home.html", config=config)
+
+
+
+# OPERACIONES
+
+def get_permisos(user):
+    # crear lista con todos los permisos del usuario, contemplando mas de un rol
+    permisos = []
+    for tupla in user:
+        tupla_permisos = Usuario.get_permisos(tupla['id_rol'])
+        for p in tupla_permisos:
+            permisos.append(p['nombre'])
+    # eliminar permisos repetidos
+    return set(permisos)
+
+def get_roles(id):
+    tabla_roles = Usuario.get_roles(id)
+    roles = []
+    for tupla in tabla_roles:
+        roles.append(tupla['nombre'])
+    return roles

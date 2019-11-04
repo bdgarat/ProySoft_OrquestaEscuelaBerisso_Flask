@@ -50,67 +50,81 @@ class Usuario(object):
 
 
 
-    # RECUPERAR TODOS LOS USUARIOS POR ROL
+    # RECUPERAR TODOS LOS USUARIOS
     @classmethod
-    def get_usuarios_por_rol(self, rol, termino = None, activo = None, inactivo = None):
-        params = [rol]
+    def get_usuarios(self, rol = '0', termino = '', activo = None, inactivo = None):
+        
+        params = []
+        
         sql = """
             SELECT u.id, u.username FROM usuario u
             INNER JOIN usuario_tiene_rol ur ON (u.id = ur.usuario_id)
             INNER JOIN rol r ON (ur.rol_id = r.id)
-            WHERE r.nombre = %s AND u.borrado_logico = 0
+            WHERE u.borrado_logico = 0
         """
-        if termino != None:
+
+        if rol != '0':
+            sql = sql + """
+                AND r.nombre = %s 
+            """
+            params.append(rol)
+
+        if termino != '':
             termino = '%'+termino+'%'
             sql = sql + """ AND u.username LIKE %s """
             params.append(termino)
             
-        if not (activo != None and inactivo != None):          
-                
+        if not (activo != None and inactivo != None):                
             if activo != None:
                 sql = sql + """ AND u.activo = true """
                 
             if inactivo != None:
                 sql = sql + """ AND u.activo = false """
 
-        cursor = self.db.cursor()
-        cursor.execute(sql, params)
-
+        cursor = self.db.cursor()   
+        if len(params):
+            cursor.execute(sql, params)
+        else:
+            cursor.execute(sql)
         return cursor.fetchall()
     
     # RECUPERAR TODOS LOS USUARIOS POR ROL Y PAGINADOS
     @classmethod
-    def get_usuarios_por_rol_paginados(self, rol, limit, offset = 1, termino = None, activo = None, inactivo = None):
+    def get_usuarios_paginados(self, limit, offset = 1, rol = '0', termino = '', activo = None, inactivo = None):
         
+        params = []
         sql = """
             SELECT u.id, u.email, u.username, u.first_name, u.last_name, u.activo FROM usuario u
             INNER JOIN usuario_tiene_rol ur ON (u.id = ur.usuario_id)
             INNER JOIN rol r ON (ur.rol_id = r.id)
-            WHERE r.nombre = %s AND u.borrado_logico = 0 
+            WHERE  u.borrado_logico = 0 
             """
 
-        if termino != None:
+        if rol != '0':
+            sql = sql + """
+                AND r.nombre = %s 
+            """
+            params.append(rol)
+
+        if termino != '':
             termino = '%'+termino+'%'
             sql = sql + """ AND u.username LIKE %s """
+            params.append(termino)
             
         if not (activo != None and inactivo != None):
             
             if activo != None:
                 sql = sql + """ AND u.activo = true """
-                print("es activo")
                 
             if inactivo != None:
                 sql = sql + """ AND u.activo = false """
-                print("es inactivo")
 
         sql = sql + """
                     LIMIT %s OFFSET %s
                     """
 
-        if termino != None:
-            params = (rol, termino, limit, offset)
-        else:
-            params = (rol, limit, offset)
+        params.append(limit)
+        params.append(offset)
 
         cursor = self.db.cursor()
         cursor.execute(sql, params)
