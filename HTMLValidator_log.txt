@@ -1,0 +1,11 @@
+Estado Validador HTML(4/11/19):
+
+"Home" estado=Listo;
+"Configuracion del sistema" estado=Listo;
+"Registro de usuario" estado=Listo;
+"Registro de estudiante" estado=ListoConWarnings(type "date" not supported in all browsers);
+"Index Usuarios" estado=ListoConWarnings?(Mismas correcciones que en "Index Estudiantes");
+"Index Estudiantes" estado=ListoConWarnings(Possible misuse of aria-label);
+"Mostrar usuario" estado=Listo;
+"Editar Usuario" estado=Listo?(Corregido segun rama master);
+"Mantenimiento" estado=Listo;

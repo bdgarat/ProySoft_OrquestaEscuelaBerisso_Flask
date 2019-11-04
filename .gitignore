@@ -50,6 +50,16 @@ __pycache__
 migrations/
 *.db
 __pycache__/
+flaskps/__pycache__/
+flaskps/config/__pycache__/
+flaskps/helpers/__pycache__/
+flaskps/models/__pycache__/
+flaskps/routes/__pycache__/
+flaskps/__pycache__
+flaskps/config/__pycache__
+flaskps/helpers/__pycache__
+flaskps/models/__pycache__
+flaskps/routes/__pycache__
 *.py[cod]
 *$py.class
 

@@ -8,7 +8,7 @@
     <br>
     <h5 class="mb-4 mt-4 pt-4"><i class="fa fa-info-circle"></i> Información del usuario:</h5>
 
-    <div class="list-group list-group-flush">
+    <menu class="list-group list-group-flush">
         <li class="list-group-item"><strong>Email: </strong>{{ usuario.email }}</li>
         <li class="list-group-item"><strong>Fecha de creación: </strong>{{ usuario.created_at }}</li>
         <li class="list-group-item"><strong>Estado: </strong> {% if usuario.activo == 1 %} Activo {% else %} Inactivo {% endif %}</li>
@@ -19,7 +19,7 @@
                 {% endfor %}
             </ol>
         </li>
-    </div>
+    </menu>
 </div>
 
 {% endblock %}
