@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired, Email
 from wtforms.fields.html5 import EmailField, DateField
 
@@ -12,7 +12,7 @@ class LoginForm(FlaskForm):
     
 class ConfigForm(FlaskForm):   
     titulo = StringField('Titulo del sitio', render_kw={"class": "form-control"})
-    descripcion = StringField('Descripcion', render_kw={"class": "form-control"})   
+    descripcion = TextAreaField('Descripcion', render_kw={"class": "form-control"})   
     contacto = StringField('Información de contacto', render_kw={"class": "form-control"})   
     paginacion = IntegerField('Cantidad de elementos por página', render_kw={"class": "form-control"})
     sitio_habilitado = BooleanField('Habilitar sitio')   
@@ -63,4 +63,4 @@ class BusquedaUsuarioForm(FlaskForm):
     
 class BusquedaEstudianteForm(FlaskForm):
     termino = StringField('Buscar por nombre o apellido', render_kw={"class": "form-control"})
-    submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary pb-20"})
+    submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary"})

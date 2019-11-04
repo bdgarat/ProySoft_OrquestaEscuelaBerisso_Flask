@@ -1,6 +1,6 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 <div class="jumbotron">
-    <h2 class="display-4 animated fadeIn">Listado de estudiantes</h1>
+    <h2 class="display-4 animated fadeIn">Listado de estudiantes</h2>
 
         <hr class="my-4"> {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error_busqueda != 1%}
 
@@ -13,26 +13,25 @@
 
         {% endif %}{% endfor %} {% endif %} {% endwith %}
 
-
-        <table class="table text-center" summary="Tabla con los usuarios registrados">
-
-            <form class="form-inline my-2 my-lg-0" method="get">
-                {{ form.termino.label }}:
-                <div class="row">
-                    <div class="col-xs-12 col-md-5 col-lg-5">{{ form.termino(size=32) }}</div>
-                    <div class="col-xs-4 col-md-2 col-lg-2">{{ form.submit() }}</div>
-                </div>
-            </form>
-            <br>
-
-
-            <p>Total de estudiantes: <strong>{{ pagination.total }}</strong></p>
+        <!-- No se permite tener el form dentro de la table -->
+        <form class="form-horizontal my-2 my-lg-0" method="get">
+            {{ form.termino.label }}:
+            <div class="from-group">
+                <div class="">{{ form.termino(size=32) }}</div>
+                <div class="">{{ form.submit() }}</div>
+            </div>
+        </form>
+        <br>
+        
+        <p>Total de estudiantes: <strong>{{ pagination.total }}</strong></p>
+        <table class="table text-center">
+            <caption>Tabla con los estudiantes registrados</caption>
 
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col" id="email" alt="email">Email</th>
-                    <th scope="col" id="nombre" alt="nombre">Nombre y apellido</th>
-                    <th scope="col" id="operaciones" alt="operaciones">Operaciones</th>
+                    <th scope="col" id="email" aria-label="email">Email</th>
+                    <th scope="col" id="nombre" aria-label="nombre y apellido">Nombre y apellido</th>
+                    <th scope="col" id="operaciones" aria-label="operaciones">Operaciones</th>
                 </tr>
             </thead>
             <tbody>

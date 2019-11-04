@@ -1,6 +1,6 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 <div class="jumbotron">
-    <h2 class="display-4 animated fadeIn">Administración de {{ titulo }}</h1>
+    <h2 class="display-4 animated fadeIn">Administración de {{ titulo }}</h2>
 
         <hr class="my-4"> {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error_busqueda != 1%}
 
@@ -13,33 +13,32 @@
 
         {% endif %}{% endfor %} {% endif %} {% endwith %}
 
-
-        <table class="table text-center" summary="Tabla con los usuarios registrados">
-
-            <form class="form-inline my-2 my-lg-0" method="get">
-                {{ form.termino.label }}:
-                <div class="row">
-                    <div class="col-xs-12 col-md-5 col-lg-5">{{ form.termino(size=32) }}</div>
-                    <div class="col-xs-4 col-md-2 col-lg-2">
-                        {{ form.activos() }} {{ form.activos.label }}
-                    </div>
-                    <div class="col-xs-4 col-md-2 col-lg-2">
-                        {{ form.inactivos() }} {{ form.inactivos.label }}
-                    </div>
-                    <div class="col-xs-4 col-md-2 col-lg-2">{{ form.submit() }}</div>
+        <form class="form-inline my-2 my-lg-0" method="get">
+            {{ form.termino.label }}:
+            <div class="row">
+                <div class="col-xs-12 col-md-5 col-lg-5">{{ form.termino(size=32) }}</div>
+                <div class="col-xs-4 col-md-2 col-lg-2">
+                    {{ form.activos() }} {{ form.activos.label }}
                 </div>
-            </form>
-            <br>
+                <div class="col-xs-4 col-md-2 col-lg-2">
+                    {{ form.inactivos() }} {{ form.inactivos.label }}
+                </div>
+                <div class="col-xs-4 col-md-2 col-lg-2">{{ form.submit() }}</div>
+            </div>
+        </form>
+        <br>
 
+        <p>Total de usuarios: <strong>{{ pagination.total }}</strong></p>
 
-            <p>Total de usuarios: <strong>{{ pagination.total }}</strong></p>
+        <table class="table text-center">
+            <caption>Tabla con los usuarios registrados</caption>
 
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col" id="email" alt="email">Email</th>
-                    <th scope="col" id="username" alt="username">Username</th>
-                    <th scope="col" id="nombre" alt="nombre">Nombre y apellido</th>
-                    <th scope="col" id="operaciones" alt="operaciones">Operaciones</th>
+                    <th scope="col" id="email" aria-label="email">Email</th>
+                    <th scope="col" id="username" aria-label="username">Username</th>
+                    <th scope="col" id="nombre" aria-label="nombre">Nombre y apellido</th>
+                    <th scope="col" id="operaciones" aria-label="operaciones">Operaciones</th>
                 </tr>
             </thead>
             <tbody>
