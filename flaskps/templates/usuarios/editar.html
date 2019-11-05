@@ -41,14 +41,21 @@
         {{ form.last_name.label }}:<br> {{ form.last_name() }}
     </p>
 
-    {% if session['user']['nombre_rol'] == "admin" %}
-    <h4 class="mt-4">Agregar o quitar roles:</h4>
-    <div class="form row justify-content-md-center">
-        <p>{{ form.es_admin() }} {{ form.es_admin.label }}</p>
-        <p>{{ form.es_preceptor() }} {{ form.es_preceptor.label }}</p>
-        <p>{{ form.es_docente() }} {{ form.es_docente.label }}</p>
+    
+    <h4 class="mt-4">Administrar roles:</h4>
+
+    <h6>Roles actuales:</h6>
+    <ol class="pt-2">
+        {% for r in roles_usuario %}
+        <li>{{ r | capitalize }}</li>
+        {% endfor %}
+    </ol>
+    
+    <div class="form row justify-content-md-center  mb-5">
+        <p class="mr-5">{{ form.agregar_rol.label }}{{ form.agregar_rol }}</p>   
+        <p>{{ form.quitar_rol.label }}{{ form.quitar_rol }}</p>   
     </div>
-    {% endif %}
+    
 
     <p>{{ form.submit() }}</p>
 </form>

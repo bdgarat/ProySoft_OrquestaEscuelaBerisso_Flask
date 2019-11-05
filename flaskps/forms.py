@@ -24,9 +24,7 @@ class SignUpForm(FlaskForm):
     password = PasswordField('Contraseña', validators=[DataRequired()], render_kw={"class": "form-control"})
     first_name = StringField('Nombre', validators=[DataRequired()], render_kw={"class": "form-control"})
     last_name = StringField('Apellido', validators=[DataRequired()], render_kw={"class": "form-control"})
-    es_admin = BooleanField('Administrador', render_kw={"class": "col"})
-    es_preceptor = BooleanField('Preceptor', render_kw={"class": "col"})
-    es_docente = BooleanField('Docente', render_kw={"class": "col"})
+    rol = SelectField('Rol', render_kw={"class": "form-control"})
     submit = SubmitField('Registrar usuario', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
     
 class SignUpEstudianteForm(FlaskForm):
@@ -45,13 +43,12 @@ class SignUpEstudianteForm(FlaskForm):
     submit = SubmitField('Registrar estudiante', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
     
 class EditarForm(FlaskForm):
-    email = EmailField('Email', validators=[DataRequired(), Email("Ingrese un email válido")], render_kw={"class": "form-control"})
-    username = StringField('Nombre de usuario', validators=[DataRequired()], render_kw={"class": "form-control"})
-    first_name = StringField('Nombre', validators=[DataRequired()], render_kw={"class": "form-control"})
-    last_name = StringField('Apellido', validators=[DataRequired()], render_kw={"class": "form-control"})
-    es_admin = BooleanField('Administrador', render_kw={"class": "col"})
-    es_preceptor = BooleanField('Preceptor', render_kw={"class": "col"})
-    es_docente = BooleanField('Docente', render_kw={"class": "col"})
+    email = EmailField('Email', validators=[Email("Ingrese un email válido")], render_kw={"class": "form-control"})
+    username = StringField('Nombre de usuario', render_kw={"class": "form-control"})
+    first_name = StringField('Nombre', render_kw={"class": "form-control"})
+    last_name = StringField('Apellido', render_kw={"class": "form-control"})
+    agregar_rol = SelectField('Agregar rol', render_kw={"class": "form-control"})
+    quitar_rol = SelectField('Quitar rol', render_kw={"class": "form-control"})
     submit = SubmitField('Editar usuario', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
     
 class BusquedaUsuarioForm(FlaskForm):

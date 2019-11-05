@@ -8,7 +8,6 @@ from flaskps.helpers.auth import authenticated
 from flaskps.forms import SignUpForm, SignUpEstudianteForm, BusquedaUsuarioForm, EditarForm
 from flask_paginate import Pagination, get_page_parameter
 
-
 mod = Blueprint('usuario', __name__)
 
 
@@ -98,58 +97,51 @@ def index():
 def registrar():
     
     # Reviso que tenga permiso
-    if not Usuario.tengo_permiso_registrar(session['permisos']):
-        flash('No tiene permiso para registrar usuarios. ')
+    if 'admin' not in session['roles']:
+        flash('No tiene permiso para registrar usuarios.')
         return redirect('/home')  
-    else:     
+       
     
-        form = SignUpForm()
+    Usuario.db = get_db()
+    form = SignUpForm()
+    
+    # Armo la lista de opciones del select
+    roles = [('0', 'Seleccionar rol')]
+    for r in Usuario.all_roles():
+        roles.append( (r['nombre'], r['nombre']) )
+    form.rol.choices = roles
+
+    # para manejar los mensajes flash
+    error=0
+    exito=0
+    
+    if request.method == 'POST':
         
-        # para manejar los mensajes flash
-        error=0
-        exito=0
-        
-        
-        if request.method == 'POST':
+        if form.validate_on_submit():
             
-            if form.validate_on_submit():
-                Usuario.db = get_db()
+            Usuario.db = get_db()
+            
+            if not Usuario.existe(form.username.data):
+                  
+                usuario = Usuario(form.email.data, form.username.data, form.password.data, form.first_name.data, form.last_name.data)
+                Usuario.insert(usuario)
                 
-                if not Usuario.existe(form.username.data):
-                    
-                    usuario = Usuario(form.email.data, form.username.data, form.password.data, form.first_name.data, form.last_name.data)
-                    Usuario.insert(usuario)
-                    
-                    # chequeo qué permisos se le otorgaron al usuario
-                    
-                    if (form.es_admin.data):
-                        usuario.agregar_rol('admin', usuario)
-                        
-                    if (form.es_preceptor.data):
-                        usuario.agregar_rol('preceptor', usuario)
-                        
-                    if (form.es_docente.data):
-                        usuario.agregar_rol('docente', usuario)
-                    
-                    flash("Usuario registrado correctamente.")
-                    exito = 1
-                    
-                else:
-                    flash("Error al registrar: Ya existe ese nombre de usuario.")
-                    error = 1
-                    
-            else: 
-                flash("Debe completar todos los campos y el email ingresado debe ser válido.")
+                # chequeo si se otorgó rol y lo agrego
+                if form.rol.data != '0':
+                    usuario.agregar_rol(form.rol.data, usuario)
+                
+                flash("Usuario registrado correctamente.")
+                exito = 1
+                
+            else:
+                flash("Error al registrar: Ya existe ese nombre de usuario.")
                 error = 1
                 
-                
-        # para mostrar los checkbox según los roles que puedo agregar
-        puedo_docente = Usuario.tengo_permiso( session['permisos'], 'docente_new')
-        puedo_preceptor = Usuario.tengo_permiso(session['permisos'], 'preceptor_new')
-        puedo_admin = Usuario.tengo_permiso(session['permisos'], 'admin_new')
-
-                
-        return render_template("usuarios/registrar.html", form=form, error=error, exito=exito, puedo_admin=puedo_admin, puedo_docente=puedo_docente, puedo_preceptor=puedo_preceptor)
+        else: 
+            flash("Debe completar todos los campos y el email ingresado debe ser válido.")
+            error = 1
+            
+    return render_template("usuarios/registrar.html", form=form, error=error, exito=exito)
 
 
 #  ACTIVAR/DESACTIVAR USUARIO
@@ -192,37 +184,26 @@ def editar(id_usuario):
     exito=0
     Usuario.db = get_db()
     usuario = Usuario.get_user(id_usuario)
-    
+
+
     if request.method == 'POST':
-        
-        if form.validate_on_submit():          
-
-            Usuario.editar(id_usuario, form.email.data,form.username.data, form.first_name.data, form.last_name.data)
-            usuario = Usuario(usuario['email'], usuario['username'], usuario['password'], usuario['first_name'], usuario['last_name'])
-            # chequeo qué permisos se le otorgaron al usuario        
-            if (form.es_admin.data):
-                usuario.agregar_rol('admin', usuario)
-            else:
-                usuario.quitar_rol('admin', usuario)    
             
-            if (form.es_preceptor.data):
-                usuario.agregar_rol('preceptor', usuario)
-            else:
-                usuario.quitar_rol('preceptor', usuario)
+        Usuario.editar(id_usuario, form.email.data,form.username.data, form.first_name.data, form.last_name.data)
+        usuario = Usuario(usuario['email'], usuario['username'], usuario['password'], usuario['first_name'], usuario['last_name'])
+            
+        # chequeo si se otorgó rol y lo agrego
+        if form.agregar_rol.data != '0':
+            usuario.agregar_rol(form.agregar_rol.data, usuario)
 
-            if (form.es_docente.data):
-                usuario.agregar_rol('docente', usuario)
-            else:
-                usuario.quitar_rol('docente', usuario)   
+        # chequeo si se quitó rol y lo quito
+        if form.quitar_rol.data != '0':
+            usuario.quitar_rol(form.quitar_rol.data, usuario)
 
-            # vuelvo a consultar por los valores del usuario
-            usuario = Usuario.get_user(id_usuario)    
-            flash("Usuario editado correctamente.")
-            exito = 1
+        # vuelvo a consultar por los valores del usuario
+        usuario = Usuario.get_user(id_usuario)    
+        flash("Usuario editado correctamente.")
+        exito = 1
                 
-        else: 
-            flash("Debe completar todos los campos.")
-            error = 1
             
     # vuelvo a setear el form con los valores actualizados del usuario
     form.email.data = usuario['email']
@@ -230,66 +211,69 @@ def editar(id_usuario):
     form.first_name.data = usuario['first_name']
     form.last_name.data = usuario['last_name']
    
-    # obtengo roles del usuario y seteo los checkbox
-    tuplas_roles = Usuario.get_roles(usuario['id'])
-    roles = []
-    for t in tuplas_roles:
-        roles.append(t['nombre'])
-    if 'admin' in roles:
-        form.es_admin.data = 1
-    if 'preceptor' in roles:
-        form.es_preceptor.data = 1
-    if 'docente' in roles:
-        form.es_docente.data = 1
+    # obtengo roles del usuario
+    roles_usuario = []
+    for t in Usuario.get_roles(usuario['id']):
+        roles_usuario.append(t['nombre'])
 
+    # Armo la lista de opciones del select para agregar
+    agregar_roles = [('0', 'Seleccionar')]
+    for r in Usuario.all_roles():
+        if r['nombre'] not in roles_usuario:
+            agregar_roles.append( (r['nombre'], r['nombre']) )
 
-    return render_template("usuarios/editar.html", form=form, error=error, exito=exito)
+    # Armo la lista de opciones del select para eliminar
+    quitar_roles = [('0', 'Seleccionar')]
+    for r in Usuario.all_roles():
+        if r['nombre'] in roles_usuario:
+            quitar_roles.append( (r['nombre'], r['nombre']) )
+    
+
+    form.agregar_rol.choices = agregar_roles
+    form.quitar_rol.choices = quitar_roles
+
+    return render_template("usuarios/editar.html", form=form, roles_usuario=roles_usuario, error=error, exito=exito)
 
 
 # ELIMINAR USUARIO
 
-@mod.route("/eliminar/<id_usuario>/<rol>")
-def eliminar(id_usuario, rol):
+@mod.route("/eliminar/<id_usuario>")
+def eliminar(id_usuario):
     
     if int(id_usuario) == session['user']['id']:
         flash('No se puede eliminar a sí mismo!')
-        return redirect('/index/' + rol)
+        return redirect('/index/usuarios')
 
     # Reviso que tenga permiso
-    permiso = rol+'_destroy'
-    if not Usuario.tengo_permiso(session['permisos'], permiso):
-        flash('No tiene permiso para eliminar este tipo de usuario')
-        
-    else:
-        Usuario.db = get_db()
-        ok = Usuario.eliminar(id_usuario)
-        print(ok)
-        flash('El usuario se eliminó con éxito')
+    if 'admin' not in session['roles']:
+        flash('No tiene permiso para eliminar usuarios')
+        return redirect('/index/usuarios')
+   
+    Usuario.db = get_db()
+    Usuario.eliminar(id_usuario)
+    flash('El usuario se eliminó con éxito')
     
-    return redirect('/index/' + rol)
+    return redirect('/index/usuarios')
+
 
 # SHOW USUARIO
-
-@mod.route("/show/<id_usuario>/<rol>")
-def show(id_usuario, rol):
+@mod.route("/show/<id_usuario>")
+def show(id_usuario):
     
     # Reviso que tenga permiso
-    permiso = rol+'_show'
-    if not Usuario.tengo_permiso(session['permisos'], permiso) and int(id_usuario) != session['user']['id']:
-        flash('No tiene permiso para ver el detalle de éste tipo de usuario')
-        return redirect('/index/' + rol)
+    if 'admin' not in session['roles']:
+        flash('No tiene permiso para ver usuarios')
+        return redirect('/index/usuarios')
 
-    else:
-        Usuario.db = get_db()
-        usuario = Usuario.get_user(id_usuario)       
-        
-        # obtengo roles del usuario y seteo los checkbox
-        tuplas_roles = Usuario.get_roles(usuario['id'])
-        roles = []
-        for t in tuplas_roles:
-            roles.append(t['nombre'])
+    Usuario.db = get_db()
+    usuario = Usuario.get_user(id_usuario)       
+    
+    # obtengo roles del usuario
+    roles = []
+    for t in Usuario.get_roles(usuario['id']):
+        roles.append(t['nombre'])
 
-        return render_template("usuarios/show.html", usuario=usuario, roles=roles)
+    return render_template("usuarios/show.html", usuario=usuario, roles=roles)
 
 
 # ------------------------------------------------
