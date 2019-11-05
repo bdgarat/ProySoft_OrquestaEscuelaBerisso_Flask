@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 04-11-2019 a las 00:56:06
+-- Tiempo de generación: 05-11-2019 a las 19:07:31
 -- Versión del servidor: 10.4.6-MariaDB
 -- Versión de PHP: 7.3.9
 
@@ -141,8 +141,15 @@ CREATE TABLE `docente` (
   `tipo_doc_id` int(11) NOT NULL,
   `numero` int(11) NOT NULL,
   `tel` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `borrado_logico` tinyint(4) NOT NULL
+  `borrado_logico` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `docente`
+--
+
+INSERT INTO `docente` (`id`, `apellido`, `nombre`, `fecha_nac`, `localidad_id`, `domicilio`, `genero_id`, `tipo_doc_id`, `numero`, `tel`, `borrado_logico`) VALUES
+(1, 'Onofri', 'Melisa', '2019-11-07', 1, '1', 1, 1, 1, '1', 0);
 
 -- --------------------------------------------------------
 
@@ -654,7 +661,7 @@ CREATE TABLE `usuario` (
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `activo` tinyint(1) NOT NULL DEFAULT 0,
+  `activo` tinyint(1) NOT NULL DEFAULT 1,
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `first_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -668,8 +675,8 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`id`, `email`, `username`, `password`, `activo`, `updated_at`, `created_at`, `first_name`, `last_name`, `borrado_logico`) VALUES
 (1, 'admin@test.com', 'admin_principal', '123456', 1, '2019-10-23 20:40:44', '2019-10-23 20:40:44', 'Admin', 'Admin', 0),
-(7, 'test6@test.com', 'test6', '123456', 1, '2019-10-23 20:52:01', '2019-10-23 20:52:01', 'Preceptor1', 'Preceptor1', 0),
-(8, 'test7@test.com', 'test7', '123456', 1, '2019-10-23 20:52:13', '2019-10-23 20:52:13', 'Preceptor2', 'Preceptor2', 0),
+(7, 'test6@test.com', 'test6', '123456', 1, '2019-11-05 14:54:27', '2019-10-23 20:52:01', 'Preceptor1', 'Preceptor1', 0),
+(8, 'test7@test.com', 'test7', '123456', 1, '2019-11-05 14:58:16', '2019-10-23 20:52:13', 'Preceptor2', 'Preceptor2', 0),
 (9, 'test8@test.com', 'test8', '123456', 1, '2019-10-23 20:54:18', '2019-10-23 20:54:18', 'Preceptor3', 'Preceptor3', 0),
 (10, 'test9@test.com', 'test9', '123456', 1, '2019-10-23 20:54:56', '2019-10-23 20:54:56', 'Docente1', 'Docente1', 0),
 (11, 'test10@test.com', 'test10', '123456', 1, '2019-10-23 20:55:08', '2019-10-23 20:55:08', 'Docente2', 'Docente2', 0),
@@ -677,7 +684,7 @@ INSERT INTO `usuario` (`id`, `email`, `username`, `password`, `activo`, `updated
 (13, 'test12@test.com', 'test12', '123456', 1, '2019-10-23 20:55:34', '2019-10-23 20:55:34', 'Docente4', 'Docente4', 0),
 (14, 'test13@test.com', 'test13', '123456', 1, '2019-10-23 20:56:26', '2019-10-23 20:56:26', 'Preceptor y Docente 1', 'Preceptor y Docente 1', 0),
 (15, 'test14@test.com', 'test14', '123456', 1, '2019-10-23 20:56:45', '2019-10-23 20:56:45', 'Preceptor y Docente 2', 'Preceptor y Docente 2', 0),
-(18, 'test17@test.com', 'test17', '123456', 1, '2019-10-23 20:58:07', '2019-10-23 20:58:07', 'Admin y Preceptor 1', 'Admin y Preceptor 1', 0),
+(18, 'test17@test.com', 'test17', '123456', 1, '2019-11-05 14:55:31', '2019-10-23 20:58:07', 'Admin y Preceptor 1', 'Admin y Preceptor 1', 0),
 (19, 'test19@test.com', 'test19', '123456', 1, '2019-10-30 16:17:54', '2019-10-30 15:55:23', 'PreceptorPrueba', 'PreceptorPrueba', 0);
 
 -- --------------------------------------------------------
@@ -919,7 +926,7 @@ ALTER TABLE `config`
 -- AUTO_INCREMENT de la tabla `docente`
 --
 ALTER TABLE `docente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `escuela`
@@ -931,7 +938,7 @@ ALTER TABLE `escuela`
 -- AUTO_INCREMENT de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `genero`
@@ -986,6 +993,12 @@ ALTER TABLE `taller`
 --
 ALTER TABLE `tipo_instrumento`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Restricciones para tablas volcadas
@@ -1069,13 +1082,6 @@ ALTER TABLE `responsable_estudiante`
 ALTER TABLE `rol_tiene_permiso`
   ADD CONSTRAINT `FK_permiso_id` FOREIGN KEY (`permiso_id`) REFERENCES `permiso` (`id`),
   ADD CONSTRAINT `FK_rol_id` FOREIGN KEY (`rol_id`) REFERENCES `rol` (`id`);
-
---
--- Filtros para la tabla `usuario_tiene_rol`
---
-ALTER TABLE `usuario_tiene_rol`
-  ADD CONSTRAINT `FK_rol_utp_id` FOREIGN KEY (`rol_id`) REFERENCES `rol` (`id`),
-  ADD CONSTRAINT `FK_usuario_utp_id` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

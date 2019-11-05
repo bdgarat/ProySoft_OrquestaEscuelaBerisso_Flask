@@ -113,3 +113,20 @@ def registrar_estudiante():
 
                 
         return render_template("estudiantes/registrar.html", form=form, error=error, exito=exito)
+    
+    
+# ELIMINAR ESTUDIANTE
+
+@mod.route("/estudiante/eliminar/<id_estudiante>")
+def eliminar(id_estudiante):
+
+    # Reviso que tenga permiso
+    if 'admin' not in session['roles']:
+        flash('No tiene permiso para eliminar estudiantes')
+        return redirect('/index/estudiante')
+   
+    Estudiante.db = get_db()
+    Estudiante.eliminar(id_estudiante)
+    flash('El estudiante se eliminó con éxito')
+    
+    return redirect('/index/estudiante')

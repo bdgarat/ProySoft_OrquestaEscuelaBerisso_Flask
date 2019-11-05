@@ -237,7 +237,7 @@ def editar(id_usuario):
 
 # ELIMINAR USUARIO
 
-@mod.route("/eliminar/<id_usuario>")
+@mod.route("/usuario/eliminar/<id_usuario>")
 def eliminar(id_usuario):
     
     if int(id_usuario) == session['user']['id']:

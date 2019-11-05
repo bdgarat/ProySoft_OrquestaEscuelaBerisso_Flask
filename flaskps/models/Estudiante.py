@@ -110,3 +110,20 @@ class Estudiante(object):
         cursor.execute(sql, params)
 
         return cursor.fetchall()
+    
+    
+    # ELIMINAR UN ESTUDIANTE
+    @classmethod
+    def eliminar(self, id_estudiante):
+        cursor = self.db.cursor()
+        
+        sql = """
+            UPDATE estudiante 
+            SET borrado_logico = 1
+            WHERE id = %s
+        """
+
+        o = cursor.execute(sql, (id_estudiante))
+        self.db.commit()
+
+        return o
