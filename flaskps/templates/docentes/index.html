@@ -1,6 +1,6 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 <div class="jumbotron">
-    <h2 class="display-4 animated fadeIn">Listado de estudiantes</h2>
+    <h2 class="display-4 animated fadeIn">Listado de docentes</h2>
 
     <hr class="my-4"> {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error_busqueda != 1%}
 
@@ -23,9 +23,9 @@
     </form>
     <br>
 
-    <p>Total de estudiantes: <strong>{{ pagination.total }}</strong></p>
+    <p>Total de docentes: <strong>{{ pagination.total }}</strong></p>
     <table class="table text-center">
-        <caption>Tabla con los estudiantes registrados</caption>
+        <caption>Tabla con los docentes registrados</caption>
 
         <thead class="thead-dark">
             <tr>
@@ -35,10 +35,10 @@
             </tr>
         </thead>
         <tbody>
-            {% for e in estudiantes %}
+            {% for d in docentes %}
             <tr>
-                <th scope="row" id="tupla{{ loop.index }}">{{ e.id }}</th>
-                <td headers="nombre y apellido">{{ e.apellido }},{{ e.nombre }}</td>
+                <th scope="row" id="tupla{{ loop.index }}">{{ d.id }}</th>
+                <td headers="nombre y apellido">{{ d.apellido }},{{ d.nombre }}</td>
                 <td headers="operaciones">
 
                     bu

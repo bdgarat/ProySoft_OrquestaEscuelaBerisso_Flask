@@ -3,7 +3,7 @@
 
     <div class="text-center">
         <img class="mb-4 img_form rounded-lg" src="static/images/OEBerisso_logo.png" alt="Logo de la Orquesta Escuela de Berisso">
-        <h1 class="h3 mb-3 font-weight-normal">Registrar estudiante</h1>
+        <h1 class="h3 mb-3 font-weight-normal">Registrar docente</h1>
 
     </div>
 
@@ -40,6 +40,10 @@
         </div>
 
     </div>
+    <p>
+        {{ form.fecha_nac.label }}:<br> {{ form.fecha_nac() }}
+    </p>
+
     <div class="row">
         <div class="col">
             <p>
@@ -48,37 +52,28 @@
         </div>
         <div class="col">
             <p>
-                {{ form.barrio.label }}:<br> {{ form.barrio() }}
+                {{ form.domicilio.label }}:<br> {{ form.domicilio() }}
             </p>
         </div>
 
     </div>
-    <div class="row">
-        <div class="col">
-            <p>
-                {{ form.domicilio.label }}:<br> {{ form.domicilio() }}
-            </p>
-        </div>
-        <div class="col">
-            <p>
-                {{ form.escuela.label }}:<br> {{ form.escuela() }}
-            </p>
-        </div>
 
-    </div>
     <div class="row">
-        <div class="col">
-            <p>
-                {{ form.domicilio.label }}:<br> {{ form.domicilio() }}
-            </p>
-        </div>
         <div class="col">
             <p>
                 {{ form.genero.label }}:<br> {{ form.genero() }}
             </p>
         </div>
+        <div class="col">
+            <p>
+                {{ form.tel.label }}:<br> {{ form.tel() }}
+            </p>
+        </div>
 
     </div>
+
+
+
     <div class="row">
         <div class="col">
             <p>
@@ -93,13 +88,7 @@
 
     </div>
 
-    <p>
-        {{ form.fecha_nac.label }}:<br> {{ form.fecha_nac() }}
-    </p>
 
-    <p>
-        {{ form.nivel.label }}:<br> {{ form.nivel() }}
-    </p>
 
 
     <div class="row">
