@@ -5,6 +5,7 @@ from flaskps.models.Usuario import Usuario
 from flaskps.models.Estudiante import Estudiante
 from flaskps.models.Configuracion import Configuracion
 from flaskps.helpers.auth import authenticated
+from flaskps.helpers.mantenimiento import sitio_disponible
 from flaskps.forms import SignUpForm, SignUpEstudianteForm, BusquedaUsuarioForm, EditarForm
 from flask_paginate import Pagination, get_page_parameter
 
@@ -15,6 +16,9 @@ mod = Blueprint('usuario', __name__)
 def before_request():
     if not authenticated(session):
         return redirect("/home")
+    # Reviso el estado del sitio
+    if not sitio_disponible():
+        return redirect("/logout")
 
 # LISTADOS
 @mod.route("/index/usuarios")

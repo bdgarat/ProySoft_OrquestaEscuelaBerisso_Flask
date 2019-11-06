@@ -1,5 +1,7 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, session
 from flaskps.db import get_db
+from flaskps.helpers.auth import authenticated
+from flaskps.helpers.mantenimiento import sitio_disponible
 from flaskps.config import Config
 from flask_session import Session
 from flaskps.models.Usuario import Usuario
@@ -21,19 +23,23 @@ Session(app)
 #     Configuracion.db = get_db()
 #     habilitado = Configuracion.get_sitio_habilitado()['sitio_habilitado']
 
-habilitado = None
-@app.before_request
-def before_request():
-    Configuracion.db = get_db()
-    habilitado = Configuracion.get_sitio_habilitado()['sitio_habilitado']
-    if habilitado == 0:
-        return render_template('mantenimiento.html')
+# habilitado = None
+# @app.before_request
+# def before_request():
+#     Configuracion.db = get_db()
+#     habilitado = Configuracion.get_sitio_habilitado()['sitio_habilitado']
+#     if habilitado == 0:
+#         if authenticated(session) and 'admin' not in session['roles']:
+#             return render_template('mantenimiento.html')
 
 @app.route("/")
 @app.route("/home")
 def home():
     Configuracion.db = get_db()
     config = Configuracion.get_config()
+    # Reviso el estado del sitio
+    if not sitio_disponible():
+        return redirect("/logout")
     return render_template('home.html', config=config)
 
 

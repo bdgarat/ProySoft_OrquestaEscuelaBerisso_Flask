@@ -5,6 +5,7 @@ from flaskps.models.Usuario import Usuario
 from flaskps.models.Configuracion import Configuracion
 from flaskps.forms import LoginForm
 from flaskps.helpers.auth import authenticated
+from flaskps.helpers.mantenimiento import sitio_disponible 
 
 
 mod = Blueprint('auth', __name__)
@@ -35,9 +36,7 @@ def login():
             # cargar lista de permisos del usuario
             session['permisos'] = get_permisos(user)
 
-            Configuracion.db = get_db()
-            config = Configuracion.get_config()
-            return render_template("home.html", config=config)
+            return redirect("/home")
         else:
             flash("Debe completar todos los campos")
             error=1
@@ -48,17 +47,18 @@ def login():
 def logout():
     if not authenticated(session):
         return redirect("/login")
-    
-    # eliminar sesion
-    del session['user']
-    del session['roles']
-    del session['permisos']
-    session.clear()
-    flash("La sesión se cerró correctamente.")
+    else:
+        # eliminar sesion
+        del session['user']
+        del session['roles']
+        del session['permisos']
+        session.clear()
+        
 
-    Configuracion.db = get_db()
-    config = Configuracion.get_config()
-    return render_template("home.html", config=config)
+    if not sitio_disponible():
+        return render_template("mantenimiento.html")
+    flash("La sesión se cerró correctamente.")
+    return redirect("/home")
 
 
 
