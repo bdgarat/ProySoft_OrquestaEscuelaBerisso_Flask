@@ -181,3 +181,29 @@ div.list-group {
 li.list-group-item {
     background-color: #e9ecef !important;
 }
+
+
+@media only screen and (max-width: 770px) {
+    
+    table{
+        overflow: auto;
+        display: inherit;
+    }
+
+    /* /* section{
+        width: 80%;
+        /* margin: fixed;
+    } 
+    */
+    div{
+        text-align: unset;   
+    }
+
+    .row {
+        display: block !important;
+    }
+    /* form{
+        text-align: unset;
+    } */
+
+}
