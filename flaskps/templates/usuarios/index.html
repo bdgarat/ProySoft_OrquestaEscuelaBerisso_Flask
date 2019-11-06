@@ -1,9 +1,16 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 <div class="jumbotron">
     <h2 class="display-4 animated fadeIn">Administración de usuarios</h2>
-
+    
     <hr class="my-4">
-
+    <div class="text-right">
+        <button class="btn btn-primary"
+                onclick="location.href='/registrar'">
+            <i class="fa fa-plus"></i>
+            Agregar usuario
+        </button>
+    </div>
+    
     <form class="form-inline my-2 my-lg-0" method="get">
         <div class="row mb-4">
             {{ form.termino.label }}:
