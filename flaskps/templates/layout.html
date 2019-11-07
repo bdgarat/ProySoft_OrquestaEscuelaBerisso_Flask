@@ -76,8 +76,8 @@
 
         <!-- CARRUSEL -->
         {% block carrusel %}
-        <div id="carrusel" class="carru animated fadeIn">
-            <div id="demo" class="carru carousel slide" data-ride="carousel">
+        <div id="carrusel" class="animated fadeIn">
+            <div id="demo" class="carousel slide" data-ride="carousel">
 
                 <ol class="carousel-indicators">
                     <li data-target="#demo" data-slide-to="0" class="active"></li>
@@ -86,23 +86,26 @@
                 </ol>
 
 
-                <div class="carru carousel-inner">
-                    <div class="carru carousel-item active">
-                        <img src="/static/images/escuela3.jpg" style="width: 100%; height: 100%;" alt="Los Angeles">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="/static/images/escuela3.jpg" alt="Los Angeles" width="1100" height="500" style="width: 100%;
+                        height: 100%;">
                         <div class="carousel-caption">
                             <h2>{{ config.titulo }}</h2>
                             <p>¡Bienvenidos!</p>
                         </div>
                     </div>
-                    <div class="carru carousel-item">
-                        <img src="/static/images/escuela.jpg" style="width: 100%; height: 100%;" alt="Chicago">
+                    <div class="carousel-item">
+                        <img src="/static/images/escuela.jpg" alt="Chicago" width="1100" height="500" style="width: 100%;
+                        height: 100%;">
                         <div class="carousel-caption">
                             <h2>{{ config.titulo }}</h2>
                             <p>¡Bienvenidos!</p>
                         </div>
                     </div>
-                    <div class="carru carousel-item">
-                        <img src="/static/images/escuela2.jpg" style="width: 100%; height: 100%;" alt="New York">
+                    <div class="carousel-item">
+                        <img src="/static/images/escuela2.jpg" alt="New York" width="1100" height="500" style="width: 100%;
+                        height: 100%;">
                         <div class="carousel-caption">
                             <h2>{{ config.titulo }}</h2>
                             <p>¡Bienvenidos!</p>
@@ -116,8 +119,8 @@
                     <span class="carousel-control-next-icon"></span>
                 </a>
             </div>
+            {% endblock %}
         </div>
-        {% endblock %}
         <!-- END CARRUSEL -->
         <main class="container">
             <section class="main">{% block content %}{% endblock %}

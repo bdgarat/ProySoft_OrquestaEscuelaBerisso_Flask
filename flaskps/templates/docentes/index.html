@@ -30,31 +30,33 @@
     <br>
 
     <p>Total de docentes: <strong>{{ pagination.total }}</strong></p>
-    <table class="table text-center">
-        <caption>Tabla con los docentes registrados</caption>
+    <div class="table-responsive">
+        <table class="table text-center">
+            <caption>Tabla con los docentes registrados</caption>
 
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col" id="id" aria-label="id">ID</th>
-                <th scope="col" id="nombre" aria-label="nombre y apellido">Nombre y apellido</th>
-                <th scope="col" id="operaciones" aria-label="operaciones">Operaciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for d in docentes %}
-            <tr>
-                <th scope="row" id="tupla{{ loop.index }}">{{ d.id }}</th>
-                <td headers="nombre y apellido">{{ d.apellido }},{{ d.nombre }}</td>
-                <td headers="operaciones">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col" id="id" aria-label="id">ID</th>
+                    <th scope="col" id="nombre" aria-label="nombre y apellido">Nombre y apellido</th>
+                    <th scope="col" id="operaciones" aria-label="operaciones">Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in docentes %}
+                <tr>
+                    <th scope="row" id="tupla{{ loop.index }}">{{ d.id }}</th>
+                    <td headers="nombre y apellido">{{ d.apellido }},{{ d.nombre }}</td>
+                    <td headers="operaciones">
 
-                    bu
+                        bu
 
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
 
-    </table>
+        </table>
+    </div>
     <div class="text-center animated fadeIn" aria-label="Páginas de la tabla">
         {{ pagination.links }}
     </div>

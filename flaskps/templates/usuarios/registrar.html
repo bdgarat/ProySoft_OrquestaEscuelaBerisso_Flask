@@ -43,12 +43,12 @@
         {{ form.last_name.label }}:<br> {{ form.last_name() }}
     </p>
     <h4 class="mt-4">Agregar rol:</h4>
-    <div class="form row justify-content-md-center  mb-4">
-        <p>{{ form.rol }}</p>
-    </div>
+    <p>
+        {{ form.rol }}
+    </p>
     <div class="row">
         <p class="col">{{ form.submit() }}</p>
-        <a href="/home" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a>
+        <p class="col"><a href="/home" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
     </div>
 </form>
 

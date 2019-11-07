@@ -31,7 +31,7 @@ $ deactivate
 # Para crear el entorno virtual
 $ python3 -m venv venv
 # Para iniciar el entorno virtual
-$ venv\Scripts\activate.bat
+$ venv\\Scripts\\activate.bat
 # Instalar las dependencias dentro del entorno virtual
 $ pip3 install -r requirements.txt
 # En el directorio raiz

@@ -113,14 +113,17 @@ ul {
     border-color: #db1f38 !important;
 }
 
-
-/* CARRUSEL */
-
-.carru {
-    height: 700px;
+.form-signin {
+    width: 100%;
 }
 
+.form-horizontal {
+    width: 100%;
+}
 
+button {
+    margin: 5px;
+}
 /* =======================================================================
 
                         MANTENIMIENTO DEL SITIO

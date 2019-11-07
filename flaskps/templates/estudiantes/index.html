@@ -30,55 +30,57 @@
     <br>
 
     <p>Total de estudiantes: <strong>{{ pagination.total }}</strong></p>
-    <table class="table text-center">
-        <caption>Tabla con los estudiantes registrados</caption>
+    <div class="table-responsive">
+        <table class="table text-center">
+            <caption>Tabla con los estudiantes registrados</caption>
 
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col" id="id" aria-label="id">ID</th>
-                <th scope="col" id="nombre" aria-label="nombre y apellido">Nombre y apellido</th>
-                <th scope="col" id="operaciones" aria-label="operaciones">Operaciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for e in estudiantes %}
-            <tr>
-                <th scope="row" id="tupla{{ loop.index }}">{{ e.id }}</th>
-                <td headers="nombre y apellido">{{ e.apellido }},{{ e.nombre }}</td>
-                <td headers="operaciones">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col" id="id" aria-label="id">ID</th>
+                    <th scope="col" id="nombre" aria-label="nombre y apellido">Nombre y apellido</th>
+                    <th scope="col" id="operaciones" aria-label="operaciones">Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in estudiantes %}
+                <tr>
+                    <th scope="row" id="tupla{{ loop.index }}">{{ e.id }}</th>
+                    <td headers="nombre y apellido">{{ e.apellido }},{{ e.nombre }}</td>
+                    <td headers="operaciones">
 
-                    {% if 'estudiante_destroy' in session['permisos'] %}
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary eliminar" title="Eliminar estudiante" role="button" data-toggle="modal" data-target="#exampleModal{{ e.id }}"><i class="fa fa-trash"></i>
-                    </button> {% endif %}
+                        {% if 'estudiante_destroy' in session['permisos'] %}
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary eliminar" title="Eliminar estudiante" role="button" data-toggle="modal" data-target="#exampleModal{{ e.id }}"><i class="fa fa-trash"></i>
+                        </button> {% endif %}
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal{{ e.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro que querés eliminar al estudiante {{ e.apellido }} {{ e.nombre }}?</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                                </div>
-                                <div class="modal-body">
-                                    No se podrá revertir el cambio.
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                                    <button onclick="location.href='/estudiante/eliminar/{{ e.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal{{ e.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro que querés eliminar al estudiante {{ e.apellido }} {{ e.nombre }}?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        No se podrá revertir el cambio.
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                        <button onclick="location.href='/estudiante/eliminar/{{ e.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
 
-    </table>
+        </table>
+    </div>
     <div class="text-center animated fadeIn" aria-label="Páginas de la tabla">
         {{ pagination.links }}
     </div>

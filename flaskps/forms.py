@@ -15,7 +15,7 @@ class ConfigForm(FlaskForm):
     descripcion = TextAreaField('Descripcion', render_kw={"class": "form-control"})   
     contacto = StringField('Información de contacto', render_kw={"class": "form-control"})   
     paginacion = IntegerField('Cantidad de elementos por página', render_kw={"class": "form-control"})
-    sitio_habilitado = BooleanField('Habilitar sitio')   
+    sitio_habilitado = BooleanField('Habilitar sitio')
     submit = SubmitField('Guardar cambios', render_kw={"class": "btn btn-lg btn-primary btn-block"})
     
 class SignUpForm(FlaskForm):
@@ -68,12 +68,12 @@ class BusquedaUsuarioForm(FlaskForm):
     termino = StringField('Buscar por nombre de usuario', render_kw={"class": "form-control"})
     activos = BooleanField('Usuarios activos')
     inactivos = BooleanField('Usuarios inactivos')
-    submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary pb-20"})
+    submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary pb-20", "style": "margin: 20px"})
     
 class BusquedaEstudianteForm(FlaskForm):
     termino = StringField('Buscar por nombre o apellido', render_kw={"class": "form-control"})
-    submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary"})
+    submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})
     
 class BusquedaDocenteForm(FlaskForm):
     termino = StringField('Buscar por nombre o apellido', render_kw={"class": "form-control"})
-    submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary"})
+    submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})

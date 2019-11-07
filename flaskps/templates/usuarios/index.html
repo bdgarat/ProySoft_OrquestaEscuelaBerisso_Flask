@@ -44,97 +44,98 @@
     {% endif %}{% endfor %} {% endif %} {% endwith %}
 
     <p>Total de usuarios: <strong>{{ pagination.total }}</strong></p>
+    <div class="table-responsive">
+        <table class="table text-center">
+            <caption>Tabla con los usuarios registrados</caption>
 
-    <table class="table text-center">
-        <caption>Tabla con los usuarios registrados</caption>
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col" id="email" aria-label="email">Email</th>
+                    <th scope="col" id="username" aria-label="username">Username</th>
+                    <th scope="col" id="nombre" aria-label="nombre">Nombre y apellido</th>
+                    <th scope="col" id="operaciones" aria-label="operaciones">Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in usuarios %}
+                <tr>
+                    <th scope="row" id="tupla{{ loop.index }}">{{ u.email }}</th>
+                    <td headers="username">{{ u.username }}</td>
+                    <td headers="nombre y apellido">{{ u.last_name }},{{ u.first_name }}</td>
+                    <td headers="operaciones">
 
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col" id="email" aria-label="email">Email</th>
-                <th scope="col" id="username" aria-label="username">Username</th>
-                <th scope="col" id="nombre" aria-label="nombre">Nombre y apellido</th>
-                <th scope="col" id="operaciones" aria-label="operaciones">Operaciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for u in usuarios %}
-            <tr>
-                <th scope="row" id="tupla{{ loop.index }}">{{ u.email }}</th>
-                <td headers="username">{{ u.username }}</td>
-                <td headers="nombre y apellido">{{ u.last_name }},{{ u.first_name }}</td>
-                <td headers="operaciones">
+                        <button type="button" onclick="location.href='/show/{{ u.id }}'" class="btn btn-primary" title="Ver perfil del usuario" style="margin: 5px" role="button"><i class="fa fa-user-circle"></i></button> {% if u.id != session['user']['id'] %}{% if u.activo %}
+                        <button type="button" class="btn btn-primary" title="Desactivar usuario" style="margin: 5px" role="button" data-toggle="modal" data-target="#desactivarModal{{ u.id }}">Desactivar</button> {% else %}
+                        <button type="button" class="btn btn-primary" title="Activar usuario" style="margin: 5px" role="button" data-toggle="modal" data-target="#activarModal{{ u.id }}">Activar</button> {% endif %}
 
-                    <button type="button" onclick="location.href='/show/{{ u.id }}'" class="btn btn-primary" title="Ver perfil del usuario" role="button"><i class="fa fa-user-circle"></i></button> {% if u.id != session['user']['id'] %}{% if u.activo %}
-                    <button type="button" class="btn btn-primary" title="Desactivar usuario" role="button" data-toggle="modal" data-target="#desactivarModal{{ u.id }}">Desactivar</button> {% else %}
-                    <button type="button" class="btn btn-primary" title="Activar usuario" role="button" data-toggle="modal" data-target="#activarModal{{ u.id }}">Activar</button> {% endif %}
+                        <button type="button" onclick="location.href='/editar/{{ u.id }}'" class="btn btn-primary" title="Editar usuario" style="margin: 5px" role="button"><i class="fa fa-edit"></i></button>
 
-                    <button type="button" onclick="location.href='/editar/{{ u.id }}'" class="btn btn-primary" title="Editar usuario" role="button"><i class="fa fa-edit"></i></button>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary eliminar" title="Eliminar usuario" style="margin: 5px" role="button" data-toggle="modal" data-target="#eliminarModal{{ u.id }}"><i class="fa fa-trash"></i>
+                        </button>{% endif %}
 
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary eliminar" title="Eliminar usuario" role="button" data-toggle="modal" data-target="#eliminarModal{{ u.id }}"><i class="fa fa-trash"></i>
-                    </button>{% endif %}
-
-                    <!-- Modal eliminar-->
-                    <div class="modal fade" id="eliminarModal{{ u.id }}" tabindex="-1" role="dialog" aria-labelledby="eliminarModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="eliminarModalLabel">¿Estás seguro que querés eliminar al usuario {{ u.username }}?</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                                </div>
-                                <div class="modal-body">
-                                    No se podrá revertir el cambio.
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                                    <button onclick="location.href='/usuario/eliminar/{{ u.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Modal activar-->
-                    <div class="modal fade" id="activarModal{{ u.id }}" tabindex="-1" role="dialog" aria-labelledby="activarModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="activarModalLabel">¿Estás seguro que querés activar al usuario {{ u.username }}?</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                                    <button onclick="location.href='/activar/{{ u.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                        <!-- Modal eliminar-->
+                        <div class="modal fade" id="eliminarModal{{ u.id }}" tabindex="-1" role="dialog" aria-labelledby="eliminarModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="eliminarModalLabel">¿Estás seguro que querés eliminar al usuario {{ u.username }}?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        No se podrá revertir el cambio.
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                        <button onclick="location.href='/usuario/eliminar/{{ u.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Modal desactivar-->
-                    <div class="modal fade" id="desactivarModal{{ u.id }}" tabindex="-1" role="dialog" aria-labelledby="desactivarModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="desactivarModalLabel">¿Estás seguro que querés desactivar al usuario {{ u.username }}?</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                                    <button onclick="location.href='/activar/{{ u.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                        <!-- Modal activar-->
+                        <div class="modal fade" id="activarModal{{ u.id }}" tabindex="-1" role="dialog" aria-labelledby="activarModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="activarModalLabel">¿Estás seguro que querés activar al usuario {{ u.username }}?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                        <button onclick="location.href='/activar/{{ u.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <!-- Modal desactivar-->
+                        <div class="modal fade" id="desactivarModal{{ u.id }}" tabindex="-1" role="dialog" aria-labelledby="desactivarModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="desactivarModalLabel">¿Estás seguro que querés desactivar al usuario {{ u.username }}?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                        <button onclick="location.href='/activar/{{ u.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
 
-    </table>
+        </table>
+    </div>
     <div class="text-center animated fadeIn" aria-label="Páginas de la tabla">
         {{ pagination.links }}
     </div>
