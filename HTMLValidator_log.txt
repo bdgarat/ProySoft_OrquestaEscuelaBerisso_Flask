@@ -1,11 +1,29 @@
 Estado Validador HTML(4/11/19):
 
-"Home" estado=Listo;
-"Configuracion del sistema" estado=Listo;
-"Registro de usuario" estado=Listo;
-"Registro de estudiante" estado=ListoConWarnings(type "date" not supported in all browsers);
-"Index Usuarios" estado=ListoConWarnings?(Mismas correcciones que en "Index Estudiantes");
-"Index Estudiantes" estado=ListoConWarnings(Possible misuse of aria-label);
-"Mostrar usuario" estado=Listo;
-"Editar Usuario" estado=Listo?(Corregido segun rama master);
-"Mantenimiento" estado=Listo;
+☻ "Home" estado=Listo;
+☻ "Configuracion del sistema" estado=Listo;
+☻ "Registro de usuario" estado=Listo;
+☻ "Registro de estudiante" estado=ListoConWarnings(type "date" not supported in all browsers);
+☻ "Index Usuarios" estado=ListoConWarnings?(Mismas correcciones que en "Index Estudiantes");
+☻ "Index Estudiantes" estado=ListoConWarnings(Possible misuse of aria-label);
+☻ "Mostrar usuario" estado=Listo;
+☻ "Editar Usuario" estado=Listo?(Corregido segun rama master);
+☻ "Mantenimiento" estado=Listo;
+
+---------------------------------------------------------
+
+Estado Validador HTML(8/11/19):
+
+☻ "Login" estado=***ERROR: BUG***(Doble csrf_token, no funca web-responsiveness);
+☻ "Home" estado=Listo;
+☻ "Configuracion del sistema" estado=Listo;
+☻ "Registro de usuario" estado=Listo;
+☻ "Edicion de usuario" estado=Listo;
+☻ "Registro de estudiante" estado=ListoConWarnings(type "date" not supported in all browsers);
+☻ "Registro de docente" estado=ListoConWarnings(type "date" not supported in all browsers);
+☻ "Index Usuarios" estado=ListoConWarnings?(Mismas correcciones que en "Index Estudiantes");
+☻ "Index Estudiantes" estado=ListoConWarnings(Possible misuse of aria-label);
+☻ "Index Docentes" estado=ListoConWarnings(Possible misuse of aria-label);
+☻ "Mostrar usuario" estado=Listo;
+☻ "Editar Usuario" estado=Listo?(Corregido segun rama master);
+☻ "Mantenimiento" estado=???(Tira el login directamente);
