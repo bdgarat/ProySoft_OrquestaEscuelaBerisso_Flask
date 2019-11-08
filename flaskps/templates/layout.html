@@ -55,19 +55,20 @@
                     </div>
                     <!-- {% endif %} -->
                 </div>
-            </div>
-            <div class="navbar-nav">
-                <a class="nav-item nav-link" href="/show/{{ session['user']['id']}}">
-                    <i class="fa fa-user" aria-hidden="true"></i> {{ session['user']['last_name'] }}, {{ session['user']['first_name'] }}</a>
-                <a class="nav-item nav-link" href="/logout">
-                    <i class="fa fa-sign-out" aria-hidden="true"></i> Cerrar sesión
-                </a>
-            </div>
-                {% else %}
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link" href="/login">
-                        <i class="fa fa-sign-in" aria-hidden="true"></i> Iniciar Sesión
+            
+                <div class="navbar-nav ml-auto">
+                    <a class="nav-item nav-link" href="/show/{{ session['user']['id']}}">
+                        <i class="fa fa-user" aria-hidden="true"></i> {{ session['user']['last_name'] }}, {{ session['user']['first_name'] }}</a>
+                    <a class="nav-item nav-link" href="/logout">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i> Cerrar sesión
                     </a>
+                </div>
+                    {% else %}
+                    <div class="navbar-nav ml-auto">
+                        <a class="nav-item nav-link" href="/login">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i> Iniciar Sesión
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
