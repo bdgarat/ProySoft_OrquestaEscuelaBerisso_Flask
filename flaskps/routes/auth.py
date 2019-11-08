@@ -28,7 +28,7 @@ def login():
                 flash("Usuario o clave incorrecto.")
                 error=1
                 return render_template("login.html", title='Iniciar Sesión', form=form, error=error)
-
+            
             # crear la sesion, datos del usuario
             session['user'] = user[0]
             # cargar los roles del usuario

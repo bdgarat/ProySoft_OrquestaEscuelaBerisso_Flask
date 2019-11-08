@@ -140,7 +140,7 @@ class Usuario(object):
             FROM usuario u
             INNER JOIN usuario_tiene_rol ur ON (u.id = ur.usuario_id)
             INNER JOIN rol r ON (ur.rol_id = r.id)
-            WHERE u.email = %s AND u.password = %s
+            WHERE u.email = %s AND u.password = %s AND u.activo = 1 AND u.borrado_logico = 0
         """
 
         cursor = self.db.cursor()

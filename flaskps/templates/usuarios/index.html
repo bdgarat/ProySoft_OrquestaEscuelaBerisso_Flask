@@ -1,16 +1,15 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 <div class="jumbotron">
     <h2 class="display-4 animated fadeIn">Administración de usuarios</h2>
-    
+
     <hr class="my-4">
     <div class="text-right">
-        <button class="btn btn-primary"
-                onclick="location.href='/registrar'">
+        <button class="btn btn-primary" onclick="location.href='/registrar'">
             <i class="fa fa-plus"></i>
             Agregar usuario
         </button>
     </div>
-    
+
     <form class="form-inline my-2 my-lg-0" method="get">
         <div class="row mb-4">
             {{ form.termino.label }}:
@@ -64,7 +63,8 @@
                     <td headers="nombre_y_apellido">{{ u.last_name }},{{ u.first_name }}</td>
                     <td headers="operaciones">
 
-                        <button type="button" onclick="location.href='/show/{{ u.id }}'" class="btn btn-primary" title="Ver perfil del usuario" style="margin: 5px"><i class="fa fa-user-circle"></i></button> {% if u.id != session['user']['id'] %}{% if u.activo %}
+                        <button type="button" onclick="location.href='/show/{{ u.id }}'" class="btn btn-primary" title="Ver perfil del usuario" style="margin: 5px"><i class="fa fa-user-circle"></i></button> {% if u.id != session['user']['id'] %}{% if
+                        u.activo %}
                         <button type="button" class="btn btn-primary" title="Desactivar usuario" style="margin: 5px" data-toggle="modal" data-target="#desactivarModal{{ u.id }}">Desactivar</button> {% else %}
                         <button type="button" class="btn btn-primary" title="Activar usuario" style="margin: 5px" data-toggle="modal" data-target="#activarModal{{ u.id }}">Activar</button> {% endif %}
 
@@ -120,6 +120,10 @@
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
+
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Al desactivarlo, no podrá iniciar sesión.</p>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
