@@ -2,10 +2,9 @@
 <div class="jumbotron">
     <h2 class="display-4 animated fadeIn">Listado de docentes</h2>
     <hr class="my-4"> {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error_busqueda != 1%}
-    
+
     <div class="text-right">
-        <button class="btn btn-primary"
-                onclick="location.href='/'">
+        <button class="btn btn-primary" onclick="location.href='/'">
             <i class="fa fa-plus"></i>
             Agregar docente
         </button>
@@ -48,8 +47,32 @@
                     <td headers="nombre_y_apellido">{{ d.apellido }},{{ d.nombre }}</td>
                     <td headers="operaciones">
 
-                        bu
+                        {% if 'docente_destroy' in session['permisos'] %}
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary eliminar" title="Eliminar docente" role="button" data-toggle="modal" data-target="#eliminarDocenteModal{{ d.id }}"><i class="fa fa-trash"></i>
+                        </button> {% endif %} {% if 'docente_update' in session['permisos'] %}
+                        <button type="button" onclick="location.href='/docente/editar/{{ d.id }}'" class="btn btn-primary" title="Editar docente" style="margin: 5px"><i class="fa fa-edit"></i></button> {% endif %}
 
+                        <!-- Modal -->
+                        <div class="modal fade" id="eliminarDocenteModal{{ d.id }}" tabindex="-1" role="dialog" aria-labelledby="eliminarDocenteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="eliminarDocenteModalLabel">¿Estás seguro que querés eliminar al docente {{ d.apellido }} {{ d.nombre }}?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        No se podrá revertir el cambio.
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                        <button onclick="location.href='/docente/eliminar/{{ d.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 {% endfor %}

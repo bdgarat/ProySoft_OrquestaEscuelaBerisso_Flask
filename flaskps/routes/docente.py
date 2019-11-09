@@ -6,7 +6,7 @@ from flaskps.models.Configuracion import Configuracion
 from flaskps.models.Usuario import Usuario
 from flaskps.helpers.auth import authenticated
 from flaskps.helpers.mantenimiento import sitio_disponible
-from flaskps.forms import SignUpDocenteForm, BusquedaDocenteForm
+from flaskps.forms import SignUpDocenteForm, BusquedaDocenteForm, EditarDocenteForm
 from flask_paginate import Pagination, get_page_parameter
 
 
@@ -117,3 +117,65 @@ def registrar_docente():
 
                 
         return render_template("docentes/registrar.html", form=form, error=error, exito=exito)
+    
+    
+# ELIMINAR DOCENTE
+
+@mod.route("/docente/eliminar/<id_docente>")
+def eliminar(id_docente):
+
+    # Reviso que tenga permiso
+    if 'admin' not in session['roles']:
+        flash('No tiene permiso para eliminar docentes')
+        return redirect('/index/docente')
+   
+    Docente.db = get_db()
+    Docente.eliminar(id_docente)
+    flash('El docente se eliminó con éxito')
+    
+    return redirect('/index/docente')
+
+#  EDITAR DOCENTE
+@mod.route("/docente/editar/<id_docente>", methods=['GET', 'POST'])
+def editar(id_docente):
+
+    # Reviso que tenga permiso
+    if 'docente_update' not in session['permisos']:
+        flash('No tiene permiso para editar docentes. ')
+        return redirect('/home')  
+    else:  
+    
+
+        form = EditarDocenteForm()
+        # para manejar los mensajes flash
+        error=0
+        exito=0
+        Docente.db = get_db()
+        docente = Docente.get_docente(id_docente)
+        print(docente)
+
+        if request.method == 'POST':
+            
+            if form.validate_on_submit():
+                Docente.editar(id_docente, form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.domicilio.data, form.genero.data, form.tipo_doc.data, form.numero.data, form.tel.data)
+
+                # vuelvo a consultar por los valores del docente
+                docente = Docente.get_docente(id_docente)    
+                flash("Docente editado correctamente.")
+                exito = 1
+            else:
+                flash("Debe completar todos los campos")
+                error = 1
+           
+    # vuelvo a setear el form con los valores actualizados del docente
+    form.nombre.data = docente['nombre']
+    form.apellido.data = docente['apellido']
+    form.fecha_nac.data = docente['fecha_nac']
+    form.localidad.data = docente['localidad_id']
+    form.domicilio.data = docente['domicilio']
+    form.genero.data = docente['genero_id']
+    form.tipo_doc.data = docente['tipo_doc_id']
+    form.numero.data = docente['numero']
+    form.tel.data = docente['tel']
+
+    return render_template("docentes/editar.html", form=form, error=error, exito=exito)

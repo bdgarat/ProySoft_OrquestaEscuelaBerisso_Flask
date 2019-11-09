@@ -104,3 +104,36 @@ class Docente(object):
         cursor.execute(sql, params)
 
         return cursor.fetchall()
+    
+    
+    # ELIMINAR UN DOCENTE
+    @classmethod
+    def eliminar(self, id_docente):
+        cursor = self.db.cursor()
+        
+        sql = """
+            UPDATE docente 
+            SET borrado_logico = 1
+            WHERE id = %s
+        """
+
+        o = cursor.execute(sql, (id_docente))
+        self.db.commit()
+
+        return o
+    
+    # EDITAR UN DOCENTE
+    @classmethod
+    def editar(self, id_docente, apellido, nombre, fecha_nac, localidad_id,domicilio, genero_id,tipo_doc_id, numero, tel):
+        
+        sql = """
+            UPDATE docente 
+            SET apellido = %s, nombre = %s, fecha_nac = %s, localidad_id = %s, domicilio = %s, genero_id = %s, tipo_doc_id = %s, numero = %s, tel = %s
+            WHERE id = %s
+        """
+
+        cursor = self.db.cursor()
+        cursor.execute(sql, ( apellido, nombre, fecha_nac, localidad_id, domicilio, genero_id, tipo_doc_id, numero, tel,id_docente))
+        self.db.commit()
+
+        return True
