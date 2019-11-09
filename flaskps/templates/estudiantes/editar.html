@@ -1,0 +1,118 @@
+{% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
+
+<form method="post" class="form-signin jumbotron animated fadeIn" novalidate>
+    <div class="text-center">
+        <img class="mb-4 img_form rounded-lg" src="/static/images/OEBerisso_logo.png" alt="Logo de la Orquesta Escuela de Berisso">
+        <h1 class="h3 mb-3 font-weight-normal">Editar estudiante</h1>
+    </div>
+
+    <!-- Mostrar mensajes guardados en flash -->
+    {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error == 1 %}
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+
+    {% elif exito == 1 %}
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Éxito:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+
+    {% endif %} {% endfor %} {% endif %} {% endwith %} {{ form.hidden_tag() }}
+
+    <div class="row">
+        <div class="col">
+            <p>
+                {{ form.nombre.label }}:<br> {{ form.nombre() }}
+            </p>
+        </div>
+        <div class="col">
+            <p>
+                {{ form.apellido.label }}:<br> {{ form.apellido() }}
+            </p>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>
+                {{ form.localidad.label }}:<br> {{ form.localidad() }}
+            </p>
+        </div>
+        <div class="col">
+            <p>
+                {{ form.barrio.label }}:<br> {{ form.barrio() }}
+            </p>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>
+                {{ form.domicilio.label }}:<br> {{ form.domicilio() }}
+            </p>
+        </div>
+        <div class="col">
+            <p>
+                {{ form.escuela.label }}:<br> {{ form.escuela() }}
+            </p>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>
+                {{ form.tel.label }}:<br> {{ form.tel() }}
+            </p>
+        </div>
+        <div class="col">
+            <p>
+                {{ form.genero.label }}:<br> {{ form.genero() }}
+            </p>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>
+                {{ form.tipo_doc.label }}:<br> {{ form.tipo_doc() }}
+            </p>
+        </div>
+        <div class="col">
+            <p>
+                {{ form.numero.label }}:<br> {{ form.numero() }}
+            </p>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <p>
+                {{ form.fecha_nac.label }}:<br> {{ form.fecha_nac() }}
+            </p>
+
+        </div>
+        <div class="col">
+            <p>
+                {{ form.nivel.label }}:<br> {{ form.nivel() }}
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <p class="col">{{ form.submit() }}</p>
+        <p class="col"><a href="/home" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
+
+    </div>
+
+    {% endblock %}

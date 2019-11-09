@@ -6,7 +6,7 @@ from flaskps.models.Configuracion import Configuracion
 from flaskps.models.Usuario import Usuario
 from flaskps.helpers.auth import authenticated
 from flaskps.helpers.mantenimiento import sitio_disponible
-from flaskps.forms import SignUpEstudianteForm, BusquedaEstudianteForm
+from flaskps.forms import SignUpEstudianteForm, BusquedaEstudianteForm, EditarEstudianteForm
 from flask_paginate import Pagination, get_page_parameter
 
 
@@ -84,7 +84,7 @@ def index_estudiante():
     
 # REGISTRAR ESTUDIANTE
 
-@mod.route("/registrar_estudiante", methods=['GET', 'POST'])
+@mod.route("/estudiante/registrar", methods=['GET', 'POST'])
 def registrar_estudiante():
     
    # Reviso que tenga permiso
@@ -134,3 +134,51 @@ def eliminar(id_estudiante):
     flash('El estudiante se eliminó con éxito')
     
     return redirect('/index/estudiante')
+
+#  EDITAR ESTUDIANTE
+@mod.route("/estudiante/editar/<id_estudiante>", methods=['GET', 'POST'])
+def editar(id_estudiante):
+
+    # Reviso que tenga permiso
+    if 'estudiante_update' not in session['permisos']:
+        flash('No tiene permiso para editar estudiantes. ')
+        return redirect('/home')  
+    else:  
+    
+
+        form = EditarEstudianteForm()
+        # para manejar los mensajes flash
+        error=0
+        exito=0
+        Estudiante.db = get_db()
+        estudiante = Estudiante.get_estudiante(id_estudiante)
+        print(estudiante)
+
+        if request.method == 'POST':
+            
+            if form.validate_on_submit():
+                Estudiante.editar(id_estudiante, form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.nivel.data, form.domicilio.data, form.genero.data, form.escuela.data, form.tipo_doc.data, form.numero.data, form.tel.data, form.barrio.data)
+
+                # vuelvo a consultar por los valores del estudiante
+                estudiante = Estudiante.get_estudiante(id_estudiante)    
+                flash("Estudiante editado correctamente.")
+                exito = 1
+            else:
+                flash("Debe completar todos los campos")
+                error = 1
+           
+    # vuelvo a setear el form con los valores actualizados del estudiante
+    form.nombre.data = estudiante['nombre']
+    form.apellido.data = estudiante['apellido']
+    form.fecha_nac.data = estudiante['fecha_nac']
+    form.localidad.data = estudiante['localidad_id']
+    form.nivel.data = estudiante['nivel_id']
+    form.domicilio.data = estudiante['domicilio']
+    form.genero.data = estudiante['genero_id']
+    form.escuela.data = estudiante['escuela_id']
+    form.tipo_doc.data = estudiante['tipo_doc_id']
+    form.numero.data = estudiante['numero']
+    form.tel.data = estudiante['tel']
+    form.barrio.data = estudiante['barrio_id']
+
+    return render_template("estudiantes/editar.html", form=form, error=error, exito=exito)

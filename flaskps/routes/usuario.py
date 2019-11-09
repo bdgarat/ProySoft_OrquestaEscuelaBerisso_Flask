@@ -97,7 +97,7 @@ def index():
 
 
 # REGISTRAR USUARIO
-@mod.route("/registrar", methods=['GET', 'POST'])
+@mod.route("/usuario/registrar", methods=['GET', 'POST'])
 def registrar():
     
     # Reviso que tenga permiso
@@ -149,7 +149,7 @@ def registrar():
 
 
 #  ACTIVAR/DESACTIVAR USUARIO
-@mod.route("/activar/<id_usuario>")
+@mod.route("/usuario/activar/<id_usuario>")
 def activar(id_usuario):
     
     if int(id_usuario) == session['user']['id']:
@@ -169,7 +169,7 @@ def activar(id_usuario):
 
 
 #  EDITAR USUARIO
-@mod.route("/editar/<id_usuario>", methods=['GET', 'POST'])
+@mod.route("/usuario/editar/<id_usuario>", methods=['GET', 'POST'])
 def editar(id_usuario):
     
     if int(id_usuario) == session['user']['id']:
@@ -261,7 +261,7 @@ def eliminar(id_usuario):
 
 
 # SHOW USUARIO
-@mod.route("/show/<id_usuario>")
+@mod.route("/usuario/show/<id_usuario>")
 def show(id_usuario):
     
     # Reviso que tenga permiso

@@ -2,10 +2,9 @@
 <div class="jumbotron">
     <h2 class="display-4 animated fadeIn">Listado de estudiantes</h2>
     <hr class="my-4"> {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error_busqueda != 1%}
-    
+
     <div class="text-right">
-        <button class="btn btn-primary"
-                onclick="location.href='/'">
+        <button class="btn btn-primary" onclick="location.href='/'">
             <i class="fa fa-plus"></i>
             Agregar estudiante
         </button>
@@ -51,7 +50,8 @@
                         {% if 'estudiante_destroy' in session['permisos'] %}
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary eliminar" title="Eliminar estudiante" role="button" data-toggle="modal" data-target="#exampleModal{{ e.id }}"><i class="fa fa-trash"></i>
-                        </button> {% endif %}
+                        </button> {% endif %} {% if 'estudiante_update' in session['permisos'] %}
+                        <button type="button" onclick="location.href='/estudiante/editar/{{ e.id }}'" class="btn btn-primary" title="Editar estudiante" style="margin: 5px"><i class="fa fa-edit"></i></button> {% endif %}
 
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal{{ e.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

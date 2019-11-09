@@ -48,33 +48,33 @@
                             <a class="dropdown-item" href="/index/usuarios">Listado de usuarios</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/config">Configuración de Sistema</a>
-                            <a class="dropdown-item" href="/registrar">Registrar usuario</a> {% endif %} {% if "estudiante_new" in session['permisos'] %}
-                            <a class="dropdown-item" href="/registrar_estudiante">Registrar estudiante</a> {% endif %}{% if "docente_new" in session['permisos'] %}
-                            <a class="dropdown-item" href="/registrar_docente">Registrar docente</a> {% endif %}
+                            <a class="dropdown-item" href="/usuario/registrar">Registrar usuario</a> {% endif %} {% if "estudiante_new" in session['permisos'] %}
+                            <a class="dropdown-item" href="/estudiante/registrar">Registrar estudiante</a> {% endif %}{% if "docente_new" in session['permisos'] %}
+                            <a class="dropdown-item" href="/docente/registrar">Registrar docente</a> {% endif %}
                         </div>
                     </div>
                     <!-- {% endif %} -->
                 </div>
-            
+
                 <div class="navbar-nav ml-auto">
-                    <a class="nav-item nav-link" href="/show/{{ session['user']['id']}}">
+                    <a class="nav-item nav-link" href="/usuario/show/{{ session['user']['id']}}">
                         <i class="fa fa-user" aria-hidden="true"></i> {{ session['user']['last_name'] }}, {{ session['user']['first_name'] }}</a>
                     <a class="nav-item nav-link" href="/logout">
                         <i class="fa fa-sign-out" aria-hidden="true"></i> Cerrar sesión
                     </a>
                 </div>
-                    {% else %}
-                    <div class="navbar-nav ml-auto">
-                        <a class="nav-item nav-link" href="/login">
-                            <i class="fa fa-sign-in" aria-hidden="true"></i> Iniciar Sesión
-                        </a>
-                    </div>
+                {% else %}
+                <div class="navbar-nav ml-auto">
+                    <a class="nav-item nav-link" href="/login">
+                        <i class="fa fa-sign-in" aria-hidden="true"></i> Iniciar Sesión
+                    </a>
                 </div>
             </div>
-        </div>
-                {% endif %}
+            </div>
+            </div>
+            {% endif %}
 
-                
+
         </nav>
         {% endblock %}
         <!-- End Navbar -->
@@ -124,9 +124,9 @@
                     <span class="carousel-control-next-icon"></span>
                 </a>
             </div>
-        </div>        
+        </div>
         {% endblock %}
-        
+
         <!-- END CARRUSEL -->
         <main class="container">
             <section class="main">{% block content %}{% endblock %}

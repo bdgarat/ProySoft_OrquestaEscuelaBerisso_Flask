@@ -65,6 +65,23 @@ class Estudiante(object):
 
         return True
     
+    
+    # EDITAR ESTUDIANTE
+    @classmethod
+    def editar(self, id_estudiante, apellido, nombre, fecha_nac, localidad_id,nivel_id,domicilio, genero_id, escuela_id,tipo_doc_id, numero, tel,barrio_id):
+        
+        sql = """
+            UPDATE estudiante 
+            SET apellido = %s, nombre = %s, fecha_nac = %s, localidad_id = %s, nivel_id = %s,domicilio = %s, genero_id = %s, escuela_id = %s,tipo_doc_id = %s, numero = %s, tel = %s,barrio_id = %s
+            WHERE id = %s
+        """
+
+        cursor = self.db.cursor()
+        cursor.execute(sql, ( apellido, nombre, fecha_nac, localidad_id, nivel_id, domicilio, genero_id, escuela_id, tipo_doc_id, numero, tel, barrio_id,id_estudiante))
+        self.db.commit()
+
+        return True
+    
     # RECUPERAR TODOS LOS ESTUDIANTES POR TERMINO DE BUSQUEDA
     @classmethod
     def get_estudiantes(self, termino = None):

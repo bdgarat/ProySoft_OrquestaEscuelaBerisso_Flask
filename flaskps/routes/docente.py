@@ -84,7 +84,7 @@ def index_docente():
     
 # REGISTRAR DOCENTE
 
-@mod.route("/registrar_docente", methods=['GET', 'POST'])
+@mod.route("/docente/registrar", methods=['GET', 'POST'])
 def registrar_docente():
     
    # Reviso que tenga permiso

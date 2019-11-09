@@ -63,12 +63,12 @@
                     <td headers="nombre_y_apellido">{{ u.last_name }},{{ u.first_name }}</td>
                     <td headers="operaciones">
 
-                        <button type="button" onclick="location.href='/show/{{ u.id }}'" class="btn btn-primary" title="Ver perfil del usuario" style="margin: 5px"><i class="fa fa-user-circle"></i></button> {% if u.id != session['user']['id'] %}{% if
-                        u.activo %}
+                        <button type="button" onclick="location.href='/usuario/show/{{ u.id }}'" class="btn btn-primary" title="Ver perfil del usuario" style="margin: 5px"><i class="fa fa-user-circle"></i></button> {% if u.id != session['user']['id']
+                        %}{% if u.activo %}
                         <button type="button" class="btn btn-primary" title="Desactivar usuario" style="margin: 5px" data-toggle="modal" data-target="#desactivarModal{{ u.id }}">Desactivar</button> {% else %}
                         <button type="button" class="btn btn-primary" title="Activar usuario" style="margin: 5px" data-toggle="modal" data-target="#activarModal{{ u.id }}">Activar</button> {% endif %}
 
-                        <button type="button" onclick="location.href='/editar/{{ u.id }}'" class="btn btn-primary" title="Editar usuario" style="margin: 5px"><i class="fa fa-edit"></i></button>
+                        <button type="button" onclick="location.href='/usuario/editar/{{ u.id }}'" class="btn btn-primary" title="Editar usuario" style="margin: 5px"><i class="fa fa-edit"></i></button>
 
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary eliminar" title="Eliminar usuario" style="margin: 5px" data-toggle="modal" data-target="#eliminarModal{{ u.id }}"><i class="fa fa-trash"></i>
@@ -106,7 +106,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                                        <button onclick="location.href='/activar/{{ u.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                                        <button onclick="location.href='/usuario/activar/{{ u.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
                                     </div>
                                 </div>
                             </div>
@@ -127,7 +127,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                                        <button onclick="location.href='/activar/{{ u.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                                        <button onclick="location.href='/usuario/activar/{{ u.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
                                     </div>
                                 </div>
                             </div>
