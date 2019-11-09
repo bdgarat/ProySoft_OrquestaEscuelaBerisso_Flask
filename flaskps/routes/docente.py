@@ -179,3 +179,20 @@ def editar(id_docente):
     form.tel.data = docente['tel']
 
     return render_template("docentes/editar.html", form=form, error=error, exito=exito)
+
+
+# SHOW DOCENTE
+@mod.route("/docente/show/<id_docente>")
+def show(id_docente):
+    
+    # Reviso que tenga permiso
+    if 'docente_show' in session['permisos']:
+
+        Docente.db = get_db()
+        docente = Docente.get_docente(id_docente)       
+
+        return render_template("docentes/show.html", docente=docente)
+
+    else:
+        flash("No tiene permisos para realizar ésta acción")
+        return redirect("/home")

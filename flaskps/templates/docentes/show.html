@@ -1,0 +1,22 @@
+{% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
+
+<div class="jumbotron">
+    <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-user" aria-hidden="true"></i> {{ docente.apellido }}, {{ docente.nombre }}
+    </h1>
+    <hr class="my-2">
+    <br>
+    <h5 class="mb-4 mt-4 pt-4"><i class="fa fa-info-circle"></i> Información del docente:</h5>
+
+    <menu class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Fecha de nacimiento: </strong>{{ docente.fecha_nac }}</li>
+        <li class="list-group-item"><strong>Localidad: </strong>{{ docente.localidad_id }}</li>
+        <li class="list-group-item"><strong>Domicilio: </strong>{{ docente.domicilio }}</li>
+        <li class="list-group-item"><strong>Genero: </strong>{{ docente.genero_id }}</li>
+        <li class="list-group-item"><strong>Tipo de documento: </strong>{{ docente.tipo_doc_id }}</li>
+        <li class="list-group-item"><strong>Número de documento: </strong>{{ docente.numero }}</li>
+        <li class="list-group-item"><strong>Teléfono de contacto: </strong>{{ docente.tel }}</li>
+
+    </menu>
+</div>
+
+{% endblock %}
