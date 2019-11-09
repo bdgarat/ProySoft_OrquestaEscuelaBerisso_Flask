@@ -1,0 +1,25 @@
+{% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
+
+<div class="jumbotron">
+    <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-user" aria-hidden="true"></i> {{ estudiante.apellido }}, {{ estudiante.nombre }}
+    </h1>
+    <hr class="my-2">
+    <br>
+    <h5 class="mb-4 mt-4 pt-4"><i class="fa fa-info-circle"></i> Información del estudiante:</h5>
+
+    <menu class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Fecha de nacimiento: </strong>{{ estudiante.fecha_nac }}</li>
+        <li class="list-group-item"><strong>Localidad: </strong>{{ estudiante.localidad_id }}</li>
+        <li class="list-group-item"><strong>Nivel: </strong>{{ estudiante.nivel_id }}</li>
+        <li class="list-group-item"><strong>Domicilio: </strong>{{ estudiante.domicilio }}</li>
+        <li class="list-group-item"><strong>Genero: </strong>{{ estudiante.genero_id }}</li>
+        <li class="list-group-item"><strong>Escuela: </strong>{{ estudiante.escuela_id }}</li>
+        <li class="list-group-item"><strong>Tipo de documento: </strong>{{ estudiante.tipo_doc_id }}</li>
+        <li class="list-group-item"><strong>Número de documento: </strong>{{ estudiante.numero }}</li>
+        <li class="list-group-item"><strong>Teléfono de contacto: </strong>{{ estudiante.tel }}</li>
+        <li class="list-group-item"><strong>Barrio: </strong>{{ estudiante.barrio_id }}</li>
+
+    </menu>
+</div>
+
+{% endblock %}

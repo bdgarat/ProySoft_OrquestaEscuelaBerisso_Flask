@@ -182,3 +182,19 @@ def editar(id_estudiante):
     form.barrio.data = estudiante['barrio_id']
 
     return render_template("estudiantes/editar.html", form=form, error=error, exito=exito)
+
+# SHOW ESTUDIANTE
+@mod.route("/estudiante/show/<id_estudiante>")
+def show(id_estudiante):
+    
+    # Reviso que tenga permiso
+    if 'estudiante_show' in session['permisos']:
+
+        Estudiante.db = get_db()
+        estudiante = Estudiante.get_estudiante(id_estudiante)       
+
+        return render_template("estudiantes/show.html", estudiante=estudiante)
+
+    else:
+        flash("No tiene permisos para realizar ésta acción")
+        return redirect("/home")

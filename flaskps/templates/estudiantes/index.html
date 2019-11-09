@@ -47,7 +47,9 @@
                     <td headers="nombre y apellido">{{ e.apellido }},{{ e.nombre }}</td>
                     <td headers="operaciones">
 
-                        {% if 'estudiante_destroy' in session['permisos'] %}
+                        {% if 'estudiante_show' in session['permisos'] %}
+                        <button type="button" onclick="location.href='/estudiante/show/{{ e.id }}'" class="btn btn-primary" title="Ver perfil del estudiante" style="margin: 5px"><i class="fa fa-user-circle"></i></button>{% endif %} {% if 'estudiante_destroy'
+                        in session['permisos'] %}
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary eliminar" title="Eliminar estudiante" role="button" data-toggle="modal" data-target="#exampleModal{{ e.id }}"><i class="fa fa-trash"></i>
                         </button> {% endif %} {% if 'estudiante_update' in session['permisos'] %}
