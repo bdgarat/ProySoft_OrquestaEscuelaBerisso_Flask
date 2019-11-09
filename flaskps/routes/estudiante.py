@@ -130,8 +130,8 @@ def eliminar(id_estudiante):
         return redirect('/index/estudiante')
    
     Estudiante.db = get_db()
-    Estudiante.eliminar(id_estudiante)
-    flash('El estudiante se eliminó con éxito')
+    if Estudiante.eliminar(id_estudiante):       
+        flash('El estudiante se eliminó con éxito')
     
     return redirect('/index/estudiante')
 
@@ -145,7 +145,6 @@ def editar(id_estudiante):
         return redirect('/home')  
     else:  
     
-
         form = EditarEstudianteForm()
         # para manejar los mensajes flash
         error=0
@@ -153,35 +152,39 @@ def editar(id_estudiante):
         Estudiante.db = get_db()
         estudiante = Estudiante.get_estudiante(id_estudiante)
         print(estudiante)
+        
+        if estudiante:
 
-        if request.method == 'POST':
-            
-            if form.validate_on_submit():
-                Estudiante.editar(id_estudiante, form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.nivel.data, form.domicilio.data, form.genero.data, form.escuela.data, form.tipo_doc.data, form.numero.data, form.tel.data, form.barrio.data)
-
-                # vuelvo a consultar por los valores del estudiante
-                estudiante = Estudiante.get_estudiante(id_estudiante)    
-                flash("Estudiante editado correctamente.")
-                exito = 1
-            else:
-                flash("Debe completar todos los campos")
-                error = 1
+            if request.method == 'POST':
+                
+                if form.validate_on_submit():
+                    Estudiante.editar(id_estudiante, form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.nivel.data, form.domicilio.data, form.genero.data, form.escuela.data, form.tipo_doc.data, form.numero.data, form.tel.data, form.barrio.data)
+                    # vuelvo a consultar por los valores del estudiante
+                    estudiante = Estudiante.get_estudiante(id_estudiante) 
+                    print(estudiante)  
+                    flash("Estudiante editado correctamente.")
+                    exito = 1
+                else:
+                    flash("Debe completar todos los campos")
+                    error = 1               
            
-    # vuelvo a setear el form con los valores actualizados del estudiante
-    form.nombre.data = estudiante['nombre']
-    form.apellido.data = estudiante['apellido']
-    form.fecha_nac.data = estudiante['fecha_nac']
-    form.localidad.data = estudiante['localidad_id']
-    form.nivel.data = estudiante['nivel_id']
-    form.domicilio.data = estudiante['domicilio']
-    form.genero.data = estudiante['genero_id']
-    form.escuela.data = estudiante['escuela_id']
-    form.tipo_doc.data = estudiante['tipo_doc_id']
-    form.numero.data = estudiante['numero']
-    form.tel.data = estudiante['tel']
-    form.barrio.data = estudiante['barrio_id']
+            # vuelvo a setear el form con los valores actualizados del estudiante
+            form.nombre.data = estudiante['nombre']
+            form.apellido.data = estudiante['apellido']
+            form.fecha_nac.data = estudiante['fecha_nac']
+            form.localidad.data = estudiante['localidad_id']
+            form.nivel.data = estudiante['nivel_id']
+            form.domicilio.data = estudiante['domicilio']
+            form.genero.data = estudiante['genero_id']
+            form.escuela.data = estudiante['escuela_id']
+            form.tipo_doc.data = estudiante['tipo_doc_id']
+            form.numero.data = estudiante['numero']
+            form.tel.data = estudiante['tel']
+            form.barrio.data = estudiante['barrio_id']
 
-    return render_template("estudiantes/editar.html", form=form, error=error, exito=exito)
+            return render_template("estudiantes/editar.html", form=form, error=error, exito=exito)
+        else:
+            return redirect("/home")
 
 # SHOW ESTUDIANTE
 @mod.route("/estudiante/show/<id_estudiante>")
@@ -193,7 +196,11 @@ def show(id_estudiante):
         Estudiante.db = get_db()
         estudiante = Estudiante.get_estudiante(id_estudiante)       
 
-        return render_template("estudiantes/show.html", estudiante=estudiante)
+        if estudiante:
+            
+            return render_template("estudiantes/show.html", estudiante=estudiante)
+        else:
+            return redirect("/home")
 
     else:
         flash("No tiene permisos para realizar ésta acción")

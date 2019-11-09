@@ -133,7 +133,7 @@ class Docente(object):
         """
 
         cursor = self.db.cursor()
-        cursor.execute(sql, ( apellido, nombre, fecha_nac, localidad_id, domicilio, genero_id, tipo_doc_id, numero, tel,id_docente))
+        ok = cursor.execute(sql, ( apellido, nombre, fecha_nac, localidad_id, domicilio, genero_id, tipo_doc_id, numero, tel,id_docente))
         self.db.commit()
 
-        return True
+        return ok

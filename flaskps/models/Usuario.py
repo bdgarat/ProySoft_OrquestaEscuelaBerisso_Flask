@@ -297,10 +297,10 @@ class Usuario(object):
             WHERE id = %s
         """
 
-        cursor.execute(sql, (id_usuario))
+        ok = cursor.execute(sql, (id_usuario))
         self.db.commit()
 
-        return True
+        return ok 
     
     
     # EDITAR UN USUARIO
@@ -335,10 +335,10 @@ class Usuario(object):
             WHERE id = %s
         """
 
-        o = cursor.execute(sql, (updated_at, id_usuario))
+        ok = cursor.execute(sql, (updated_at, id_usuario))
         self.db.commit()
 
-        return o
+        return ok
     
     
     #   CHEQUEO SI TENGO UN PERMISO

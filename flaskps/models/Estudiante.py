@@ -76,11 +76,11 @@ class Estudiante(object):
             WHERE id = %s
         """
 
-        cursor = self.db.cursor()
+        ok = cursor = self.db.cursor()
         cursor.execute(sql, ( apellido, nombre, fecha_nac, localidad_id, nivel_id, domicilio, genero_id, escuela_id, tipo_doc_id, numero, tel, barrio_id,id_estudiante))
         self.db.commit()
 
-        return True
+        return ok
     
     # RECUPERAR TODOS LOS ESTUDIANTES POR TERMINO DE BUSQUEDA
     @classmethod
@@ -140,7 +140,7 @@ class Estudiante(object):
             WHERE id = %s
         """
 
-        o = cursor.execute(sql, (id_estudiante))
+        ok = cursor.execute(sql, (id_estudiante))
         self.db.commit()
 
-        return o
+        return ok

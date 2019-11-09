@@ -130,8 +130,8 @@ def eliminar(id_docente):
         return redirect('/index/docente')
    
     Docente.db = get_db()
-    Docente.eliminar(id_docente)
-    flash('El docente se eliminó con éxito')
+    if Docente.eliminar(id_docente):
+        flash('El docente se eliminó con éxito')
     
     return redirect('/index/docente')
 
@@ -152,33 +152,36 @@ def editar(id_docente):
         exito=0
         Docente.db = get_db()
         docente = Docente.get_docente(id_docente)
-        print(docente)
+        
+        if docente:
 
-        if request.method == 'POST':
-            
-            if form.validate_on_submit():
-                Docente.editar(id_docente, form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.domicilio.data, form.genero.data, form.tipo_doc.data, form.numero.data, form.tel.data)
+            if request.method == 'POST':
+                
+                if form.validate_on_submit():
+                    Docente.editar(id_docente, form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.domicilio.data, form.genero.data, form.tipo_doc.data, form.numero.data, form.tel.data)
 
-                # vuelvo a consultar por los valores del docente
-                docente = Docente.get_docente(id_docente)    
-                flash("Docente editado correctamente.")
-                exito = 1
-            else:
-                flash("Debe completar todos los campos")
-                error = 1
+                    # vuelvo a consultar por los valores del docente
+                    docente = Docente.get_docente(id_docente)    
+                    flash("Docente editado correctamente.")
+                    exito = 1
+                else:
+                    flash("Debe completar todos los campos")
+                    error = 1
            
-    # vuelvo a setear el form con los valores actualizados del docente
-    form.nombre.data = docente['nombre']
-    form.apellido.data = docente['apellido']
-    form.fecha_nac.data = docente['fecha_nac']
-    form.localidad.data = docente['localidad_id']
-    form.domicilio.data = docente['domicilio']
-    form.genero.data = docente['genero_id']
-    form.tipo_doc.data = docente['tipo_doc_id']
-    form.numero.data = docente['numero']
-    form.tel.data = docente['tel']
+            # vuelvo a setear el form con los valores actualizados del docente
+            form.nombre.data = docente['nombre']
+            form.apellido.data = docente['apellido']
+            form.fecha_nac.data = docente['fecha_nac']
+            form.localidad.data = docente['localidad_id']
+            form.domicilio.data = docente['domicilio']
+            form.genero.data = docente['genero_id']
+            form.tipo_doc.data = docente['tipo_doc_id']
+            form.numero.data = docente['numero']
+            form.tel.data = docente['tel']
 
-    return render_template("docentes/editar.html", form=form, error=error, exito=exito)
+            return render_template("docentes/editar.html", form=form, error=error, exito=exito)
+        else:
+            return redirect("/home")
 
 
 # SHOW DOCENTE
@@ -189,9 +192,12 @@ def show(id_docente):
     if 'docente_show' in session['permisos']:
 
         Docente.db = get_db()
-        docente = Docente.get_docente(id_docente)       
-
-        return render_template("docentes/show.html", docente=docente)
+        docente = Docente.get_docente(id_docente)
+        
+        if (docente):      
+            return render_template("docentes/show.html", docente=docente)
+        else:
+            return redirect("/home")
 
     else:
         flash("No tiene permisos para realizar ésta acción")

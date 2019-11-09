@@ -162,9 +162,9 @@ def activar(id_usuario):
         return redirect('/index/usuarios')
 
     Usuario.db = get_db()
-    Usuario.activar(id_usuario)
+    if Usuario.activar(id_usuario):
+        flash("Se guardaron los cambios con éxito")
     
-    flash("Se guardaron los cambios con éxito")
     return redirect("/index/usuarios")
 
 
@@ -188,55 +188,58 @@ def editar(id_usuario):
     exito=0
     Usuario.db = get_db()
     usuario = Usuario.get_user(id_usuario)
-
-
-    if request.method == 'POST':
-            
-        Usuario.editar(id_usuario, form.email.data,form.username.data, form.first_name.data, form.last_name.data)
-        usuario = Usuario(usuario['email'], usuario['username'], usuario['password'], usuario['first_name'], usuario['last_name'])
-            
-        # chequeo si se otorgó rol y lo agrego
-        if form.agregar_rol.data != '0':
-            usuario.agregar_rol(form.agregar_rol.data, usuario)
-
-        # chequeo si se quitó rol y lo quito
-        if form.quitar_rol.data != '0':
-            usuario.quitar_rol(form.quitar_rol.data, usuario)
-
-        # vuelvo a consultar por los valores del usuario
-        usuario = Usuario.get_user(id_usuario)    
-        flash("Usuario editado correctamente.")
-        exito = 1
-                
-            
-    # vuelvo a setear el form con los valores actualizados del usuario
-    form.email.data = usuario['email']
-    form.username.data = usuario['username']
-    form.first_name.data = usuario['first_name']
-    form.last_name.data = usuario['last_name']
-   
-    # obtengo roles del usuario
-    roles_usuario = []
-    for t in Usuario.get_roles(usuario['id']):
-        roles_usuario.append(t['nombre'])
-
-    # Armo la lista de opciones del select para agregar
-    agregar_roles = [('0', 'Seleccionar')]
-    for r in Usuario.all_roles():
-        if r['nombre'] not in roles_usuario:
-            agregar_roles.append( (r['nombre'], r['nombre']) )
-
-    # Armo la lista de opciones del select para eliminar
-    quitar_roles = [('0', 'Seleccionar')]
-    for r in Usuario.all_roles():
-        if r['nombre'] in roles_usuario:
-            quitar_roles.append( (r['nombre'], r['nombre']) )
     
+    if usuario:
 
-    form.agregar_rol.choices = agregar_roles
-    form.quitar_rol.choices = quitar_roles
+        if request.method == 'POST':
+                
+            Usuario.editar(id_usuario, form.email.data,form.username.data, form.first_name.data, form.last_name.data)
+            usuario = Usuario(usuario['email'], usuario['username'], usuario['password'], usuario['first_name'], usuario['last_name'])
+                
+            # chequeo si se otorgó rol y lo agrego
+            if form.agregar_rol.data != '0':
+                usuario.agregar_rol(form.agregar_rol.data, usuario)
 
-    return render_template("usuarios/editar.html", form=form, roles_usuario=roles_usuario, error=error, exito=exito)
+            # chequeo si se quitó rol y lo quito
+            if form.quitar_rol.data != '0':
+                usuario.quitar_rol(form.quitar_rol.data, usuario)
+
+            # vuelvo a consultar por los valores del usuario
+            usuario = Usuario.get_user(id_usuario)    
+            flash("Usuario editado correctamente.")
+            exito = 1
+                    
+                
+        # vuelvo a setear el form con los valores actualizados del usuario
+        form.email.data = usuario['email']
+        form.username.data = usuario['username']
+        form.first_name.data = usuario['first_name']
+        form.last_name.data = usuario['last_name']
+    
+        # obtengo roles del usuario
+        roles_usuario = []
+        for t in Usuario.get_roles(usuario['id']):
+            roles_usuario.append(t['nombre'])
+
+        # Armo la lista de opciones del select para agregar
+        agregar_roles = [('0', 'Seleccionar')]
+        for r in Usuario.all_roles():
+            if r['nombre'] not in roles_usuario:
+                agregar_roles.append( (r['nombre'], r['nombre']) )
+
+        # Armo la lista de opciones del select para eliminar
+        quitar_roles = [('0', 'Seleccionar')]
+        for r in Usuario.all_roles():
+            if r['nombre'] in roles_usuario:
+                quitar_roles.append( (r['nombre'], r['nombre']) )
+        
+
+        form.agregar_rol.choices = agregar_roles
+        form.quitar_rol.choices = quitar_roles
+
+        return render_template("usuarios/editar.html", form=form, roles_usuario=roles_usuario, error=error, exito=exito)
+    else:
+        return redirect("/home")
 
 
 # ELIMINAR USUARIO
@@ -254,8 +257,8 @@ def eliminar(id_usuario):
         return redirect('/index/usuarios')
    
     Usuario.db = get_db()
-    Usuario.eliminar(id_usuario)
-    flash('El usuario se eliminó con éxito')
+    if Usuario.eliminar(id_usuario):
+        flash('El usuario se eliminó con éxito')
     
     return redirect('/index/usuarios')
 
@@ -270,14 +273,18 @@ def show(id_usuario):
         return redirect('/index/usuarios')
 
     Usuario.db = get_db()
-    usuario = Usuario.get_user(id_usuario)       
+    usuario = Usuario.get_user(id_usuario) 
+    print(usuario)   
     
-    # obtengo roles del usuario
-    roles = []
-    for t in Usuario.get_roles(usuario['id']):
-        roles.append(t['nombre'])
+    if usuario:     
+        # obtengo roles del usuario
+        roles = []
+        for t in Usuario.get_roles(usuario['id']):
+            roles.append(t['nombre'])
 
-    return render_template("usuarios/show.html", usuario=usuario, roles=roles)
+        return render_template("usuarios/show.html", usuario=usuario, roles=roles)
+    else:
+        return redirect("/home")
 
 
 # ------------------------------------------------
