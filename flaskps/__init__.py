@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, session
+from flask import Flask, render_template, redirect, session, request
 from flaskps.db import get_db
 from flaskps.helpers.auth import authenticated
 from flaskps.helpers.mantenimiento import sitio_disponible
@@ -15,22 +15,6 @@ app.config.from_object(Config)
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
-#Esto lo dejo pero en realidad no funciona porque no es dinamico, para ver los cambios hay que 
-# bajar y subir el server 
-
-# with app.app_context():
-#     # Si el modo deshabilitado del sitio está activado, se muestra el template de "Sitio en Mantenimiento"
-#     Configuracion.db = get_db()
-#     habilitado = Configuracion.get_sitio_habilitado()['sitio_habilitado']
-
-# habilitado = None
-# @app.before_request
-# def before_request():
-#     Configuracion.db = get_db()
-#     habilitado = Configuracion.get_sitio_habilitado()['sitio_habilitado']
-#     if habilitado == 0:
-#         if authenticated(session) and 'admin' not in session['roles']:
-#             return render_template('mantenimiento.html')
 
 @app.route("/")
 @app.route("/home")

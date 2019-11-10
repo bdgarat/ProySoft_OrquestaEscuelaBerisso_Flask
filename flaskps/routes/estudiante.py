@@ -2,12 +2,15 @@ from flask import Blueprint
 from flaskps.db import get_db
 from flask import render_template, flash, redirect, session, abort, request
 from flaskps.models.Estudiante import Estudiante
+from flaskps.models.Informacion import Informacion
 from flaskps.models.Configuracion import Configuracion
 from flaskps.models.Usuario import Usuario
 from flaskps.helpers.auth import authenticated
+from flaskps.helpers.apiReferencias import tipos_documento, localidades
 from flaskps.helpers.mantenimiento import sitio_disponible
 from flaskps.forms import SignUpEstudianteForm, BusquedaEstudianteForm, EditarEstudianteForm
 from flask_paginate import Pagination, get_page_parameter
+
 
 
 
@@ -99,6 +102,19 @@ def registrar_estudiante():
         error=0
         exito=0
         
+        # Armo la lista de opciones del select de tipo de documento y localidades
+        Informacion.db = get_db()
+        form.barrio.choices = Informacion.all('barrio')
+        form.genero.choices = Informacion.all('genero')
+        form.nivel.choices = Informacion.all('nivel')
+        form.escuela.choices = Informacion.all('escuela')
+        
+
+        # Api
+        form.tipo_doc.choices = tipos_documento()
+        form.localidad.choices = localidades()
+
+
         
         if request.method == 'POST':
             
