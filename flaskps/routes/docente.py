@@ -4,7 +4,9 @@ from flask import render_template, flash, redirect, session, abort, request
 from flaskps.models.Docente import Docente
 from flaskps.models.Configuracion import Configuracion
 from flaskps.models.Usuario import Usuario
+from flaskps.models.Informacion import Informacion
 from flaskps.helpers.auth import authenticated
+from flaskps.helpers.apiReferencias import tipos_documento, localidades
 from flaskps.helpers.mantenimiento import sitio_disponible
 from flaskps.forms import SignUpDocenteForm, BusquedaDocenteForm, EditarDocenteForm
 from flask_paginate import Pagination, get_page_parameter
@@ -93,20 +95,30 @@ def registrar_docente():
         return redirect('/home')  
     else:  
     
-        form = SignUpDocenteForm()
+        form = SignUpDocenteForm(request.form)
         
         # para manejar los mensajes flash
         error=0
         exito=0
         
+        # Armo la lista de opciones del select de tipo de documento y localidades
+        Informacion.db = get_db()
+        form.genero.choices = Informacion.all('genero')
+
+        # Api
+        form.tipo_doc.choices = tipos_documento()
+        form.localidad.choices = localidades()
         
         if request.method == 'POST':
+            
+            # IMPORTANTE, CASTEAR A INTEGER 
+            form.genero.data = int(form.genero.data)
             
             if form.validate_on_submit():
                 Docente.db = get_db()
                     
                 docente = Docente(form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.domicilio.data, form.genero.data, form.tipo_doc.data, form.numero.data, form.tel.data)
-                Docente.insert(docente)
+                Docente.insert(docencte)
                 
                 flash("Docente registrado correctamente.")
                 exito = 1
@@ -153,10 +165,23 @@ def editar(id_docente):
         Docente.db = get_db()
         docente = Docente.get_docente(id_docente)
         
+        # Armo la lista de opciones del select de tipo de documento y localidades
+        Informacion.db = get_db()
+        form.genero.choices = Informacion.all('genero')
+
+        # Api
+        form.tipo_doc.choices = tipos_documento()
+        form.localidad.choices = localidades()
+
+
         if docente:
+            
 
             if request.method == 'POST':
-                
+            
+                # IMPORTANTE, CASTEAR A INTEGER 
+                form.genero.data = int(form.genero.data)
+
                 if form.validate_on_submit():
                     Docente.editar(id_docente, form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.domicilio.data, form.genero.data, form.tipo_doc.data, form.numero.data, form.tel.data)
 
@@ -167,15 +192,19 @@ def editar(id_docente):
                 else:
                     flash("Debe completar todos los campos")
                     error = 1
+            
            
             # vuelvo a setear el form con los valores actualizados del docente
+            form.genero.default = docente['genero_id']  
+            form.localidad.default = docente['localidad_id']
+            form.tipo_doc.default = docente['tipo_doc_id']
+            form.process() #IMPORTANTE
+
             form.nombre.data = docente['nombre']
             form.apellido.data = docente['apellido']
             form.fecha_nac.data = docente['fecha_nac']
-            form.localidad.data = docente['localidad_id']
             form.domicilio.data = docente['domicilio']
-            form.genero.data = docente['genero_id']
-            form.tipo_doc.data = docente['tipo_doc_id']
+            
             form.numero.data = docente['numero']
             form.tel.data = docente['tel']
 
