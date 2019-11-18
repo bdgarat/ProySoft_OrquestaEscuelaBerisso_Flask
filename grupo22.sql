@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 05-11-2019 a las 19:07:31
+-- Tiempo de generación: 18-11-2019 a las 01:29:24
 -- Versión del servidor: 10.4.6-MariaDB
 -- Versión de PHP: 7.3.9
 
@@ -538,7 +538,8 @@ CREATE TABLE `responsable` (
 
 CREATE TABLE `responsable_estudiante` (
   `responsable_id` int(11) NOT NULL,
-  `estudiante_id` int(11) NOT NULL
+  `estudiante_id` int(11) NOT NULL,
+  `tipo_responsable_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -649,6 +650,27 @@ INSERT INTO `tipo_instrumento` (`id`, `nombre`) VALUES
 (1, 'Viento'),
 (2, 'Cuerda'),
 (3, 'Percusión');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_responsable`
+--
+
+CREATE TABLE `tipo_responsable` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) COLLATE utf8_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `tipo_responsable`
+--
+
+INSERT INTO `tipo_responsable` (`id`, `nombre`) VALUES
+(1, 'padre'),
+(2, 'madre'),
+(3, 'tutor'),
+(4, 'otro');
 
 -- --------------------------------------------------------
 
@@ -882,6 +904,12 @@ ALTER TABLE `tipo_instrumento`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `tipo_responsable`
+--
+ALTER TABLE `tipo_responsable`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
@@ -993,6 +1021,12 @@ ALTER TABLE `taller`
 --
 ALTER TABLE `tipo_instrumento`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `tipo_responsable`
+--
+ALTER TABLE `tipo_responsable`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
