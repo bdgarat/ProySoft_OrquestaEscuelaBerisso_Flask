@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 18-11-2019 a las 01:29:24
--- Versión del servidor: 10.4.6-MariaDB
--- Versión de PHP: 7.3.9
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 18-11-2019 a las 06:38:35
+-- Versión del servidor: 10.4.8-MariaDB
+-- Versión de PHP: 7.3.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -88,7 +88,8 @@ CREATE TABLE `ciclo_lectivo` (
   `id` int(11) NOT NULL,
   `fecha_ini` datetime DEFAULT NULL,
   `fecha_fin` datetime DEFAULT NULL,
-  `semestre` tinyint(1) NOT NULL DEFAULT 1
+  `semestre` tinyint(1) NOT NULL DEFAULT 1,
+  `borrado_logico` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -484,7 +485,12 @@ INSERT INTO `permiso` (`id`, `nombre`) VALUES
 (19, 'admin_update'),
 (20, 'admin_show'),
 (21, 'config_index'),
-(22, 'config_update');
+(22, 'config_update'),
+(23, 'ciclo_lectivo_index'),
+(24, 'ciclo_lectivo_new'),
+(25, 'ciclo_lectivo_destroy'),
+(26, 'ciclo_lectivo_update'),
+(27, 'ciclo_lectivo_show');
 
 -- --------------------------------------------------------
 
@@ -600,6 +606,11 @@ INSERT INTO `rol_tiene_permiso` (`rol_id`, `permiso_id`) VALUES
 (1, 20),
 (1, 21),
 (1, 22),
+(1, 23),
+(1, 24),
+(1, 25),
+(1, 26),
+(1, 27),
 (2, 1),
 (2, 3),
 (2, 4),
@@ -617,7 +628,9 @@ INSERT INTO `rol_tiene_permiso` (`rol_id`, `permiso_id`) VALUES
 (3, 4),
 (3, 5),
 (3, 6),
-(3, 10);
+(3, 10),
+(3, 23),
+(3, 27);
 
 -- --------------------------------------------------------
 
@@ -990,7 +1003,7 @@ ALTER TABLE `nucleo`
 -- AUTO_INCREMENT de la tabla `permiso`
 --
 ALTER TABLE `permiso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `preceptor`

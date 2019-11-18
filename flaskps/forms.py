@@ -65,6 +65,12 @@ class SignUpDocenteForm(FlaskForm):
     numero = StringField('Número de documento', validators=[DataRequired()], render_kw={"class": "form-control"})
     tel = StringField('Teléfono', validators=[DataRequired()], render_kw={"class": "form-control"})
     submit = SubmitField('Registrar docente', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
+
+class SignUpCicloLectivoForm(FlaskForm):
+    fecha_ini = DateField('Fecha de inicio', validators=[DataRequired()], render_kw={"class": "form-control"})
+    fecha_fin = DateField('Fecha de finalizacion', validators=[DataRequired()], render_kw={"class": "form-control"})
+    semestre = SelectField('Semestre', validators=[DataRequired()], render_kw={"class": "form-control"})
+    submit = SubmitField('Registrar ciclo lectivo', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
     
 class EditarForm(FlaskForm):
     email = EmailField('Email', validators=[Email("Ingrese un email válido")], render_kw={"class": "form-control"})
@@ -89,6 +95,12 @@ class EditarEstudianteForm(FlaskForm):
     tel = StringField('Teléfono', validators=[DataRequired()], render_kw={"class": "form-control"})
     barrio = IntegerField('Barrio', validators=[DataRequired()], render_kw={"class": "form-control"})
     submit = SubmitField('Editar estudiante', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
+
+class EditarCicloLectivoForm(FlaskForm):
+    fecha_ini = DateField('Fecha de inicio', validators=[DataRequired()], render_kw={"class": "form-control"})
+    fecha_fin = DateField('Fecha de finalizacion', validators=[DataRequired()], render_kw={"class": "form-control"})
+    semestre = SelectField('Semestre', validators=[DataRequired()], render_kw={"class": "form-control"})
+    submit = SubmitField('Editar ciclo lectivo', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
     
 class BusquedaUsuarioForm(FlaskForm):
     rol = SelectField('Buscar por rol', render_kw={"class": "form-control"})
@@ -103,4 +115,10 @@ class BusquedaEstudianteForm(FlaskForm):
     
 class BusquedaDocenteForm(FlaskForm):
     termino = StringField('Buscar por nombre o apellido', render_kw={"class": "form-control"})
+    submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})
+
+class BusquedaCicloLectivoForm(FlaskForm):
+    fecha_ini = DateField('Fecha de inicio', render_kw={"class": "form-control"})
+    fecha_fin = DateField('Fecha de finalizacion', render_kw={"class": "form-control"})
+    semestre = SelectField('Semestre', render_kw={"class": "form-control"})
     submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})

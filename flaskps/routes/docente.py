@@ -118,7 +118,7 @@ def registrar_docente():
                 Docente.db = get_db()
                     
                 docente = Docente(form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.domicilio.data, form.genero.data, form.tipo_doc.data, form.numero.data, form.tel.data)
-                Docente.insert(docencte)
+                Docente.insert(docente)
                 
                 flash("Docente registrado correctamente.")
                 exito = 1
