@@ -20,6 +20,16 @@
         <li class="list-group-item"><strong>Barrio: </strong>{{ estudiante.barrio_id }}</li>
 
     </menu>
+
+    <h5 class="mb-4 mt-4 pt-4"><i class="fa fa-info-circle"></i> Información del responsable:</h5>
+
+    <menu class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Nombre: </strong>{{ responsable.nombre }}</li>
+        <li class="list-group-item"><strong>Apellido: </strong>{{ responsable.apellido }}</li>
+        <li class="list-group-item"><strong>Tipo de responsable: </strong>{{ responsable.tipo_responsable }}</li>
+        <li class="list-group-item"><strong>Teléfono: </strong>{{ responsable.tel }}</li>
+
+    </menu>
 </div>
 
 {% endblock %}

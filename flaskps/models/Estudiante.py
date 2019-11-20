@@ -63,7 +63,8 @@ class Estudiante(object):
                              estudiante.barrio_id))
         self.db.commit()
 
-        return True
+        return cursor.lastrowid
+
     
     
     # EDITAR ESTUDIANTE
@@ -81,7 +82,56 @@ class Estudiante(object):
         self.db.commit()
 
         return ok
+
+    # AGREGAR RELACION CON RESPONSABLE
+    @classmethod 
+    def agregar_responsable(self, id_responsable, id_estudiante, id_tipo_responsable ):
+        cursor = self.db.cursor()
+
+        sql = """
+            INSERT INTO responsable_estudiante (responsable_id, estudiante_id, tipo_responsable_id)
+            VALUES (%s, %s, %s)
+        """
+        
+        cursor.execute(sql, ( id_responsable, id_estudiante, id_tipo_responsable ))
+        self.db.commit()
+        
+        return True
+
+    # MODIFICAR RESPONSABLE
+    @classmethod
+    def editar_responsable(self, id_responsable, id_estudiante, id_tipo_responsable ):
+        cursor = self.db.cursor()
+
+        sql = """
+            UPDATE responsable_estudiante 
+            SET responsable_id = %s, tipo_responsable_id = %s
+            WHERE estudiante_id = %s
+        """
+        
+        cursor.execute(sql, ( id_responsable, id_tipo_responsable, id_estudiante ))
+        self.db.commit()
+        
+        return True
+
     
+    # OBTENER RESPONSABLE
+    @classmethod
+    def get_responsable(self, id_estudiante):
+
+        sql = """
+            SELECT r.id, r.apellido, r.nombre, r.fecha_nac, r.tel, re.tipo_responsable_id, tr.nombre AS tipo_responsable 
+            FROM responsable r
+            INNER JOIN responsable_estudiante re ON (r.id = re.responsable_id)
+            INNER JOIN estudiante e ON (re.estudiante_id = e.id)
+            INNER JOIN tipo_responsable tr ON (re.tipo_responsable_id = tr.id)
+            WHERE e.id = %s
+        """
+        cursor = self.db.cursor()
+        cursor.execute(sql, ( id_estudiante ))
+        return cursor.fetchone()
+    
+
     # RECUPERAR TODOS LOS ESTUDIANTES POR TERMINO DE BUSQUEDA
     @classmethod
     def get_estudiantes(self, termino = None):
@@ -144,3 +194,20 @@ class Estudiante(object):
         self.db.commit()
 
         return ok
+
+    # OBTENER RESPONSABLES
+    @classmethod
+    def get_responsables_select(self):
+        
+        sql = """
+            SELECT id, apellido, nombre FROM responsable
+        """
+
+        cursor = self.db.cursor()
+        cursor.execute(sql)
+
+        res = cursor.fetchall()
+        lista = []
+        for l in res:
+            lista.append( (l['id'], l['nombre'] + ' ' + l['apellido']) )
+        return lista

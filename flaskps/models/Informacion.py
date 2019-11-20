@@ -14,7 +14,7 @@ class Informacion(object):
         res = cursor.fetchall()
         lista = []
         for l in res:
-            lista.append( (l['id'], l['nombre']) )
+            lista.append( (l['id'], l['nombre'].upper()) )
         
         return lista
 
