@@ -124,3 +124,294 @@ class Ciclo_lectivo(object):
         self.db.commit()
 
         return o
+
+    # RECUPERAR EL TALLER DE UN CICLO LECTIVO DADO UN ID CICLO LECTIVO
+    @classmethod
+    def get_taller(self, id_ciclo_lectivo):
+        sql = """
+                SELECT t.nombre 
+                FROM ciclo_lectivo c
+                INNER JOIN ciclo_lectivo_taller ct ON (c.id = ct.ciclo_lectivo_id)
+                INNER JOIN taller t ON (t.id = ct.taller_id) 
+                WHERE c.id = %s
+            """
+        cursor = self.db.cursor()
+        cursor.execute(sql, (id_ciclo_lectivo))
+
+        return cursor.fetchall()
+
+
+    # RECUPERAR LOS DOCENTES DE UN CICLO LECTIVO DADO UN ID CICLO LECTIVO
+    @classmethod
+    def get_docentes(self, id_ciclo_lectivo):
+        sql = """
+                SELECT d.nombre AND d.apellido
+                FROM ciclo_lectivo c
+                INNER JOIN docente_responsable_taller drt ON (c.id = drt.ciclo_lectivo_id)
+                INNER JOIN docente d ON (d.id = drt.docente_id) 
+                WHERE c.id = %s
+            """
+        cursor = self.db.cursor()
+        cursor.execute(sql, (id_ciclo_lectivo))
+
+        return cursor.fetchall()
+
+
+    # RECUPERAR LOS ESTUDIANTES DE UN CICLO LECTIVO DADO UN ID CICLO LECTIVO
+    @classmethod
+    def get_estudiantes(self, id_ciclo_lectivo):
+        sql = """
+                SELECT e.nombre AND e.apellido
+                FROM ciclo_lectivo c
+                INNER JOIN estudiante_taller aet ON (c.id = et.ciclo_lectivo_id)
+                INNER JOIN estudiante e ON (e.id = et.estudiante_id) 
+                WHERE c.id = %s
+            """
+        cursor = self.db.cursor()
+        cursor.execute(sql, (id_ciclo_lectivo))
+
+        return cursor.fetchall()
+
+    # AGREGAR TALLER A UN CICLO LECTIVO
+    @classmethod
+    def agregar_taller(self, ciclo_lectivo, taller):
+        
+        cursor = self.db.cursor()
+        
+        sql = """
+            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s
+        """
+
+        cursor.execute(sql, (ciclo_lectivo.fecha_ini, ciclo_lectivo.fecha_fin, ciclo_lectivo.semestre))
+        id_ciclo_lectivo = cursor.fetchone()['id']
+        
+        sql = """
+            SELECT id FROM taller where nombre=%s AND nombre_corto=%s
+        """
+
+        cursor.execute(sql, (taller.nombre, taller.nombre_corto))
+        id_taller = cursor.fetchone()['id']
+        
+        sql = """
+            SELECT *
+            FROM ciclo_lectivo_taller
+            WHERE ciclo_lectivo_id = %s AND taller_id = %s
+        """
+        cursor.execute(sql, (id_ciclo_lectivo, id_taller))
+        existe = cursor.fetchone()
+        
+        if existe:
+            return False
+
+        sql = """
+            INSERT INTO ciclo_lectivo_taller (taller_id, ciclo_lectivo_id)
+            VALUES (%s, %s)
+        """
+        cursor.execute(sql, (id_taller, id_ciclo_lectivo))
+
+        self.db.commit()
+
+        return True
+    
+    # QUITAR TALLER DE UN CICLO LECTIVO
+    @classmethod
+    def quitar_taller(self, ciclo_lectivo, taller):
+        
+        cursor = self.db.cursor()
+        
+        sql = """
+            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s
+        """
+
+        cursor.execute(sql, (ciclo_lectivo.fecha_ini, ciclo_lectivo.fecha_fin, ciclo_lectivo.semestre))
+        id_ciclo_lectivo = cursor.fetchone()['id']
+        
+        sql = """
+            SELECT id FROM taller where nombre=%s AND nombre_corto=%s
+        """
+
+        cursor.execute(sql, (taller.nombre, taller.nombre_corto))
+        id_taller = cursor.fetchone()['id']
+        
+        sql = """
+            DELETE 
+            FROM ciclo_lectivo_taller 
+            WHERE taller_id = %s AND ciclo_lectivo_id = %s
+        """
+
+        cursor.execute(sql, (id_taller, id_ciclo_lectivo))
+        self.db.commit()
+
+        return True
+
+    # AGREGAR DOCENTE A UN TALLER
+    @classmethod
+    def agregar_docente(self, ciclo_lectivo, taller, docente):
+        
+        cursor = self.db.cursor()
+        
+        sql = """
+            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s
+        """
+
+        cursor.execute(sql, (ciclo_lectivo.fecha_ini, ciclo_lectivo.fecha_fin, ciclo_lectivo.semestre))
+        id_ciclo_lectivo = cursor.fetchone()['id']
+        
+        sql = """
+            SELECT id FROM docente where nombre=%s AND apellido=%s AND numero=%s
+        """
+
+        cursor.execute(sql, (docente.nombre, docente.apellido, docente.numero))
+        id_docente = cursor.fetchone()['id']
+        
+        sql = """
+            SELECT id FROM taller where nombre=%s AND nombre_corto=%s
+        """
+
+        cursor.execute(sql, (taller.nombre, taller.nombre_corto))
+        id_taller = cursor.fetchone()['id']
+
+        sql = """
+            SELECT *
+            FROM docente_responsable_taller
+            WHERE ciclo_lectivo_id = %s AND taller_id = %s AND docente_id = %s
+        """
+        cursor.execute(sql, (id_ciclo_lectivo, id_taller, id_docente))
+        existe = cursor.fetchone()
+        
+        if existe:
+            return False
+
+        sql = """
+            INSERT INTO ciclo_lectivo_taller (taller_id, ciclo_lectivo_id, docente_id)
+            VALUES (%s, %s, %s)
+        """
+        cursor.execute(sql, (id_taller, id_ciclo_lectivo, id_docente))
+
+        self.db.commit()
+
+        return True
+    
+    # QUITAR DOCENTE DE UN TALLER
+    @classmethod
+    def quitar_docente(self, ciclo_lectivo, taller, docente):
+        
+        cursor = self.db.cursor()
+        
+        sql = """
+            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s
+        """
+
+        cursor.execute(sql, (ciclo_lectivo.fecha_ini, ciclo_lectivo.fecha_fin, ciclo_lectivo.semestre))
+        id_ciclo_lectivo = cursor.fetchone()['id']
+        
+        sql = """
+            SELECT id FROM docente where nombre=%s AND apellido=%s AND numero=%s
+        """
+
+        cursor.execute(sql, (docente.nombre, docente.apellido, docente.numero))
+        id_docente = cursor.fetchone()['id']
+        
+        sql = """
+            SELECT id FROM taller where nombre=%s AND nombre_corto=%s
+        """
+
+        cursor.execute(sql, (taller.nombre, taller.nombre_corto))
+        id_taller = cursor.fetchone()['id']
+        
+        sql = """
+            DELETE 
+            FROM docente_responsable_taller 
+            WHERE taller_id = %s AND ciclo_lectivo_id = %s AND docente_id = %s
+        """
+
+        cursor.execute(sql, (id_taller, id_ciclo_lectivo, id_docente))
+        self.db.commit()
+
+        return True
+
+    # AGREGAR ESTUDIANTE A UN TALLER
+    @classmethod
+    def agregar_estudiante(self, ciclo_lectivo, taller, estudiante):
+        
+        cursor = self.db.cursor()
+        
+        sql = """
+            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s
+        """
+
+        cursor.execute(sql, (ciclo_lectivo.fecha_ini, ciclo_lectivo.fecha_fin, ciclo_lectivo.semestre))
+        id_ciclo_lectivo = cursor.fetchone()['id']
+        
+        sql = """
+            SELECT id FROM estudiante where nombre=%s AND apellido=%s AND numero=%s
+        """
+
+        cursor.execute(sql, (estudiante.nombre, estudiante.apellido, estudiante.numero))
+        id_estudiante = cursor.fetchone()['id']
+        
+        sql = """
+            SELECT id FROM taller where nombre=%s AND nombre_corto=%s
+        """
+
+        cursor.execute(sql, (taller.nombre, taller.nombre_corto))
+        id_taller = cursor.fetchone()['id']
+
+        sql = """
+            SELECT *
+            FROM estudiante_taller
+            WHERE ciclo_lectivo_id = %s AND taller_id = %s AND estudiante_id = %s
+        """
+        cursor.execute(sql, (id_ciclo_lectivo, id_taller, id_estudiante))
+        existe = cursor.fetchone()
+        
+        if existe:
+            return False
+
+        sql = """
+            INSERT INTO estudiante_taller (taller_id, ciclo_lectivo_id, estudiante_id)
+            VALUES (%s, %s, %s)
+        """
+        cursor.execute(sql, (id_taller, id_ciclo_lectivo, id_estudiante))
+
+        self.db.commit()
+
+        return True
+    
+    # QUITAR ESTUDIANTE DE UN TALLER
+    @classmethod
+    def quitar_estudiante(self, ciclo_lectivo, taller, estudiante):
+        
+        cursor = self.db.cursor()
+        
+        sql = """
+            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s
+        """
+
+        cursor.execute(sql, (ciclo_lectivo.fecha_ini, ciclo_lectivo.fecha_fin, ciclo_lectivo.semestre))
+        id_ciclo_lectivo = cursor.fetchone()['id']
+        
+        sql = """
+            SELECT id FROM estudiante where nombre=%s AND apellido=%s AND numero=%s
+        """
+
+        cursor.execute(sql, (estudiante.nombre, estudiante.apellido, estudiante.numero))
+        id_estudiante = cursor.fetchone()['id']
+        
+        sql = """
+            SELECT id FROM taller where nombre=%s AND nombre_corto=%s
+        """
+
+        cursor.execute(sql, (taller.nombre, taller.nombre_corto))
+        id_taller = cursor.fetchone()['id']
+        
+        sql = """
+            DELETE 
+            FROM estudiante_taller 
+            WHERE taller_id = %s AND ciclo_lectivo_id = %s AND estudiante_id = %s
+        """
+
+        cursor.execute(sql, (id_taller, id_ciclo_lectivo, id_estudiante))
+        self.db.commit()
+
+        return True
