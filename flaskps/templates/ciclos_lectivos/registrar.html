@@ -1,0 +1,62 @@
+{% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
+<form method="post" class="form-signin mb-20 jumbotron animated fadeIn" novalidate>
+    <div class="text-center">
+        <img class="mb-4 img_form rounded-lg" src="/static/images/OEBerisso_logo.png" alt="Logo de la Orquesta Escuela de Berisso">
+        <h1 class="h3 mb-3 font-weight-normal">Registrar Ciclo lectivo</h1>
+    </div>
+
+    <!-- Mostrar mensajes guardados en flash -->
+    {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error == 1 %}
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+    {% elif exito == 1 %}
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Nota:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+
+    {% endif %} {% endfor %} {% endif %} {% endwith %} {{ form.hidden_tag() }}
+
+    <p>
+        {{ form.taller.label }}:<br> {{ form.taller() }}
+    </p>
+
+    <div class="row">
+        <div class="col">
+            <p>
+                {{ form.fecha_ini.label }}:<br> {{ form.fecha_ini() }}
+            </p>
+        </div>
+        <div class="col">
+            <p>
+                {{ form.fecha_fin.label }}:<br> {{ form.fecha_fin() }}
+            </p>
+        </div>
+
+    </div>
+    
+    <div class="row">
+        <div class="col">
+            <p>
+                {{ form.semestre.label }}:<br> {{ form.semestre() }}
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <p class="col">{{ form.submit() }}</p>
+        <p class="col"><a href="/home" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
+
+    </div>
+</form>
+
+
+{% endblock %}

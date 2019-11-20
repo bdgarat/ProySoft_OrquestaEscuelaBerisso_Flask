@@ -70,6 +70,7 @@ class SignUpCicloLectivoForm(FlaskForm):
     fecha_ini = DateField('Fecha de inicio', validators=[DataRequired()], render_kw={"class": "form-control"})
     fecha_fin = DateField('Fecha de finalizacion', validators=[DataRequired()], render_kw={"class": "form-control"})
     semestre = SelectField('Semestre', validators=[DataRequired()], render_kw={"class": "form-control"})
+    taller = SelectField('Taller', render_kw={"class": "form-control"})
     submit = SubmitField('Registrar ciclo lectivo', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
     
 class EditarForm(FlaskForm):
@@ -100,6 +101,7 @@ class EditarCicloLectivoForm(FlaskForm):
     fecha_ini = DateField('Fecha de inicio', validators=[DataRequired()], render_kw={"class": "form-control"})
     fecha_fin = DateField('Fecha de finalizacion', validators=[DataRequired()], render_kw={"class": "form-control"})
     semestre = SelectField('Semestre', validators=[DataRequired()], render_kw={"class": "form-control"})
+    taller = SelectField('Taller', render_kw={"class": "form-control"})
     submit = SubmitField('Editar ciclo lectivo', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
     
 class BusquedaUsuarioForm(FlaskForm):
@@ -121,4 +123,5 @@ class BusquedaCicloLectivoForm(FlaskForm):
     fecha_ini = DateField('Fecha de inicio', render_kw={"class": "form-control"})
     fecha_fin = DateField('Fecha de finalizacion', render_kw={"class": "form-control"})
     semestre = SelectField('Semestre', render_kw={"class": "form-control"})
+    taller = SelectField('Taller', render_kw={"class": "form-control"})
     submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})

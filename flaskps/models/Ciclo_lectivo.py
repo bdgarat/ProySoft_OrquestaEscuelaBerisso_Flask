@@ -13,7 +13,7 @@ class Ciclo_lectivo(object):
     # RECUPERAR TODOS LOS CICLOS LECTIVOS
     @classmethod
     def all(self):
-        sql = 'SELECT * FROM ciclo_lectivo WHERE WHERE borrado_logico = 0'
+        sql = 'SELECT * FROM ciclo_lectivo WHERE borrado_logico = 0'
         cursor = self.db.cursor()
         cursor.execute(sql)
 
@@ -23,7 +23,7 @@ class Ciclo_lectivo(object):
     # RECUPERAR UN CICLO LECTIVO DADO UN ID
     @classmethod
     def get_ciclo_lectivo(self, id):
-        sql = 'SELECT * FROM ciclo_lectivo where WHERE borrado_logico = 0 AND id = %s'
+        sql = 'SELECT * FROM ciclo_lectivo where borrado_logico = 0 and id = %s'
         cursor = self.db.cursor()
         cursor.execute(sql, (id))
 
@@ -46,7 +46,52 @@ class Ciclo_lectivo(object):
         self.db.commit()
 
         return True
-    
+
+    # VER SI EXISTE EL CICLO LECTIVO Y TALLER
+    @classmethod
+    def existe(self, ciclo_lectivo, nombre_taller):
+        cursor = self.db.cursor()
+        
+        sql = """
+            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s
+        """
+
+        cursor.execute(sql, (ciclo_lectivo.fecha_ini, ciclo_lectivo.fecha_fin, ciclo_lectivo.semestre))
+        id_ciclo_lectivo = cursor.fetchone()['id']
+        
+        sql = """
+            SELECT id FROM taller where nombre=%s
+        """
+
+        cursor.execute(sql, (taller.nombre))
+        id_taller = cursor.fetchone()['id']
+        
+        sql = """
+            SELECT *
+            FROM ciclo_lectivo_taller
+            WHERE ciclo_lectivo_id = %s AND taller_id = %s
+        """
+        cursor.execute(sql, (id_ciclo_lectivo, id_taller))
+        existe = cursor.fetchone()
+        
+        if existe:
+            return True
+
+        
+        return False
+
+    # OBTENER TALLERES DE LA DB
+    @classmethod
+    def all_talleres(self):
+        sql = """
+            SELECT t.nombre
+            FROM taller t
+        """
+        cursor = self.db.cursor()
+        cursor.execute(sql)
+        return cursor.fetchall()
+
+
     # EDITAR UN CICLO LECTIVO
     @classmethod
     def editar(self, id_ciclo_lectivo, fecha_ini, fecha_fin, semestre):
@@ -138,7 +183,7 @@ class Ciclo_lectivo(object):
         cursor = self.db.cursor()
         cursor.execute(sql, (id_ciclo_lectivo))
 
-        return cursor.fetchall()
+        return cursor.fetchone()
 
 
     # RECUPERAR LOS DOCENTES DE UN CICLO LECTIVO DADO UN ID CICLO LECTIVO
@@ -174,7 +219,7 @@ class Ciclo_lectivo(object):
 
     # AGREGAR TALLER A UN CICLO LECTIVO
     @classmethod
-    def agregar_taller(self, ciclo_lectivo, taller):
+    def agregar_taller(self, ciclo_lectivo, nombre_taller):
         
         cursor = self.db.cursor()
         
@@ -186,10 +231,10 @@ class Ciclo_lectivo(object):
         id_ciclo_lectivo = cursor.fetchone()['id']
         
         sql = """
-            SELECT id FROM taller where nombre=%s AND nombre_corto=%s
+            SELECT id FROM taller where nombre=%s
         """
 
-        cursor.execute(sql, (taller.nombre, taller.nombre_corto))
+        cursor.execute(sql, (nombre_taller))
         id_taller = cursor.fetchone()['id']
         
         sql = """
@@ -215,7 +260,7 @@ class Ciclo_lectivo(object):
     
     # QUITAR TALLER DE UN CICLO LECTIVO
     @classmethod
-    def quitar_taller(self, ciclo_lectivo, taller):
+    def quitar_taller(self, ciclo_lectivo, nombre_taller):
         
         cursor = self.db.cursor()
         
@@ -227,10 +272,10 @@ class Ciclo_lectivo(object):
         id_ciclo_lectivo = cursor.fetchone()['id']
         
         sql = """
-            SELECT id FROM taller where nombre=%s AND nombre_corto=%s
+            SELECT id FROM taller where nombre=%s
         """
 
-        cursor.execute(sql, (taller.nombre, taller.nombre_corto))
+        cursor.execute(sql, (nombre_taller))
         id_taller = cursor.fetchone()['id']
         
         sql = """
