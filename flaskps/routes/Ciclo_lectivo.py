@@ -219,12 +219,12 @@ def show(id_ciclo_lectivo):
 
             # Obtengo los estudiantes del ciclo lectivo
             estudiantes = []
-            for e in Usuario.get_estudiantes(ciclo_lectivo['id']):
+            for e in Ciclo_lectivo.get_estudiantes(ciclo_lectivo['id']):
                 estudiantes.append(e['nombre'])
 
             # Obtengo los estudiantes del ciclo lectivo
             docentes = []
-            for d in Usuario.get_docentes(ciclo_lectivo['id']):
+            for d in Ciclo_lectivo.get_docentes(ciclo_lectivo['id']):
                 docentes.append(d['nombre'])      
 
             return render_template("ciclos_lectivos/show.html", ciclo_lectivo=ciclo_lectivo, taller=taller, estudiantes=estudiantes, docentes=docentes)
