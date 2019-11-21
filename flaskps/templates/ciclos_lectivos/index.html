@@ -37,7 +37,8 @@
                 <tr>
                     <th scope="col" id="id" aria-label="id">ID</th>
                     <th scope="col" id="nombre_taller" aria-label="nombre del taller">Nombre del taller</th>
-                    <th scope="col" id="fechas" aria-label="fecha de inicio y fin del ciclo lectivo">Fecha de inicio y fin</th>
+                    <th scope="col" id="fecha_inicio" aria-label="fecha de inicio del ciclo lectivo">Fecha de inicio</th>
+                    <th scope="col" id="fecha_fin" aria-label="fecha de fin del ciclo lectivo">Fecha de fin</th>
                     <th scope="col" id="semestre" aria-label="semestre del ciclo lectivo">Semestre</th>
                     <th scope="col" id="operaciones" aria-label="operaciones">Operaciones</th>
                 </tr>
@@ -46,8 +47,9 @@
                 {% for c in ciclos_lectivos %}
                 <tr>
                     <th scope="row" id="tupla{{ loop.index }}">{{ c.id }}</th>
-                    <td headers="nombre_taller">{{ talleres(c) }}</td>
-                    <td headers="fechas">{{ c.fecha_ini }},{{ d.fecha_fin }}</td>
+                    <td headers="nombre_taller">{{ talleres[loop.index] }}</td>
+                    <td headers="fecha_inicio">{{ c.fecha_ini }}</td>
+                    <td headers="fecha_fin">{{ c.fecha_fin }}</td>
                     <td headers="semestre">{{ c.semestre }}</td>
                     <td headers="operaciones">
 
@@ -57,14 +59,14 @@
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary eliminar" title="Eliminar ciclo lectivo" role="button" data-toggle="modal" data-target="#eliminarCicloLectivoModal{{ c.id }}"><i class="fa fa-trash"></i>
                         </button> {% endif %} {% if 'ciclo_lectivo_update' in session['permisos'] %}
-                        <button type="button" onclick="location.href='/ciclo_lectivo/editar/{{ d.id }}'" class="btn btn-primary" title="Editar ciclo lectivo" style="margin: 5px"><i class="fa fa-edit"></i></button> {% endif %}
+                        <button type="button" onclick="location.href='/ciclo_lectivo/editar/{{ c.id }}'" class="btn btn-primary" title="Editar ciclo lectivo" style="margin: 5px"><i class="fa fa-edit"></i></button> {% endif %}
 
                         <!-- Modal -->
-                        <div class="modal fade" id="eliminarCicloLectivoModal{{ d.id }}" tabindex="-1" role="dialog" aria-labelledby="eliminarCicloLectivoModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="eliminarCicloLectivoModal{{ c.id }}" tabindex="-1" role="dialog" aria-labelledby="eliminarCicloLectivoModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="eliminarCicloLectivoModalLabel">¿Estás seguro que querés eliminar al ciclo lectivo {{ c.id }} {{ talleres(c) }}?</h5>
+                                        <h5 class="modal-title" id="eliminarCicloLectivoModalLabel">¿Estás seguro que querés eliminar al ciclo lectivo {{ c.id }} {{ talleres[c] }}?</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -74,7 +76,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                                        <button onclick="location.href='/ciclo_lectivo/eliminar/{{ d.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                                        <button onclick="location.href='/ciclo_lectivo/eliminar/{{ c.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
                                     </div>
                                 </div>
                             </div>

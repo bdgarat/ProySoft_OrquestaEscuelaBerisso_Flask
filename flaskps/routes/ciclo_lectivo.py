@@ -71,10 +71,10 @@ def index_ciclo_lectivo():
         error_busqueda = 1
 
     # Obtengo los talleres de los ciclos lectivos
-    ciclo_lectivo = Ciclo_lectivo.get_ciclos_lectivos()
     talleres = []
-    for t in Ciclo_lectivo.get_taller(ciclo_lectivo['id']):
-        talleres.append(t['nombre'])    
+    for t in range(len(Ciclo_lectivo.get_ciclos_lectivos()) + 1):
+        taller = Ciclo_lectivo.get_taller(t)
+        talleres.append(taller)
         
     pagination = Pagination(page=page, 
                             per_page=per_page, 
@@ -180,13 +180,11 @@ def editar(id_ciclo_lectivo):
         taller = Ciclo_lectivo.get_taller(id_ciclo_lectivo)
 
         if ciclo_lectivo:
-            print ("llegue al primer if")
             
-
             if request.method == 'POST':
-                print ("llegue al segundo if")
+
                 if form.validate_on_submit():
-                    print ("llegue al tercer if")
+
                     Ciclo_lectivo.editar(id_ciclo_lectivo, form.fecha_ini.data, form.fecha_fin.data, form.semestre.data)
 
                     # vuelvo a consultar por los valores del ciclo lectivo
@@ -207,11 +205,6 @@ def editar(id_ciclo_lectivo):
             form.semestre.data = ciclo_lectivo['semestre']
             form.taller.data = taller
 
-            print("***COMIENZO DEL DEBUG***")
-            print(form)
-            print(error)
-            print(exito)
-            print("***FIN DEL DEBUG***")
 
             return render_template("ciclos_lectivos/editar.html", form=form, error=error, exito=exito)
         else:
