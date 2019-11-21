@@ -1,12 +1,12 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 <div class="jumbotron">
-    <h2 class="display-4 animated fadeIn">Listado de docentes</h2>
+    <h2 class="display-4 animated fadeIn">Listado de responsables</h2>
     <hr class="my-4"> {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error_busqueda != 1%}
 
     <div class="text-right">
-        <button class="btn btn-primary" onclick="location.href='/docente/registrar'">
+        <button class="btn btn-primary" onclick="location.href='/responsable/registrar'">
             <i class="fa fa-plus"></i>
-            Agregar docente
+            Agregar responsable
         </button>
     </div>
     <div class="alert alert-warning alert-dismissible fade show animated fadeIn" role="alert">
@@ -28,10 +28,10 @@
     </form>
     <br>
 
-    <p>Total de docentes: <strong>{{ pagination.total }}</strong></p>
+    <p>Total de responsables: <strong>{{ pagination.total }}</strong></p>
     <div class="table-responsive">
         <table class="table text-center">
-            <caption>Tabla con los docentes registrados</caption>
+            <caption>Tabla con los responsables registrados</caption>
 
             <thead class="thead-dark">
                 <tr>
@@ -41,26 +41,26 @@
                 </tr>
             </thead>
             <tbody>
-                {% for d in docentes %}
+                {% for r in responsables %}
                 <tr>
-                    <th scope="row" id="tupla{{ loop.index }}">{{ d.id }}</th>
-                    <td headers="nombre_y_apellido">{{ d.apellido }},{{ d.nombre }}</td>
+                    <th scope="row" id="tupla{{ loop.index }}">{{ r.id }}</th>
+                    <td headers="nombre_y_apellido">{{ r.apellido }},{{ r.nombre }}</td>
                     <td headers="operaciones">
 
-                        {% if 'docente_show' in session['permisos'] %}
-                        <button type="button" onclick="location.href='/docente/show/{{ d.id }}'" class="btn btn-primary" title="Ver perfil del docente" style="margin: 5px"><i class="fa fa-user-circle"></i></button>{% endif %} {% if 'docente_destroy' in
-                        session['permisos'] %}
+                        {% if 'estudiante_show' in session['permisos'] %}
+                        <button type="button" onclick="location.href='/responsable/show/{{ r.id }}'" class="btn btn-primary" title="Ver perfil del responsable" style="margin: 5px"><i class="fa fa-user-circle"></i></button>{% endif %} {% if 'estudiante_destroy'
+                        in session['permisos'] %}
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary eliminar" title="Eliminar docente" role="button" data-toggle="modal" data-target="#eliminarDocenteModal{{ d.id }}"><i class="fa fa-trash"></i>
-                        </button> {% endif %} {% if 'docente_update' in session['permisos'] %}
-                        <button type="button" onclick="location.href='/docente/editar/{{ d.id }}'" class="btn btn-primary" title="Editar docente" style="margin: 5px"><i class="fa fa-edit"></i></button> {% endif %}
+                        <button type="button" class="btn btn-primary eliminar" title="Eliminar responsable" role="button" data-toggle="modal" data-target="#eliminarDocenteModal{{ r.id }}"><i class="fa fa-trash"></i>
+                        </button> {% endif %} {% if 'estudiante_update' in session['permisos'] %}
+                        <button type="button" onclick="location.href='/responsable/editar/{{ r.id }}'" class="btn btn-primary" title="Editar responsable" style="margin: 5px"><i class="fa fa-edit"></i></button> {% endif %}
 
                         <!-- Modal -->
-                        <div class="modal fade" id="eliminarDocenteModal{{ d.id }}" tabindex="-1" role="dialog" aria-labelledby="eliminarDocenteModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="eliminarDocenteModal{{ r.id }}" tabindex="-1" role="dialog" aria-labelledby="eliminarDocenteModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="eliminarDocenteModalLabel">¿Estás seguro que querés eliminar al docente {{ d.apellido }} {{ d.nombre }}?</h5>
+                                        <h5 class="modal-title" id="eliminarDocenteModalLabel">¿Estás seguro que querés eliminar al responsable {{ r.apellido }} {{ r.nombre }}?</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -70,7 +70,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                                        <button onclick="location.href='/docente/eliminar/{{ d.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                                        <button onclick="location.href='/responsable/eliminar/{{ r.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
                                     </div>
                                 </div>
                             </div>

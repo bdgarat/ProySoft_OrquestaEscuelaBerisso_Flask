@@ -1,0 +1,22 @@
+{% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
+
+<div class="jumbotron">
+    <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-user" aria-hidden="true"></i> {{ responsable.apellido }}, {{ responsable.nombre }}
+    </h1>
+    <hr class="my-2">
+    <br>
+    <h5 class="mb-4 mt-4 pt-4"><i class="fa fa-info-circle"></i> Información del responsable:</h5>
+
+    <menu class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Fecha de nacimiento: </strong>{{ responsable.fecha_nac }}</li>
+        <li class="list-group-item"><strong>Localidad: </strong>{{ responsable.localidad_id }}</li>
+        <li class="list-group-item"><strong>Domicilio: </strong>{{ responsable.domicilio }}</li>
+        <li class="list-group-item"><strong>Genero: </strong>{{ responsable.genero_id }}</li>
+        <li class="list-group-item"><strong>Tipo de documento: </strong>{{ responsable.tipo_doc_id }}</li>
+        <li class="list-group-item"><strong>Número de documento: </strong>{{ responsable.numero }}</li>
+        <li class="list-group-item"><strong>Teléfono de contacto: </strong>{{ responsable.tel }}</li>
+
+    </menu>
+</div>
+
+{% endblock %}

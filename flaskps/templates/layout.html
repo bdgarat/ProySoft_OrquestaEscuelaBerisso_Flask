@@ -95,8 +95,11 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                             {% if "estudiante_index" in session['permisos'] %}
-                            <a class="dropdown-item" href="/index/estudiante">Listado de estudiantes</a> {% endif %} {% if "estudiante_new" in session['permisos'] %}
-                            <a class="dropdown-item" href="/estudiante/registrar">Registrar estudiante</a> {% endif %}
+                            <a class="dropdown-item" href="/index/estudiante">Listado de estudiantes</a>
+                            <a class="dropdown-item" href="/index/responsable">Listado de responsables</a> {% endif %} {% if "estudiante_new" in session['permisos'] %}
+                            <a class="dropdown-item" href="/estudiante/registrar">Registrar estudiante</a>
+                            <a class="dropdown-item" href="/responsable/registrar">Registrar responsable</a> {% endif %}
+
 
 
                         </div>

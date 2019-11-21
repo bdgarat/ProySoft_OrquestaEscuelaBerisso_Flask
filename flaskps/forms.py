@@ -72,7 +72,7 @@ class EditarDocenteForm(FlaskForm):
     tipo_doc = SelectField('Tipo de documento', validators=[DataRequired()], render_kw={"class": "form-control"})
     numero = StringField('Número de documento', validators=[DataRequired()], render_kw={"class": "form-control"})
     tel = StringField('Teléfono', validators=[DataRequired()], render_kw={"class": "form-control"})
-    submit = SubmitField('Editar docente', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
+    submit = SubmitField('Editar', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
     
 class SignUpDocenteForm(FlaskForm):
     nombre = StringField('Nombre', validators=[DataRequired()], render_kw={"class": "form-control"})
@@ -84,7 +84,7 @@ class SignUpDocenteForm(FlaskForm):
     tipo_doc = SelectField('Tipo de documento', validators=[DataRequired()], render_kw={"class": "form-control"})
     numero = StringField('Número de documento', validators=[DataRequired()], render_kw={"class": "form-control"})
     tel = StringField('Teléfono', validators=[DataRequired()], render_kw={"class": "form-control"})
-    submit = SubmitField('Registrar docente', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
+    submit = SubmitField('Registrar', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
 
 class SignUpCicloLectivoForm(FlaskForm):
     fecha_ini = DateField('Fecha de inicio', validators=[DataRequired()], render_kw={"class": "form-control"})
