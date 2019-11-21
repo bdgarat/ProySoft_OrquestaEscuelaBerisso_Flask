@@ -42,6 +42,19 @@
     <div class="row">
         <div class="col">
             <p>
+                {{ form.tipo_responsable.label }}:<br> {{ form.tipo_responsable() }}
+            </p>
+        </div>
+        <div class="col">
+            <p>
+                {{ form.responsable.label }}:<br> {{ form.responsable() }}
+            </p>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>
                 {{ form.localidad.label }}:<br> {{ form.localidad() }}
             </p>
         </div>

@@ -97,6 +97,7 @@ def registrar_estudiante():
     else:  
     
         form = SignUpEstudianteForm()
+        Estudiante.db = get_db()
         
         # para manejar los mensajes flash
         error=0
@@ -108,22 +109,34 @@ def registrar_estudiante():
         form.genero.choices = Informacion.all('genero')
         form.nivel.choices = Informacion.all('nivel')
         form.escuela.choices = Informacion.all('escuela')
+        form.tipo_responsable.choices = Informacion.all('tipo_responsable')
+        form.responsable.choices = Estudiante.get_responsables_select()
         
 
         # Api
         form.tipo_doc.choices = tipos_documento()
         form.localidad.choices = localidades()
 
-
         
+        
+
         if request.method == 'POST':
             
+            # IMPORTANTE, CASTEAR A INTEGER 
+            form.genero.data = int(form.genero.data)
+            form.nivel.data = int(form.nivel.data)
+            form.tipo_responsable.data = int(form.tipo_responsable.data)
+            form.responsable.data = int(form.responsable.data)
+            form.escuela.data = int(form.escuela.data)
+            form.barrio.data = int(form.barrio.data)
+            
             if form.validate_on_submit():
-                Estudiante.db = get_db()
                     
                 estudiante = Estudiante(form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.nivel.data, form.domicilio.data, form.genero.data, form.escuela.data, form.tipo_doc.data, form.numero.data, form.tel.data, form.barrio.data)
-                Estudiante.insert(estudiante)
-                
+                id_estudiante = Estudiante.insert(estudiante)
+
+                Estudiante.agregar_responsable(form.responsable.data, id_estudiante, form.tipo_responsable.data)
+
                 flash("Estudiante registrado correctamente.")
                 exito = 1
                     
@@ -167,17 +180,45 @@ def editar(id_estudiante):
         exito=0
         Estudiante.db = get_db()
         estudiante = Estudiante.get_estudiante(id_estudiante)
-        print(estudiante)
+        responsable = Estudiante.get_responsable(id_estudiante)
+
+        # Armo la lista de opciones del select de tipo de documento y localidades
+        Informacion.db = get_db()
+        form.barrio.choices = Informacion.all('barrio')
+        form.genero.choices = Informacion.all('genero')
+        form.nivel.choices = Informacion.all('nivel')
+        form.escuela.choices = Informacion.all('escuela')
+        form.tipo_responsable.choices = Informacion.all('tipo_responsable')
+        form.responsable.choices = Estudiante.get_responsables_select()
+        
+
+        # Api
+        form.tipo_doc.choices = tipos_documento()
+        form.localidad.choices = localidades()
         
         if estudiante:
 
             if request.method == 'POST':
                 
+                # IMPORTANTE, CASTEAR A INTEGER 
+                form.genero.data = int(form.genero.data)
+                form.nivel.data = int(form.nivel.data)
+                form.tipo_responsable.data = int(form.tipo_responsable.data)
+                form.responsable.data = int(form.responsable.data)
+                form.escuela.data = int(form.escuela.data)
+                form.barrio.data = int(form.barrio.data)
+
+
                 if form.validate_on_submit():
                     Estudiante.editar(id_estudiante, form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.nivel.data, form.domicilio.data, form.genero.data, form.escuela.data, form.tipo_doc.data, form.numero.data, form.tel.data, form.barrio.data)
+                    
+                    if form.responsable.data == responsable['id'] or form.tipo_responsable.data == responsable['tipo_responsable_id']:
+                        Estudiante.editar_responsable(form.responsable.data, id_estudiante, form.tipo_responsable.data)
+
                     # vuelvo a consultar por los valores del estudiante
                     estudiante = Estudiante.get_estudiante(id_estudiante) 
-                    print(estudiante)  
+                    responsable = Estudiante.get_responsable(id_estudiante)
+
                     flash("Estudiante editado correctamente.")
                     exito = 1
                 else:
@@ -185,18 +226,22 @@ def editar(id_estudiante):
                     error = 1               
            
             # vuelvo a setear el form con los valores actualizados del estudiante
+            form.genero.default = estudiante['genero_id']  
+            form.localidad.default = estudiante['localidad_id']
+            form.tipo_doc.default = estudiante['tipo_doc_id']
+            form.escuela.default = estudiante['escuela_id']
+            form.nivel.default = estudiante['nivel_id']
+            form.barrio.default = estudiante['barrio_id']
+            form.tipo_responsable.default = responsable['tipo_responsable_id']
+            form.responsable.default = responsable['id']
+            form.process() #IMPORTANTE
+
             form.nombre.data = estudiante['nombre']
             form.apellido.data = estudiante['apellido']
             form.fecha_nac.data = estudiante['fecha_nac']
-            form.localidad.data = estudiante['localidad_id']
-            form.nivel.data = estudiante['nivel_id']
             form.domicilio.data = estudiante['domicilio']
-            form.genero.data = estudiante['genero_id']
-            form.escuela.data = estudiante['escuela_id']
-            form.tipo_doc.data = estudiante['tipo_doc_id']
             form.numero.data = estudiante['numero']
             form.tel.data = estudiante['tel']
-            form.barrio.data = estudiante['barrio_id']
 
             return render_template("estudiantes/editar.html", form=form, error=error, exito=exito)
         else:
@@ -211,10 +256,10 @@ def show(id_estudiante):
 
         Estudiante.db = get_db()
         estudiante = Estudiante.get_estudiante(id_estudiante)       
-
+        responsable = Estudiante.get_responsable(id_estudiante)
         if estudiante:
             
-            return render_template("estudiantes/show.html", estudiante=estudiante)
+            return render_template("estudiantes/show.html", estudiante=estudiante, responsable=responsable)
         else:
             return redirect("/home")
 

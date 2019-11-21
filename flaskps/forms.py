@@ -40,8 +40,28 @@ class SignUpEstudianteForm(FlaskForm):
     numero = StringField('Número de documento', validators=[DataRequired()], render_kw={"class": "form-control"})
     tel = StringField('Teléfono', validators=[DataRequired()], render_kw={"class": "form-control"})
     barrio = SelectField('Barrio', validators=[DataRequired()], render_kw={"class": "form-control"})
+    tipo_responsable = SelectField('Tipo de responsable', validators=[DataRequired()], render_kw={"class": "form-control"})
+    responsable = SelectField('Responsable', validators=[DataRequired()], render_kw={"class": "form-control"})
+
     submit = SubmitField('Registrar estudiante', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
     
+class EditarEstudianteForm(FlaskForm):
+    nombre = StringField('Nombre', validators=[DataRequired()], render_kw={"class": "form-control"})
+    apellido = StringField('Apellido', validators=[DataRequired()], render_kw={"class": "form-control"})
+    fecha_nac = DateField('Fecha de nacimiento', validators=[DataRequired()], render_kw={"class": "form-control"})
+    localidad = SelectField('Localidad', validators=[DataRequired()], render_kw={"class": "form-control"})
+    nivel = SelectField('Nivel', validators=[DataRequired()], render_kw={"class": "form-control"})
+    domicilio = StringField('Domicilio', validators=[DataRequired()], render_kw={"class": "form-control"})
+    genero = SelectField('Género', validators=[DataRequired()], render_kw={"class": "form-control"})
+    escuela = SelectField('Escuela', validators=[DataRequired()], render_kw={"class": "form-control"})
+    tipo_doc = SelectField('Tipo de documento', validators=[DataRequired()], render_kw={"class": "form-control"})
+    numero = StringField('Número de documento', validators=[DataRequired()], render_kw={"class": "form-control"})
+    tel = StringField('Teléfono', validators=[DataRequired()], render_kw={"class": "form-control"})
+    barrio = IntegerField('Barrio', validators=[DataRequired()], render_kw={"class": "form-control"})
+    tipo_responsable = SelectField('Tipo de responsable', validators=[DataRequired()], render_kw={"class": "form-control"})
+    responsable = SelectField('Responsable', validators=[DataRequired()], render_kw={"class": "form-control"})
+    submit = SubmitField('Editar estudiante', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
+
 class EditarDocenteForm(FlaskForm):
     nombre = StringField('Nombre', validators=[DataRequired()], render_kw={"class": "form-control"})
     apellido = StringField('Apellido', validators=[DataRequired()], render_kw={"class": "form-control"})
@@ -82,20 +102,6 @@ class EditarForm(FlaskForm):
     quitar_rol = SelectField('Quitar rol', render_kw={"class": "form-control"})
     submit = SubmitField('Editar usuario', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
     
-class EditarEstudianteForm(FlaskForm):
-    nombre = StringField('Nombre', validators=[DataRequired()], render_kw={"class": "form-control"})
-    apellido = StringField('Apellido', validators=[DataRequired()], render_kw={"class": "form-control"})
-    fecha_nac = DateField('Fecha de nacimiento', validators=[DataRequired()], render_kw={"class": "form-control"})
-    localidad = SelectField('Localidad', validators=[DataRequired()], render_kw={"class": "form-control"})
-    nivel = SelectField('Nivel', validators=[DataRequired()], render_kw={"class": "form-control"})
-    domicilio = StringField('Domicilio', validators=[DataRequired()], render_kw={"class": "form-control"})
-    genero = SelectField('Género', validators=[DataRequired()], render_kw={"class": "form-control"})
-    escuela = SelectField('Escuela', validators=[DataRequired()], render_kw={"class": "form-control"})
-    tipo_doc = SelectField('Tipo de documento', validators=[DataRequired()], render_kw={"class": "form-control"})
-    numero = StringField('Número de documento', validators=[DataRequired()], render_kw={"class": "form-control"})
-    tel = StringField('Teléfono', validators=[DataRequired()], render_kw={"class": "form-control"})
-    barrio = IntegerField('Barrio', validators=[DataRequired()], render_kw={"class": "form-control"})
-    submit = SubmitField('Editar estudiante', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
 
 class EditarCicloLectivoForm(FlaskForm):
     fecha_ini = DateField('Fecha de inicio', validators=[DataRequired()], render_kw={"class": "form-control"})
