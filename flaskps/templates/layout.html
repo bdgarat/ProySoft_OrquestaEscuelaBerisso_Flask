@@ -36,23 +36,72 @@
                     {% if session['user'] %}
                     <!-- el problema es cuando hay mas de un rol -->
                     <!-- {% if ("estudiante_index" or "docente_index" or "prepector_index") in session['permisos'] or session['user']['nombre_rol'] == "admin" %} -->
+                    {% if "admin" in session['roles'] %}
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-user-plus" aria-hidden="true"></i> Administración
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            {% if "estudiante_index" in session['permisos'] %}
-                            <a class="dropdown-item" href="/index/estudiante">Listado de estudiantes</a> {% endif %} {% if "docente_index" in session['permisos'] %}
-                            <a class="dropdown-item" href="/index/docente">Listado de docentes</a> {% endif %} {% if "admin" in session['roles'] %}
-                            <a class="dropdown-item" href="/index/usuarios">Listado de usuarios</a>
-                            <div class="dropdown-divider"></div>
+
                             <a class="dropdown-item" href="/config">Configuración de Sistema</a>
-                            <a class="dropdown-item" href="/usuario/registrar">Registrar usuario</a> {% endif %} {% if "estudiante_new" in session['permisos'] %}
-                            <a class="dropdown-item" href="/estudiante/registrar">Registrar estudiante</a> {% endif %}{% if "docente_new" in session['permisos'] %}
-                            <a class="dropdown-item" href="/docente/registrar">Registrar docente</a> {% endif %}
+                            <!-- <div class="dropdown-divider"></div> -->
                         </div>
                     </div>
+                    {% endif %} {% if "admin" in session['roles'] %}
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-user-plus" aria-hidden="true"></i> Usuarios
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                            <a class="dropdown-item" href="/index/usuarios">Listado de usuarios</a>
+                            <a class="dropdown-item" href="/usuario/registrar">Registrar usuario</a>
+
+                        </div>
+                    </div>
+                    {% endif %} {% if "admin" in session['roles'] %}
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-user-plus" aria-hidden="true"></i> Ciclos lectivos
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                            <a class="dropdown-item" href="/index/ciclo_lectivo">Listado de ciclos</a>
+                            <a class="dropdown-item" href="/ciclo_lectivo/registrar">Registrar ciclo</a>
+                            <!-- <div class="dropdown-divider"></div> -->
+                        </div>
+                    </div>
+                    {% endif %} {% if "docente_index" in session['permisos'] or "docente_new" in session['permisos'] %}
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-user-plus" aria-hidden="true"></i> Docentes
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                            {% if "docente_index" in session['permisos'] %}
+                            <a class="dropdown-item" href="/index/docente">Listado de docentes</a> {% endif %} {% if "docente_new" in session['permisos'] %}
+                            <a class="dropdown-item" href="/docente/registrar">Registrar docente</a> {% endif %}
+
+
+                        </div>
+                    </div>
+                    {% endif %} {% if "estudiante_index" in session['permisos'] or "estudiante_new" in session['permisos'] %}
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-user-plus" aria-hidden="true"></i> Estudiantes
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                            {% if "estudiante_index" in session['permisos'] %}
+                            <a class="dropdown-item" href="/index/estudiante">Listado de estudiantes</a> {% endif %} {% if "estudiante_new" in session['permisos'] %}
+                            <a class="dropdown-item" href="/estudiante/registrar">Registrar estudiante</a> {% endif %}
+
+
+                        </div>
+                    </div>
+                    {% endif %}
                     <!-- {% endif %} -->
                 </div>
 
