@@ -69,12 +69,6 @@ def index_ciclo_lectivo():
     if (total == 0 and search == True):
         flash("La búsqueda no obtuvo resultados.")
         error_busqueda = 1
-
-    # Obtengo los talleres de los ciclos lectivos
-    talleres = []
-    for t in range(len(Ciclo_lectivo.get_ciclos_lectivos()) + 1):
-        taller = Ciclo_lectivo.get_taller(t)
-        talleres.append(taller)
         
     pagination = Pagination(page=page, 
                             per_page=per_page, 
@@ -88,8 +82,7 @@ def index_ciclo_lectivo():
                             pagination=pagination, 
                             ciclos_lectivos=ciclos_lectivos,
                             form=form, 
-                            error_busqueda=error_busqueda,
-                            talleres=talleres)
+                            error_busqueda=error_busqueda)
     
 # REGISTRAR CICLO LECTIVO
 
@@ -102,14 +95,12 @@ def registrar():
         return redirect('/home')  
        
     
-    Usuario.db = get_db()
+    Ciclo_lectivo.db = get_db()
     form = SignUpCicloLectivoForm()
-    
-    # Armo la lista de opciones del select
-    talleres = [('0', 'Seleccionar taller')]
-    for t in Ciclo_lectivo.all_talleres():
-        talleres.append( (t['nombre'], t['nombre']) )
-    form.taller.choices = talleres
+    semestres = []
+    semestres.append(('1', 'Semestre 1'))
+    semestres.append(('2', 'Semestre 2'))
+    form.semestre.choices = semestres
 
     # para manejar los mensajes flash
     error=0
@@ -119,25 +110,18 @@ def registrar():
         
         if form.validate_on_submit():
             
-            Ciclo_lectivo.db = get_db()
+            if (form.fecha_fin.data > form.fecha_ini.data):
+                Ciclo_lectivo.db = get_db()
 
-            ciclo_lectivo = Ciclo_lectivo(form.fecha_ini.data, form.fecha_fin.data, form.semestre.data)
-
-            if not Ciclo_lectivo.existe(Ciclo_lectivo, form.taller.data):
-                  
+                ciclo_lectivo = Ciclo_lectivo(form.fecha_ini.data, form.fecha_fin.data, form.semestre.data)
+                    
                 Ciclo_lectivo.insert(ciclo_lectivo)
-                
-                # chequeo si se otorgó taller y lo agrego
-                if form.taller.data != '0':
-                    ciclo_lectivo.agregar_taller(ciclo_lectivo, form.taller.data)
                 
                 flash("Ciclo lectivo registrado correctamente.")
                 exito = 1
-                
             else:
-                flash("Error al registrar: Ya existe ese ciclo lectivo.")
-                error = 1
-                
+                error=1
+                flash("La fecha de fin el ciclo lectivo debe ser mayor a la fecha de inicio del mismo")             
         else: 
             flash("Debe completar todos los campos")
             error = 1

@@ -40,7 +40,14 @@
                 </button>
     </div>
 
-    {% endif %}{% endfor %} {% endif %} {% endwith %}
+    {% endif %}{% endfor %} {% endif %} {% endwith %} {% if pagination.total == 0%}
+    <div class="alert alert-warning alert-dismissible fade show animated fadeIn" role="alert">
+        <strong>Nota:</strong> No hay usuarios cargados.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+    {% endif %}
 
     <p>Total de usuarios: <strong>{{ pagination.total }}</strong></p>
     <div class="table-responsive">

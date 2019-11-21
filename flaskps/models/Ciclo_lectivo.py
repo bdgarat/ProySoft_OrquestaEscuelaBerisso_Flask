@@ -34,15 +34,15 @@ class Ciclo_lectivo(object):
     @classmethod
     def insert(self, ciclo_lectivo):
         sql = """
-            INSERT INTO ciclo_lectivo (fecha_ini, fecha_fin, semestre)
-            VALUES (%s, %s, %s)
+            INSERT INTO ciclo_lectivo (fecha_ini, fecha_fin, semestre, borrado_logico)
+            VALUES (%s, %s, %s, 0)
         """
 
         cursor = self.db.cursor()
         cursor.execute(sql, (
                              ciclo_lectivo.fecha_ini, 
                              ciclo_lectivo.fecha_fin, 
-                             ciclo_lectivo.semestre))
+                             ciclo_lectivo.semestre ))
         self.db.commit()
 
         return True
@@ -115,16 +115,12 @@ class Ciclo_lectivo(object):
         params = []
         sql = """
                 SELECT *
-                FROM ciclo_lectivo c
-                INNER JOIN ciclo_lectivo_taller ct ON (c.id = ct.ciclo_lectivo_id)
-                INNER JOIN taller t ON (t.id = ct.taller_id) 
+                FROM ciclo_lectivo c 
                 WHERE borrado_logico = 0
             """
         if termino != None:
             termino = '%'+termino+'%'
-            sql = sql + """ AND (fecha_ini LIKE %s OR fecha_fin LIKE %s OR semestre LIKE %s AND nombre LIKE %s AND nombre_corto LIKE %s) """
-            params.append(termino)
-            params.append(termino)
+            sql = sql + """ AND (fecha_ini LIKE %s OR fecha_fin LIKE %s OR semestre LIKE %s) """
             params.append(termino)
             params.append(termino)
             params.append(termino)
@@ -141,20 +137,18 @@ class Ciclo_lectivo(object):
         sql = """
                 SELECT *
                 FROM ciclo_lectivo c
-                INNER JOIN ciclo_lectivo_taller ct ON (c.id = ct.ciclo_lectivo_id)
-                INNER JOIN taller t ON (t.id = ct.taller_id) 
                 WHERE borrado_logico = 0
         """
         if termino != None:
             termino = '%'+termino+'%'
-            sql = sql + """ AND (fecha_ini LIKE %s OR fecha_fin LIKE %s OR semestre LIKE %s AND nombre LIKE %s AND nombre_corto LIKE %s) """
+            sql = sql + """ AND (fecha_ini LIKE %s OR fecha_fin LIKE %s OR semestre LIKE %s) """
             
         sql = sql + """
                     LIMIT %s OFFSET %s
                     """
 
         if termino != None:
-            params = (termino, termino, termino, termino, termino, limit, offset)
+            params = (termino, termino, termino, limit, offset)
         else:
             params = (limit, offset)
 
