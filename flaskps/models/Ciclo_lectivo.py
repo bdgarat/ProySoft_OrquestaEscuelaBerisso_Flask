@@ -108,17 +108,23 @@ class Ciclo_lectivo(object):
 
         return ok
 
+
     # RECUPERAR TODOS LOS CICLOS LECTIVOS POR TERMINO DE BUSQUEDA
     @classmethod
     def get_ciclos_lectivos(self, termino = None):
         params = []
         sql = """
-            SELECT * FROM ciclo_lectivo
-            WHERE borrado_logico = 0
-        """
+                SELECT *
+                FROM ciclo_lectivo c
+                INNER JOIN ciclo_lectivo_taller ct ON (c.id = ct.ciclo_lectivo_id)
+                INNER JOIN taller t ON (t.id = ct.taller_id) 
+                WHERE borrado_logico = 0
+            """
         if termino != None:
             termino = '%'+termino+'%'
-            sql = sql + """ AND (fecha_ini LIKE %s OR fecha_fin LIKE %s OR semestre LIKE %s) """
+            sql = sql + """ AND (fecha_ini LIKE %s OR fecha_fin LIKE %s OR semestre LIKE %s AND nombre LIKE %s AND nombre_corto LIKE %s) """
+            params.append(termino)
+            params.append(termino)
             params.append(termino)
             params.append(termino)
             params.append(termino)
@@ -133,19 +139,22 @@ class Ciclo_lectivo(object):
     def get_ciclos_lectivos_paginados(self, limit, offset = 1, termino = None):
         
         sql = """
-            SELECT * FROM ciclo_lectivo
-            WHERE borrado_logico = 0
+                SELECT *
+                FROM ciclo_lectivo c
+                INNER JOIN ciclo_lectivo_taller ct ON (c.id = ct.ciclo_lectivo_id)
+                INNER JOIN taller t ON (t.id = ct.taller_id) 
+                WHERE borrado_logico = 0
         """
         if termino != None:
             termino = '%'+termino+'%'
-            sql = sql + """ AND (fecha_ini LIKE %s OR fecha_fin LIKE %s OR semestre LIKE %s) """
+            sql = sql + """ AND (fecha_ini LIKE %s OR fecha_fin LIKE %s OR semestre LIKE %s AND nombre LIKE %s AND nombre_corto LIKE %s) """
             
         sql = sql + """
                     LIMIT %s OFFSET %s
                     """
 
         if termino != None:
-            params = (termino, termino, termino, limit, offset)
+            params = (termino, termino, termino, termino, termino, limit, offset)
         else:
             params = (limit, offset)
 
@@ -153,7 +162,8 @@ class Ciclo_lectivo(object):
         cursor.execute(sql, params)
 
         return cursor.fetchall()
-    
+
+
     # ELIMINAR UN CICLO LECTIVO
     @classmethod
     def eliminar(self, id_ciclo_lectivo):
@@ -185,7 +195,6 @@ class Ciclo_lectivo(object):
 
         return cursor.fetchone()
 
-
     # RECUPERAR LOS DOCENTES DE UN CICLO LECTIVO DADO UN ID CICLO LECTIVO
     @classmethod
     def get_docentes(self, id_ciclo_lectivo):
@@ -208,7 +217,7 @@ class Ciclo_lectivo(object):
         sql = """
                 SELECT e.nombre AND e.apellido
                 FROM ciclo_lectivo c
-                INNER JOIN estudiante_taller aet ON (c.id = et.ciclo_lectivo_id)
+                INNER JOIN estudiante_taller et ON (c.id = et.ciclo_lectivo_id)
                 INNER JOIN estudiante e ON (e.id = et.estudiante_id) 
                 WHERE c.id = %s
             """
@@ -224,7 +233,7 @@ class Ciclo_lectivo(object):
         cursor = self.db.cursor()
         
         sql = """
-            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s
+            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s AND borrado_logico = 0
         """
 
         cursor.execute(sql, (ciclo_lectivo.fecha_ini, ciclo_lectivo.fecha_fin, ciclo_lectivo.semestre))
@@ -265,7 +274,7 @@ class Ciclo_lectivo(object):
         cursor = self.db.cursor()
         
         sql = """
-            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s
+            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s AND borrado_logico = 0
         """
 
         cursor.execute(sql, (ciclo_lectivo.fecha_ini, ciclo_lectivo.fecha_fin, ciclo_lectivo.semestre))
@@ -296,7 +305,7 @@ class Ciclo_lectivo(object):
         cursor = self.db.cursor()
         
         sql = """
-            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s
+            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s AND borrado_logico = 0
         """
 
         cursor.execute(sql, (ciclo_lectivo.fecha_ini, ciclo_lectivo.fecha_fin, ciclo_lectivo.semestre))
@@ -344,7 +353,7 @@ class Ciclo_lectivo(object):
         cursor = self.db.cursor()
         
         sql = """
-            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s
+            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s AND borrado_logico = 0
         """
 
         cursor.execute(sql, (ciclo_lectivo.fecha_ini, ciclo_lectivo.fecha_fin, ciclo_lectivo.semestre))
@@ -382,7 +391,7 @@ class Ciclo_lectivo(object):
         cursor = self.db.cursor()
         
         sql = """
-            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s
+            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s AND borrado_logico = 0
         """
 
         cursor.execute(sql, (ciclo_lectivo.fecha_ini, ciclo_lectivo.fecha_fin, ciclo_lectivo.semestre))
@@ -430,7 +439,7 @@ class Ciclo_lectivo(object):
         cursor = self.db.cursor()
         
         sql = """
-            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s
+            SELECT id FROM ciclo_lectivo WHERE fecha_ini=%s AND fecha_fin=%s AND semestre=%s AND borrado_logico = 0
         """
 
         cursor.execute(sql, (ciclo_lectivo.fecha_ini, ciclo_lectivo.fecha_fin, ciclo_lectivo.semestre))

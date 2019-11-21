@@ -120,6 +120,7 @@ class BusquedaDocenteForm(FlaskForm):
     submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})
 
 class BusquedaCicloLectivoForm(FlaskForm):
+    termino = StringField('Buscar taller o fechas', render_kw={"class": "form-control"})
     fecha_ini = DateField('Fecha de inicio', render_kw={"class": "form-control"})
     fecha_fin = DateField('Fecha de finalizacion', render_kw={"class": "form-control"})
     semestre = SelectField('Semestre', render_kw={"class": "form-control"})

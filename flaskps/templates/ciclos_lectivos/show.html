@@ -1,14 +1,14 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 
 <div class="jumbotron">
-    <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-user" aria-hidden="true"></i> {{ ciclo_lectivo.id }}, {{ taller }}
+    <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-user" aria-hidden="true"></i> {{ taller.nombre }}
     </h1>
     <hr class="my-2">
     <br>
     <h5 class="mb-4 mt-4 pt-4"><i class="fa fa-info-circle"></i> Información del Ciclo lectivo:</h5>
 
     <menu class="list-group list-group-flush">
-        <li class="list-group-item"><strong>Taller dado: </strong>{{ taller }}</li>
+        <li class="list-group-item"><strong>Taller dado: </strong>{{ taller.nombre }}</li>
         <li class="list-group-item"><strong>Fecha de inicio: </strong>{{ ciclo_lectivo.fecha_ini }}</li>
         <li class="list-group-item"><strong>Fecha de fin: </strong>{{ ciclo_lectivo.fecha_fin }}</li>
         <li class="list-group-item"><strong>Semestre: </strong>{{ ciclo_lectivo.semestre }}</li>

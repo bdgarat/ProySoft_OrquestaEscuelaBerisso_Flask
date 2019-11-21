@@ -46,7 +46,7 @@
                 {% for c in ciclos_lectivos %}
                 <tr>
                     <th scope="row" id="tupla{{ loop.index }}">{{ c.id }}</th>
-                    <td headers="nombre_taller">{% c.get_taller() %}</td>
+                    <td headers="nombre_taller">{{ talleres(c) }}</td>
                     <td headers="fechas">{{ c.fecha_ini }},{{ d.fecha_fin }}</td>
                     <td headers="semestre">{{ c.semestre }}</td>
                     <td headers="operaciones">
@@ -64,7 +64,7 @@
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="eliminarCicloLectivoModalLabel">¿Estás seguro que querés eliminar al ciclo lectivo {{ c.id }} {% c.get_taller() %}?</h5>
+                                        <h5 class="modal-title" id="eliminarCicloLectivoModalLabel">¿Estás seguro que querés eliminar al ciclo lectivo {{ c.id }} {{ talleres(c) }}?</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
