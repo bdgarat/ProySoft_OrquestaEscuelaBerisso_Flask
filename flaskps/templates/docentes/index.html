@@ -3,21 +3,21 @@
     <h2 class="display-4 animated fadeIn">Listado de docentes</h2>
     <hr class="my-4"> {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error_busqueda != 1%}
 
+    <div class="alert alert-warning alert-dismissible fade show animated fadeIn" role="alert">
+        <strong>Nota:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    {% endif %}{% endfor %} {% endif %} {% endwith %}
+
     <div class="text-right">
         <button class="btn btn-primary" onclick="location.href='/docente/registrar'">
             <i class="fa fa-plus"></i>
             Agregar docente
         </button>
     </div>
-    <div class="alert alert-warning alert-dismissible fade show animated fadeIn" role="alert">
-        <strong>Nota:</strong> {{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-    </div>
-
-    {% endif %}{% endfor %} {% endif %} {% endwith %}
-
     <!-- No se permite tener el form dentro de la table -->
     <form class="form-horizontal my-2 my-lg-0" method="get">
         {{ form.termino.label }}:

@@ -102,6 +102,7 @@ def registrar_estudiante():
         # para manejar los mensajes flash
         error=0
         exito=0
+        error_api=0
         
         # Armo la lista de opciones del select de tipo de documento y localidades
         Informacion.db = get_db()
@@ -116,6 +117,11 @@ def registrar_estudiante():
         # Api
         form.tipo_doc.choices = tipos_documento()
         form.localidad.choices = localidades()
+        if form.tipo_doc.choices == [] or form.localidad.choices == []:
+            flash("No se puede realizar la operación en este momento. Intente más tarde")
+            error_api=1
+            return render_template("estudiantes/registrar.html", form=form, error=error, exito=exito, error_api=error_api)
+
 
         
         
@@ -145,7 +151,7 @@ def registrar_estudiante():
                 error = 1
 
                 
-        return render_template("estudiantes/registrar.html", form=form, error=error, exito=exito)
+        return render_template("estudiantes/registrar.html", form=form, error=error, exito=exito, error_api=error_api)
     
     
 # ELIMINAR ESTUDIANTE
@@ -178,6 +184,8 @@ def editar(id_estudiante):
         # para manejar los mensajes flash
         error=0
         exito=0
+        error_api=0
+
         Estudiante.db = get_db()
         estudiante = Estudiante.get_estudiante(id_estudiante)
         responsable = Estudiante.get_responsable(id_estudiante)
@@ -195,6 +203,10 @@ def editar(id_estudiante):
         # Api
         form.tipo_doc.choices = tipos_documento()
         form.localidad.choices = localidades()
+        if form.tipo_doc.choices == [] or form.localidad.choices == []:
+            flash("No se puede realizar la operación en este momento. Intente más tarde")
+            error_api=1
+            return render_template("estudiantes/editar.html", form=form, error=error, exito=exito, error_api=error_api)
         
         if estudiante:
 
@@ -212,7 +224,7 @@ def editar(id_estudiante):
                 if form.validate_on_submit():
                     Estudiante.editar(id_estudiante, form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.nivel.data, form.domicilio.data, form.genero.data, form.escuela.data, form.tipo_doc.data, form.numero.data, form.tel.data, form.barrio.data)
                     
-                    if form.responsable.data == responsable['id'] or form.tipo_responsable.data == responsable['tipo_responsable_id']:
+                    if form.responsable.data != responsable['id'] or form.tipo_responsable.data != responsable['tipo_responsable_id']:
                         Estudiante.editar_responsable(form.responsable.data, id_estudiante, form.tipo_responsable.data)
 
                     # vuelvo a consultar por los valores del estudiante
@@ -243,7 +255,7 @@ def editar(id_estudiante):
             form.numero.data = estudiante['numero']
             form.tel.data = estudiante['tel']
 
-            return render_template("estudiantes/editar.html", form=form, error=error, exito=exito)
+            return render_template("estudiantes/editar.html", form=form, error=error, exito=exito, error_api=error_api)
         else:
             return redirect("/home")
 
@@ -257,6 +269,7 @@ def show(id_estudiante):
         Estudiante.db = get_db()
         estudiante = Estudiante.get_estudiante(id_estudiante)       
         responsable = Estudiante.get_responsable(id_estudiante)
+
         if estudiante:
             
             return render_template("estudiantes/show.html", estudiante=estudiante, responsable=responsable)

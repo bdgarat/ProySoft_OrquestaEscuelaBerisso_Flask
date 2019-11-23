@@ -1,4 +1,6 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
+
+
 <form method="post" class="form-signin mb-20 jumbotron animated fadeIn" novalidate>
 
     <div class="text-center">
@@ -7,7 +9,7 @@
     </div>
 
     <!-- Mostrar mensajes guardados en flash -->
-    {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error == 1 %}
+    {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error == 1 or error_api == 1%}
 
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Error:</strong> {{ message }}
@@ -24,8 +26,7 @@
             </button>
     </div>
 
-    {% endif %} {% endfor %} {% endif %} {% endwith %} {{ form.hidden_tag() }}
-
+    {% endif %} {% endfor %} {% endif %} {% endwith %} {{ form.hidden_tag() }} {% if error_api == 0 %}
     <div class="row">
         <div class="col">
             <p>
@@ -119,6 +120,10 @@
         <p class="col"><a href="javascript:history.back()" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
 
     </div>
+    <!-- End error_api -->
+    {% else %}
+    <p><a href="javascript:history.back()" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
+    {% endif %}
 </form>
 
 
