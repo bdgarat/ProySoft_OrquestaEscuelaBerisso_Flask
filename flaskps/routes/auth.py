@@ -35,6 +35,8 @@ def login():
             session['roles'] = get_roles(user[0]['id'])
             # cargar lista de permisos del usuario
             session['permisos'] = get_permisos(user)
+            
+            session.permanent = True
 
             return redirect("/home")
         else:

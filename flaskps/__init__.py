@@ -6,6 +6,7 @@ from flaskps.config import Config
 from flask_session import Session
 from flaskps.models.Usuario import Usuario
 from flaskps.models.Configuracion import Configuracion
+from datetime import timedelta
 
 # Configuración inicial de la app
 app = Flask(__name__)
@@ -14,6 +15,9 @@ app.config.from_object(Config)
 #Server Side session
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
+
+# Tiempo para la sesión
+app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=30)
 
 
 @app.route("/")

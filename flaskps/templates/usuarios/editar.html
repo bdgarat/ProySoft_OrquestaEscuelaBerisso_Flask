@@ -40,7 +40,7 @@
         {{ form.last_name.label }}:<br> {{ form.last_name() }}
     </p>
 
-    
+
     <h4 class="mt-4">Administrar roles:</h4>
 
     <h6>Roles actuales:</h6>
@@ -49,14 +49,15 @@
         <li>{{ r | capitalize }}</li>
         {% endfor %}
     </ol>
-    
+
     <div class="form row justify-content-md-center  mb-5">
-        <p class="mr-5">{{ form.agregar_rol.label }}{{ form.agregar_rol }}</p>   
-        <p>{{ form.quitar_rol.label }}{{ form.quitar_rol }}</p>   
+        <p class="mr-5">{{ form.agregar_rol.label }}{{ form.agregar_rol }}</p>
+        <p>{{ form.quitar_rol.label }}{{ form.quitar_rol }}</p>
     </div>
-    
+
 
     <p>{{ form.submit() }}</p>
+    <p><a href="javascript:history.back()" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
 </form>
 
 {% endblock %}

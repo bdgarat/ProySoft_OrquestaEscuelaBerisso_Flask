@@ -13,18 +13,20 @@
         <li class="list-group-item"><strong>Fecha de fin: </strong>{{ ciclo_lectivo.fecha_fin }}</li>
         <li class="list-group-item"><strong>Semestre: </strong>{{ ciclo_lectivo.semestre }}</li>
         <li class="list-group-item"><strong>Docentes: </strong>
-        <ol class="pt-2">
-            {% for d in docentes %}
-            <li>{{ d | capitalize }}</li>
-            {% endfor %}
-        </ol>
-        <li class="list-group-item"><strong>Estudiantes: </strong>
-        <ol class="pt-2">
-            {% for e in estudiantes %}
-            <li>{{ e | capitalize }}</li>
-            {% endfor %}
-        </ol>
+            <ol class="pt-2">
+                {% for d in docentes %}
+                <li>{{ d | capitalize }}</li>
+                {% endfor %}
+            </ol>
+            <li class="list-group-item"><strong>Estudiantes: </strong>
+                <ol class="pt-2">
+                    {% for e in estudiantes %}
+                    <li>{{ e | capitalize }}</li>
+                    {% endfor %}
+                </ol>
     </menu>
+    <p><a href="javascript:history.back()" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
+
 </div>
 
 {% endblock %}
