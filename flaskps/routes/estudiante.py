@@ -246,19 +246,18 @@ def editar(id_estudiante):
                     if existe:
                         flash("Ya existe un estudiante con ese documento.")
                         error = 1
-                        return render_template("estudiantes/editar.html", form=form, error=error, exito=exito, error_api=error_api)
+                    else:    
+                        Estudiante.editar(id_estudiante, form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.nivel.data, form.domicilio.data, form.genero.data, form.escuela.data, form.tipo_doc.data, form.numero.data, form.tel.data, form.barrio.data)
                         
-                    Estudiante.editar(id_estudiante, form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.nivel.data, form.domicilio.data, form.genero.data, form.escuela.data, form.tipo_doc.data, form.numero.data, form.tel.data, form.barrio.data)
-                    
-                    if form.responsable.data != responsable['id'] or form.tipo_responsable.data != responsable['tipo_responsable_id']:
-                        Estudiante.editar_responsable(form.responsable.data, id_estudiante, form.tipo_responsable.data)
+                        if form.responsable.data != responsable['id'] or form.tipo_responsable.data != responsable['tipo_responsable_id']:
+                            Estudiante.editar_responsable(form.responsable.data, id_estudiante, form.tipo_responsable.data)
 
-                    # vuelvo a consultar por los valores del estudiante
-                    estudiante = Estudiante.get_estudiante(id_estudiante) 
-                    responsable = Estudiante.get_responsable(id_estudiante)
+                        # vuelvo a consultar por los valores del estudiante
+                        estudiante = Estudiante.get_estudiante(id_estudiante) 
+                        responsable = Estudiante.get_responsable(id_estudiante)
 
-                    flash("Estudiante editado correctamente.")
-                    exito = 1
+                        flash("Estudiante editado correctamente.")
+                        exito = 1
                 else:
                     flash("Debe completar todos los campos")
                     error = 1               

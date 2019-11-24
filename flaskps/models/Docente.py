@@ -19,7 +19,7 @@ class Docente(object):
     # RECUPERAR TODOS LOS DOCENTES
     @classmethod
     def all(self):
-        sql = 'SELECT * FROM docente where borrado_logico = 0'
+        sql = 'SELECT * FROM docente'
         cursor = self.db.cursor()
         cursor.execute(sql)
 
@@ -29,7 +29,7 @@ class Docente(object):
     # RECUPERAR UN DOCENTE DADO UN ID
     @classmethod
     def get_docente(self, id):
-        sql = 'SELECT * FROM docente where borrado_logico = 0 and id = %s'
+        sql = 'SELECT * FROM docente where id = %s'
         cursor = self.db.cursor()
         cursor.execute(sql, (id))
 
@@ -65,11 +65,10 @@ class Docente(object):
         params = []
         sql = """
             SELECT * FROM docente
-            WHERE borrado_logico = 0
         """
         if termino != None:
             termino = '%'+termino+'%'
-            sql = sql + """ AND (nombre LIKE %s OR apellido LIKE %s) """
+            sql = sql + """ WHERE (nombre LIKE %s OR apellido LIKE %s) """
             params.append(termino)
             params.append(termino)
 
@@ -84,12 +83,11 @@ class Docente(object):
         
         sql = """
             SELECT * FROM docente
-            WHERE borrado_logico = 0
             """
 
         if termino != None:
             termino = '%'+termino+'%'
-            sql = sql + """ AND (nombre LIKE %s OR apellido LIKE %s)"""
+            sql = sql + """ WHERE AND (nombre LIKE %s OR apellido LIKE %s)"""
             
         sql = sql + """
                     LIMIT %s OFFSET %s
@@ -105,15 +103,28 @@ class Docente(object):
 
         return cursor.fetchall()
     
-    
+    # RECUPERAR DOCENTE DADO UN ID CON INFORMACION
+    @classmethod
+    def get_docente_show(self, id):
+        sql = """
+            SELECT d.id, d.apellido, d.nombre, d.fecha_nac, d.domicilio, d.numero,
+                    d.tel, g.nombre AS genero
+            FROM docente d
+            INNER JOIN genero g ON (g.id = d.genero_id)
+            WHERE d.id = %s 
+        """
+        cursor = self.db.cursor()
+        cursor.execute(sql, (id))
+        return cursor.fetchone()
+
+
     # ELIMINAR UN DOCENTE
     @classmethod
     def eliminar(self, id_docente):
         cursor = self.db.cursor()
         
         sql = """
-            UPDATE docente 
-            SET borrado_logico = 1
+            DELETE FROM docente
             WHERE id = %s
         """
 
@@ -121,6 +132,22 @@ class Docente(object):
         self.db.commit()
 
         return o
+
+    # ACTIVAR / DESACTIVAR UN DOCENTE
+    @classmethod
+    def activar(self, id_docente):
+        cursor = self.db.cursor()
+        
+        sql = """
+            UPDATE docente 
+            SET borrado_logico = not borrado_logico
+            WHERE id = %s
+        """
+
+        ok = cursor.execute(sql, (id_docente))
+        self.db.commit()
+
+        return ok
     
     # EDITAR UN DOCENTE
     @classmethod
@@ -137,3 +164,16 @@ class Docente(object):
         self.db.commit()
 
         return ok
+    
+    # VER SI EXISTE TIPO_DOC+NUM
+    @classmethod
+    def existe_doc(self, tipo_doc_id, numero):
+        sql = """
+            SELECT id
+            FROM docente
+            WHERE tipo_doc_id = %s
+            AND numero = %s
+        """
+        cursor = self.db.cursor()
+        cursor.execute(sql, (tipo_doc_id, numero))
+        return cursor.fetchone()

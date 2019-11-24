@@ -100,6 +100,7 @@ def registrar_docente():
         # para manejar los mensajes flash
         error=0
         exito=0
+        error_api=0
         
         # Armo la lista de opciones del select de tipo de documento y localidades
         Informacion.db = get_db()
@@ -108,6 +109,10 @@ def registrar_docente():
         # Api
         form.tipo_doc.choices = tipos_documento()
         form.localidad.choices = localidades()
+        if form.tipo_doc.choices == [] or form.localidad.choices == []:
+            flash("No se puede realizar la operación en este momento. Intente más tarde")
+            error_api=1
+            return render_template("docentes/registrar.html", form=form, error=error, exito=exito, error_api=error_api)
         
         if request.method == 'POST':
             
@@ -116,19 +121,24 @@ def registrar_docente():
             
             if form.validate_on_submit():
                 Docente.db = get_db()
-                    
-                docente = Docente(form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.domicilio.data, form.genero.data, form.tipo_doc.data, form.numero.data, form.tel.data)
-                Docente.insert(docente)
                 
-                flash("Docente registrado correctamente.")
-                exito = 1
+                # VALIDAR QUE NO EXISTA OTRO TIPO_DOC+NUMERO IGUAL
+                existe = Docente.existe_doc(form.tipo_doc.data, form.numero.data)
+                if existe:
+                    flash("Ya existe un docente con ese documento.")
+                    error = 1
+                else:                
+                    docente = Docente(form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.domicilio.data, form.genero.data, form.tipo_doc.data, form.numero.data, form.tel.data)
+                    Docente.insert(docente)
                     
+                    flash("Docente registrado correctamente.")
+                    exito = 1    
             else: 
                 flash("Debe completar todos los campos.")
                 error = 1
 
                 
-        return render_template("docentes/registrar.html", form=form, error=error, exito=exito)
+        return render_template("docentes/registrar.html", form=form, error=error, exito=exito, error_api=error_api)
     
     
 # ELIMINAR DOCENTE
@@ -147,6 +157,22 @@ def eliminar(id_docente):
     
     return redirect('/index/docente')
 
+
+#  ACTIVAR/DESACTIVAR DOCENTE
+@mod.route("/docente/activar/<id_docente>")
+def activar(id_docente):
+    # Reviso que tenga permiso
+    if 'docente_update' not in session['permisos']:
+        flash('No tiene permiso para editar docentes. ')
+        return redirect('/index/docente')  
+
+    Docente.db = get_db()
+    if Docente.activar(id_docente):
+        flash("Se guardaron los cambios con éxito")
+    
+    return redirect("/index/docente")
+
+
 #  EDITAR DOCENTE
 @mod.route("/docente/editar/<id_docente>", methods=['GET', 'POST'])
 def editar(id_docente):
@@ -162,6 +188,8 @@ def editar(id_docente):
         # para manejar los mensajes flash
         error=0
         exito=0
+        error_api=0
+
         Docente.db = get_db()
         docente = Docente.get_docente(id_docente)
         
@@ -172,23 +200,31 @@ def editar(id_docente):
         # Api
         form.tipo_doc.choices = tipos_documento()
         form.localidad.choices = localidades()
-
+        if form.tipo_doc.choices == [] or form.localidad.choices == []:
+            flash("No se puede realizar la operación en este momento. Intente más tarde")
+            error_api=1
+            return render_template("docentes/editar.html", form=form, error=error, exito=exito, error_api=error_api)
 
         if docente:
-            
-
             if request.method == 'POST':
             
                 # IMPORTANTE, CASTEAR A INTEGER 
                 form.genero.data = int(form.genero.data)
 
                 if form.validate_on_submit():
-                    Docente.editar(id_docente, form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.domicilio.data, form.genero.data, form.tipo_doc.data, form.numero.data, form.tel.data)
+                    
+                    # VALIDAR QUE NO EXISTA OTRO TIPO_DOC+NUMERO IGUAL
+                    existe = Docente.existe_doc(form.tipo_doc.data, form.numero.data)
+                    if existe:
+                        flash("Ya existe un docente con ese documento.")
+                        error = 1
+                    else:
+                        Docente.editar(id_docente, form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.domicilio.data, form.genero.data, form.tipo_doc.data, form.numero.data, form.tel.data)
 
-                    # vuelvo a consultar por los valores del docente
-                    docente = Docente.get_docente(id_docente)    
-                    flash("Docente editado correctamente.")
-                    exito = 1
+                        # vuelvo a consultar por los valores del docente
+                        docente = Docente.get_docente(id_docente)    
+                        flash("Docente editado correctamente.")
+                        exito = 1
                 else:
                     flash("Debe completar todos los campos")
                     error = 1
@@ -208,7 +244,7 @@ def editar(id_docente):
             form.numero.data = docente['numero']
             form.tel.data = docente['tel']
 
-            return render_template("docentes/editar.html", form=form, error=error, exito=exito)
+            return render_template("docentes/editar.html", form=form, error=error, exito=exito, error_api=error_api)
         else:
             return redirect("/home")
 
@@ -222,12 +258,39 @@ def show(id_docente):
 
         Docente.db = get_db()
         docente = Docente.get_docente(id_docente)
+        tipo_doc=None
+        localidad=None
+        # API
+        error_api = 0
+        tipos_doc = tipos_documento()
+        loc = localidades()
+        if tipos_doc == [] or loc == []:
+            flash("No se puede realizar la operación en este momento. Intente más tarde")
+            error_api = 1
+            return render_template("docentes/show.html", docente=docente, 
+                                                        error_api=error_api,
+                                                        localidad=localidad,
+                                                        tipo_doc=tipo_doc)
         
-        if (docente):      
-            return render_template("docentes/show.html", docente=docente)
+        tipo_doc = get_nombre_api(tipos_doc, docente['tipo_doc_id'])
+        localidad = get_nombre_api(loc, docente['localidad_id'])
+
+        docente = Docente.get_docente_show(id_docente)
+        if docente:      
+            return render_template("docentes/show.html", docente=docente, 
+                                                        error_api=error_api,
+                                                        localidad=localidad,
+                                                        tipo_doc=tipo_doc )
         else:
             return redirect("/home")
 
     else:
         flash("No tiene permisos para realizar ésta acción")
         return redirect("/home")
+
+# OPERACIONES
+def get_nombre_api(lista, id):
+    for t in lista:
+        if int(t[0]) == int(id):
+            return t[1]
+    return None

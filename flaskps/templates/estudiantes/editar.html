@@ -7,7 +7,8 @@
     </div>
 
     <!-- Mostrar mensajes guardados en flash -->
-    {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error == 1 or error_api == 1 %}
+    {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} 
+    {% if error == 1 or error_api == 1 %}
 
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Error:</strong> {{ message }}
