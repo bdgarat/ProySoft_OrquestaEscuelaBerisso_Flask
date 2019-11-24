@@ -55,14 +55,26 @@
                     <td headers="operaciones">
 
                         {% if 'estudiante_show' in session['permisos'] %}
-                        <button type="button" onclick="location.href='/estudiante/show/{{ e.id }}'" class="btn btn-primary" title="Ver perfil del estudiante" style="margin: 5px"><i class="fa fa-user-circle"></i></button>{% endif %} {% if 'estudiante_destroy'
-                        in session['permisos'] %}
+                        <button type="button" onclick="location.href='/estudiante/show/{{ e.id }}'" class="btn btn-primary" title="Ver perfil del estudiante" style="margin: 5px"><i class="fa fa-user-circle"></i></button>
+                        {% endif %} 
+                        {% if 'estudiante_destroy' in session['permisos'] %}
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary eliminar" title="Eliminar estudiante" role="button" data-toggle="modal" data-target="#exampleModal{{ e.id }}"><i class="fa fa-trash"></i>
-                        </button> {% endif %} {% if 'estudiante_update' in session['permisos'] %}
-                        <button type="button" onclick="location.href='/estudiante/editar/{{ e.id }}'" class="btn btn-primary" title="Editar estudiante" style="margin: 5px"><i class="fa fa-edit"></i></button> {% endif %}
+                        </button> 
+                        {% endif %} 
+                        
+                        {% if 'estudiante_update' in session['permisos'] %}
+                        <button type="button" onclick="location.href='/estudiante/editar/{{ e.id }}'" class="btn btn-primary" title="Editar estudiante" style="margin: 5px"><i class="fa fa-edit"></i></button> 
+                        
+                        {% if e.borrado_logico == 0 %}
+                        <button type="button" class="btn btn-primary" title="Desactivar estudiante" style="margin: 5px" data-toggle="modal" data-target="#desactivarModal{{ e.id }}">Desactivar</button>
+                        {% else %}
+                        <button type="button" class="btn btn-primary" title="Activar estudiante" style="margin: 5px" data-toggle="modal" data-target="#activarModal{{ e.id }}">Activar</button>
+                        {% endif %}
 
-                        <!-- Modal -->
+                        {% endif %}
+
+                        <!-- Modal eliminar -->
                         <div class="modal fade" id="exampleModal{{ e.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -82,6 +94,44 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Modal activar-->
+                        <div class="modal fade" id="activarModal{{ e.id }}" tabindex="-1" role="dialog" aria-labelledby="activarModal{{ e.id }}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="confirmacionActivarModal{{ e.id }}">¿Estás seguro que querés activar al estudiante {{ e.nombre }}, {{ e.apellido}}?</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                            <button onclick="location.href='/estudiante/activar/{{ e.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal desactivar-->
+                            <div class="modal fade" id="desactivarModal{{ e.id }}" tabindex="-1" role="dialog" aria-labelledby="desactivarModal{{ e.id }}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="confirmacionDesactivarModal{{ e.id }}">¿Estás seguro que querés desactivar al estudiante {{ e.nombre }}, {{ e.apellido}}?</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+    
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                            <button onclick="location.href='/estudiante/activar/{{ e.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
 
                     </td>
                 </tr>

@@ -71,9 +71,13 @@
                     <td headers="operaciones">
 
                         <button type="button" onclick="location.href='/usuario/show/{{ u.id }}'" class="btn btn-primary" title="Ver perfil del usuario" style="margin: 5px"><i class="fa fa-user-circle"></i></button> {% if u.id != session['user']['id']
-                        %}{% if u.activo %}
-                        <button type="button" class="btn btn-primary" title="Desactivar usuario" style="margin: 5px" data-toggle="modal" data-target="#desactivarModal{{ u.id }}">Desactivar</button> {% else %}
-                        <button type="button" class="btn btn-primary" title="Activar usuario" style="margin: 5px" data-toggle="modal" data-target="#activarModal{{ u.id }}">Activar</button> {% endif %}
+                        %}
+                        
+                        {% if u.activo %}
+                        <button type="button" class="btn btn-primary" title="Desactivar usuario" style="margin: 5px" data-toggle="modal" data-target="#desactivarModal{{ u.id }}">Desactivar</button> 
+                        {% else %}
+                        <button type="button" class="btn btn-primary" title="Activar usuario" style="margin: 5px" data-toggle="modal" data-target="#activarModal{{ u.id }}">Activar</button> 
+                        {% endif %}
 
                         <button type="button" onclick="location.href='/usuario/editar/{{ u.id }}'" class="btn btn-primary" title="Editar usuario" style="margin: 5px"><i class="fa fa-edit"></i></button>
 

@@ -201,8 +201,7 @@ class Estudiante(object):
         cursor = self.db.cursor()
         
         sql = """
-            UPDATE estudiante 
-            SET borrado_logico = 1
+            DELETE FROM estudiante 
             WHERE id = %s
         """
 
@@ -227,3 +226,19 @@ class Estudiante(object):
         for l in res:
             lista.append( (l['id'], l['nombre'] + ' ' + l['apellido']) )
         return lista
+
+    # ACTIVAR / DESACTIVAR UN ESTUDIANTE
+    @classmethod
+    def activar(self, id_estudiante):
+        cursor = self.db.cursor()
+        
+        sql = """
+            UPDATE estudiante 
+            SET borrado_logico = not borrado_logico
+            WHERE id = %s
+        """
+
+        ok = cursor.execute(sql, (id_estudiante))
+        self.db.commit()
+
+        return ok 

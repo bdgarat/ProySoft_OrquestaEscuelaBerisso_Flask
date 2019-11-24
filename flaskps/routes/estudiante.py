@@ -161,14 +161,29 @@ def eliminar(id_estudiante):
 
     # Reviso que tenga permiso
     if 'admin' not in session['roles']:
-        flash('No tiene permiso para desactivar estudiantes')
+        flash('No tiene permiso para eliminar estudiantes')
         return redirect('/index/estudiante')
    
     Estudiante.db = get_db()
     if Estudiante.eliminar(id_estudiante):       
-        flash('El estudiante se desactivó con éxito')
+        flash('El estudiante se eliminó con éxito')
     
     return redirect('/index/estudiante')
+
+#  ACTIVAR/DESACTIVAR ESTUDIANTE
+@mod.route("/estudiante/activar/<id_estudiante>")
+def activar(id_estudiante):
+    # Reviso que tenga permiso
+    if 'estudiante_update' not in session['permisos']:
+        flash('No tiene permiso para editar estudiantes. ')
+        return redirect('/index/estudiante')  
+
+    Estudiante.db = get_db()
+    if Estudiante.activar(id_estudiante):
+        flash("Se guardaron los cambios con éxito")
+    
+    return redirect("/index/estudiante")
+
 
 #  EDITAR ESTUDIANTE
 @mod.route("/estudiante/editar/<id_estudiante>", methods=['GET', 'POST'])
