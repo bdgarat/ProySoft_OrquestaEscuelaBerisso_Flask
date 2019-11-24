@@ -174,9 +174,9 @@ class Ciclo_lectivo(object):
 
         return o
 
-    # RECUPERAR EL TALLER DE UN CICLO LECTIVO DADO UN ID CICLO LECTIVO
+    # RECUPERAR LOS TALLERES DE UN CICLO LECTIVO DADO UN ID CICLO LECTIVO
     @classmethod
-    def get_taller(self, id_ciclo_lectivo):
+    def get_talleres(self, id_ciclo_lectivo):
         sql = """
                 SELECT t.nombre 
                 FROM ciclo_lectivo c
@@ -187,7 +187,7 @@ class Ciclo_lectivo(object):
         cursor = self.db.cursor()
         cursor.execute(sql, (id_ciclo_lectivo))
 
-        return cursor.fetchone()
+        return cursor.fetchall()
 
     # RECUPERAR LOS DOCENTES DE UN CICLO LECTIVO DADO UN ID CICLO LECTIVO
     @classmethod

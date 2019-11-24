@@ -1,29 +1,34 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 
 <div class="jumbotron">
-    <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-user" aria-hidden="true"></i> {{ taller.nombre }}
+    <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-user" aria-hidden="true"></i> Ciclo lectivo del semestre {{ ciclo_lectivo.semestre }}
     </h1>
     <hr class="my-2">
     <br>
     <h5 class="mb-4 mt-4 pt-4"><i class="fa fa-info-circle"></i> Información del Ciclo lectivo:</h5>
 
     <menu class="list-group list-group-flush">
-        <li class="list-group-item"><strong>Taller dado: </strong>{{ taller.nombre }}</li>
         <li class="list-group-item"><strong>Fecha de inicio: </strong>{{ ciclo_lectivo.fecha_ini }}</li>
         <li class="list-group-item"><strong>Fecha de fin: </strong>{{ ciclo_lectivo.fecha_fin }}</li>
         <li class="list-group-item"><strong>Semestre: </strong>{{ ciclo_lectivo.semestre }}</li>
+        <li class="list-group-item"><strong>Talleres: </strong>
+            <ol class="pt-2">
+                {% for t in talleres %}
+                <li>{{ t | capitalize }}</li>
+                {% endfor %}
+            </ol>
         <li class="list-group-item"><strong>Docentes: </strong>
             <ol class="pt-2">
                 {% for d in docentes %}
                 <li>{{ d | capitalize }}</li>
                 {% endfor %}
             </ol>
-            <li class="list-group-item"><strong>Estudiantes: </strong>
-                <ol class="pt-2">
-                    {% for e in estudiantes %}
-                    <li>{{ e | capitalize }}</li>
-                    {% endfor %}
-                </ol>
+        <li class="list-group-item"><strong>Estudiantes: </strong>
+            <ol class="pt-2">
+                {% for e in estudiantes %}
+                <li>{{ e | capitalize }}</li>
+                {% endfor %}
+            </ol>
     </menu>
     <p><a href="javascript:history.back()" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
 

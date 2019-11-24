@@ -13,7 +13,7 @@
     {% endif %}{% endfor %} {% endif %} {% endwith %}
 
     <div class="text-right">
-        <button class="btn btn-primary" onclick="location.href='/'">
+        <button class="btn btn-primary" onclick="location.href='/ciclo_lectivo/registrar'">
             <i class="fa fa-plus"></i>
             Agregar ciclo lectivo
         </button>
@@ -26,7 +26,7 @@
             <div class="">{{ form.submit() }}</div>
         </div>
     </form>
-    <br> {% if pagination.total == 0%}
+    <br> {% if pagination.total == 0 and search == False %}
     <div class="alert alert-warning alert-dismissible fade show animated fadeIn" role="alert">
         <strong>Nota:</strong> No hay ciclos lectivos cargados.
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -57,13 +57,34 @@
                     <td headers="fecha_fin">{{ c.fecha_fin }}</td>
                     <td headers="semestre">{{ c.semestre }}</td>
                     <td headers="operaciones">
-
+                        {% if 'ciclo_lectivo_show' in session['permisos'] %}
+                        <button type="button" onclick="location.href='/ciclo_lectivo/show/{{ c.id }}'" class="btn btn-primary" title="Ver ciclo lectivo" style="margin: 5px"><i class="fa fa-user-circle"></i></button>{% endif %}
                         {% if 'ciclo_lectivo_destroy' in session['permisos'] %}
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary eliminar" title="Eliminar ciclo lectivo" role="button" data-toggle="modal" data-target="#eliminarCicloLectivoModal{{ c.id }}"><i class="fa fa-trash"></i>
                         </button> {% endif %} {% if 'ciclo_lectivo_update' in session['permisos'] %}
-                        <button type="button" class="btn btn-primary" title="Editar ciclo lectivo" style="margin: 5px"><i class="fa fa-edit"></i></button> {% endif %}
+                        <button type="button" onclick="location.href='/ciclo_lectivo/editar/{{ c.id }}'" class="btn btn-primary" title="Editar ciclo lectivo" style="margin: 5px"><i class="fa fa-edit"></i></button> {% endif %}
 
+                        <!-- Modal Eliminar Ciclo Lectivo -->
+                        <div class="modal fade" id="eliminarCicloLectivoModal{{ c.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro que querés eliminar al ciclo lectivo del semestre {{ c.semestre }} que inicia el {{ c.fecha_ini }} y finaliza el {{ c.fecha_fin }}?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        No se podrá revertir el cambio.
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                        <button onclick="location.href='/ciclo_lectivo/eliminar/{{ c.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </td>
                 </tr>

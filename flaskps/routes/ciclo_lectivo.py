@@ -94,8 +94,6 @@ def registrar():
         flash('No tiene permiso para registrar ciclos lectivos.')
         return redirect('/home')  
        
-    
-    Ciclo_lectivo.db = get_db()
     form = SignUpCicloLectivoForm()
     semestres = []
     semestres.append(('1', 'Semestre 1'))
@@ -159,9 +157,14 @@ def editar(id_ciclo_lectivo):
         # para manejar los mensajes flash
         error=0
         exito=0
+
         Ciclo_lectivo.db = get_db()
         ciclo_lectivo = Ciclo_lectivo.get_ciclo_lectivo(id_ciclo_lectivo)
-        taller = Ciclo_lectivo.get_taller(id_ciclo_lectivo)
+
+        semestres = []
+        semestres.append(('1', 'Semestre 1'))
+        semestres.append(('2', 'Semestre 2'))
+        form.semestre.choices = semestres
 
         if ciclo_lectivo:
             
@@ -169,12 +172,18 @@ def editar(id_ciclo_lectivo):
 
                 if form.validate_on_submit():
 
-                    Ciclo_lectivo.editar(id_ciclo_lectivo, form.fecha_ini.data, form.fecha_fin.data, form.semestre.data)
+                    if (form.fecha_fin.data > form.fecha_ini.data):
 
-                    # vuelvo a consultar por los valores del ciclo lectivo
-                    ciclo_lectivo = Ciclo_lectivo.get_ciclo_lectivo(id_ciclo_lectivo)    
-                    flash("Ciclo lectivo editado correctamente.")
-                    exito = 1
+                        Ciclo_lectivo.editar(id_ciclo_lectivo, form.fecha_ini.data, form.fecha_fin.data, form.semestre.data)
+
+                        # vuelvo a consultar por los valores del ciclo lectivo
+                        ciclo_lectivo = Ciclo_lectivo.get_ciclo_lectivo(id_ciclo_lectivo)    
+                        flash("Ciclo lectivo editado correctamente.")
+                        exito = 1
+                    else:
+                        flash("La fecha de fin el ciclo lectivo debe ser mayor a la fecha de inicio del mismo")   
+                        error=1
+
                 else:
                     flash("Debe completar todos los campos")
                     error = 1
@@ -187,7 +196,6 @@ def editar(id_ciclo_lectivo):
             form.fecha_ini.data = ciclo_lectivo['fecha_ini']
             form.fecha_fin.data = ciclo_lectivo['fecha_fin']
             form.semestre.data = ciclo_lectivo['semestre']
-            form.taller.data = taller
 
 
             return render_template("ciclos_lectivos/editar.html", form=form, error=error, exito=exito)
@@ -206,8 +214,12 @@ def show(id_ciclo_lectivo):
         ciclo_lectivo = Ciclo_lectivo.get_ciclo_lectivo(id_ciclo_lectivo)
 
         if (ciclo_lectivo):
-            # Obtengo el taller del ciclo lectivo
-            taller = Ciclo_lectivo.get_taller(id_ciclo_lectivo)
+
+            # Obtengo los talleres del ciclo lectivo
+            talleres = []
+            for t in Ciclo_lectivo.get_talleres(ciclo_lectivo['id']):
+                talleres.append(t['nombre'])
+
 
             # Obtengo los estudiantes del ciclo lectivo
             estudiantes = []
@@ -219,7 +231,7 @@ def show(id_ciclo_lectivo):
             for d in Ciclo_lectivo.get_docentes(ciclo_lectivo['id']):
                 docentes.append(d['nombre'])      
 
-            return render_template("ciclos_lectivos/show.html", ciclo_lectivo=ciclo_lectivo, taller=taller, estudiantes=estudiantes, docentes=docentes)
+            return render_template("ciclos_lectivos/show.html", ciclo_lectivo=ciclo_lectivo, talleres=talleres, estudiantes=estudiantes, docentes=docentes)
         else:
             return redirect("/home")
 

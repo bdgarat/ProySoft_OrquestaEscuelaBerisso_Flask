@@ -106,7 +106,6 @@ class EditarCicloLectivoForm(FlaskForm):
     fecha_ini = DateField('Fecha de inicio', validators=[DataRequired()], render_kw={"class": "form-control"})
     fecha_fin = DateField('Fecha de finalizacion', validators=[DataRequired()], render_kw={"class": "form-control"})
     semestre = SelectField('Semestre', validators=[DataRequired()], render_kw={"class": "form-control"})
-    taller = SelectField('Taller', render_kw={"class": "form-control"})
     submit = SubmitField('Editar ciclo lectivo', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
     
 class BusquedaUsuarioForm(FlaskForm):
