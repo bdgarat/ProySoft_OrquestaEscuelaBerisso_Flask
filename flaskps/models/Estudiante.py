@@ -22,7 +22,7 @@ class Estudiante(object):
     # RECUPERAR TODOS LOS ESTUDIANTES
     @classmethod
     def all(self):
-        sql = 'SELECT * FROM estudiante where borrado_logico = 0'
+        sql = 'SELECT * FROM estudiante'
         cursor = self.db.cursor()
         cursor.execute(sql)
 
@@ -32,12 +32,30 @@ class Estudiante(object):
     # RECUPERAR UN ESTUDIANTE DADO UN ID
     @classmethod
     def get_estudiante(self, id):
-        sql = 'SELECT * FROM estudiante where borrado_logico = 0 and id = %s'
+        sql = 'SELECT * FROM estudiante WHERE id = %s'
         cursor = self.db.cursor()
         cursor.execute(sql, (id))
 
         return cursor.fetchone()
     
+    # RECUPERAR ESTUDIANTE DADO UN ID CON INFORMACION
+    @classmethod
+    def get_estudiante_show(self, id):
+        sql = """
+            SELECT e.id, e.apellido, e.nombre, e.fecha_nac, e.domicilio, e.numero,
+                    e.tel, g.nombre AS genero, n.nombre AS nivel, es.nombre AS escuela,
+                    b.nombre AS barrio
+            FROM estudiante e
+            INNER JOIN genero g ON (g.id = e.genero_id)
+            INNER JOIN nivel n ON (n.id = e.nivel_id)
+            INNER JOIN escuela es ON (es.id = e.escuela_id)
+            INNER JOIN barrio b ON (b.id = e.barrio_id)
+            WHERE e.id = %s 
+        """
+        cursor = self.db.cursor()
+        cursor.execute(sql, (id))
+        return cursor.fetchone()
+
     
     # INSERTAR ESTUDIANTE
     @classmethod
@@ -138,11 +156,10 @@ class Estudiante(object):
         params = []
         sql = """
             SELECT * FROM estudiante
-            WHERE borrado_logico = 0
         """
         if termino != None:
             termino = '%'+termino+'%'
-            sql = sql + """ AND (nombre LIKE %s OR apellido LIKE %s) """
+            sql = sql + """ WHERE (nombre LIKE %s OR apellido LIKE %s) """
             params.append(termino)
             params.append(termino)
 
@@ -157,12 +174,11 @@ class Estudiante(object):
         
         sql = """
             SELECT * FROM estudiante
-            WHERE borrado_logico = 0
             """
 
         if termino != None:
             termino = '%'+termino+'%'
-            sql = sql + """ AND (nombre LIKE %s OR apellido LIKE %s)"""
+            sql = sql + """ WHERE (nombre LIKE %s OR apellido LIKE %s)"""
             
         sql = sql + """
                     LIMIT %s OFFSET %s

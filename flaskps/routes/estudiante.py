@@ -161,12 +161,12 @@ def eliminar(id_estudiante):
 
     # Reviso que tenga permiso
     if 'admin' not in session['roles']:
-        flash('No tiene permiso para eliminar estudiantes')
+        flash('No tiene permiso para desactivar estudiantes')
         return redirect('/index/estudiante')
    
     Estudiante.db = get_db()
     if Estudiante.eliminar(id_estudiante):       
-        flash('El estudiante se eliminó con éxito')
+        flash('El estudiante se desactivó con éxito')
     
     return redirect('/index/estudiante')
 
@@ -267,15 +267,47 @@ def show(id_estudiante):
     if 'estudiante_show' in session['permisos']:
 
         Estudiante.db = get_db()
-        estudiante = Estudiante.get_estudiante(id_estudiante)       
+        estudiante = Estudiante.get_estudiante(id_estudiante)
         responsable = Estudiante.get_responsable(id_estudiante)
+        tipo_doc=None
+        localidad=None
+        # API
+        error_api = 0
+        tipos_doc = tipos_documento()
+        loc = localidades()
+
+        if tipos_doc == [] or loc == []:
+            flash("No se puede realizar la operación en este momento. Intente más tarde")
+            error_api = 1
+            return render_template("estudiantes/show.html", estudiante=estudiante, 
+                                                            responsable=responsable, 
+                                                            error_api=error_api,
+                                                            localidad=localidad,
+                                                            tipo_doc=tipo_doc)
+        
+        tipo_doc = get_nombre_api(tipos_doc, estudiante['tipo_doc_id'])
+        localidad = get_nombre_api(loc, estudiante['localidad_id'])      
+        
+        estudiante = Estudiante.get_estudiante_show(id_estudiante)               
 
         if estudiante:
             
-            return render_template("estudiantes/show.html", estudiante=estudiante, responsable=responsable)
+            return render_template("estudiantes/show.html", estudiante=estudiante, 
+                                                            responsable=responsable, 
+                                                            error_api=error_api,
+                                                            localidad=localidad,
+                                                            tipo_doc=tipo_doc)
         else:
             return redirect("/home")
 
     else:
         flash("No tiene permisos para realizar ésta acción")
         return redirect("/home")
+
+
+# OPERACIONES
+def get_nombre_api(lista, id):
+    for t in lista:
+        if int(t[0]) == int(id):
+            return t[1]
+    return None

@@ -1,6 +1,24 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 
 <div class="jumbotron">
+    <!-- Mostrar mensajes guardados en flash -->
+    {% if error_api == 1 %}
+    
+    {% with messages = get_flashed_messages() %} 
+    {% if messages %} 
+    {% for message in messages %} 
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+    {% endfor %} 
+    {% endif %} 
+    {% endwith %}
+    
+    {% else %} 
+
     <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-user" aria-hidden="true"></i> {{ estudiante.apellido }}, {{ estudiante.nombre }}
     </h1>
     <hr class="my-2">
@@ -9,15 +27,15 @@
 
     <menu class="list-group list-group-flush">
         <li class="list-group-item"><strong>Fecha de nacimiento: </strong>{{ estudiante.fecha_nac }}</li>
-        <li class="list-group-item"><strong>Localidad: </strong>{{ estudiante.localidad_id }}</li>
-        <li class="list-group-item"><strong>Nivel: </strong>{{ estudiante.nivel_id }}</li>
+        <li class="list-group-item"><strong>Localidad: </strong>{{ localidad }}</li>
+        <li class="list-group-item"><strong>Nivel: </strong>{{ estudiante.nivel }}</li>
         <li class="list-group-item"><strong>Domicilio: </strong>{{ estudiante.domicilio }}</li>
-        <li class="list-group-item"><strong>Genero: </strong>{{ estudiante.genero_id }}</li>
-        <li class="list-group-item"><strong>Escuela: </strong>{{ estudiante.escuela_id }}</li>
-        <li class="list-group-item"><strong>Tipo de documento: </strong>{{ estudiante.tipo_doc_id }}</li>
+        <li class="list-group-item"><strong>Genero: </strong>{{ estudiante.genero }}</li>
+        <li class="list-group-item"><strong>Escuela: </strong>{{ estudiante.escuela }}</li>
+        <li class="list-group-item"><strong>Tipo de documento: </strong>{{ tipo_doc }}</li>
         <li class="list-group-item"><strong>Número de documento: </strong>{{ estudiante.numero }}</li>
         <li class="list-group-item"><strong>Teléfono de contacto: </strong>{{ estudiante.tel }}</li>
-        <li class="list-group-item"><strong>Barrio: </strong>{{ estudiante.barrio_id }}</li>
+        <li class="list-group-item"><strong>Barrio: </strong>{{ estudiante.barrio }}</li>
 
     </menu>
 
@@ -30,8 +48,8 @@
         <li class="list-group-item"><strong>Teléfono: </strong>{{ responsable.tel }}</li>
 
     </menu>
-    <p><a href="javascript:history.back()" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
-
+    {% endif %}
+    <p><a href="javascript:history.back()" class="col btn btn-lg btn-primary pb-0 boton_registrar mt-3">Volver</a></p>
 </div>
 
 {% endblock %}
