@@ -242,3 +242,16 @@ class Estudiante(object):
         self.db.commit()
 
         return ok 
+
+    # VER SI EXISTE TIPO_DOC+NUM
+    @classmethod
+    def existe_doc(self, tipo_doc_id, numero):
+        sql = """
+            SELECT id
+            FROM estudiante
+            WHERE tipo_doc_id = %s
+            AND numero = %s
+        """
+        cursor = self.db.cursor()
+        cursor.execute(sql, (tipo_doc_id, numero))
+        return cursor.fetchone()

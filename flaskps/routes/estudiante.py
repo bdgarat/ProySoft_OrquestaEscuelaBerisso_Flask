@@ -122,10 +122,6 @@ def registrar_estudiante():
             error_api=1
             return render_template("estudiantes/registrar.html", form=form, error=error, exito=exito, error_api=error_api)
 
-
-        
-        
-
         if request.method == 'POST':
             
             # IMPORTANTE, CASTEAR A INTEGER 
@@ -137,7 +133,14 @@ def registrar_estudiante():
             form.barrio.data = int(form.barrio.data)
             
             if form.validate_on_submit():
-                    
+
+                # VALIDAR QUE NO EXISTA OTRO TIPO_DOC+NUMERO IGUAL
+                existe = Estudiante.existe_doc(form.tipo_doc.data, form.numero.data)
+                if existe:
+                    flash("Ya existe un estudiante con ese documento.")
+                    error = 1
+                    return render_template("estudiantes/registrar.html", form=form, error=error, exito=exito, error_api=error_api)
+
                 estudiante = Estudiante(form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.nivel.data, form.domicilio.data, form.genero.data, form.escuela.data, form.tipo_doc.data, form.numero.data, form.tel.data, form.barrio.data)
                 id_estudiante = Estudiante.insert(estudiante)
 
@@ -237,6 +240,14 @@ def editar(id_estudiante):
 
 
                 if form.validate_on_submit():
+
+                    # VALIDAR QUE NO EXISTA OTRO TIPO_DOC+NUMERO IGUAL
+                    existe = Estudiante.existe_doc(form.tipo_doc.data, form.numero.data)
+                    if existe:
+                        flash("Ya existe un estudiante con ese documento.")
+                        error = 1
+                        return render_template("estudiantes/editar.html", form=form, error=error, exito=exito, error_api=error_api)
+                        
                     Estudiante.editar(id_estudiante, form.apellido.data, form.nombre.data, form.fecha_nac.data, form.localidad.data, form.nivel.data, form.domicilio.data, form.genero.data, form.escuela.data, form.tipo_doc.data, form.numero.data, form.tel.data, form.barrio.data)
                     
                     if form.responsable.data != responsable['id'] or form.tipo_responsable.data != responsable['tipo_responsable_id']:
