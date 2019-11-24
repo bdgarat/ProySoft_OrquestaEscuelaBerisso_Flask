@@ -3,13 +3,14 @@ from flaskps.db import get_db
 from flask import render_template, flash, redirect, session, abort, request
 from flaskps.models.Ciclo_lectivo import Ciclo_lectivo
 from flaskps.models.Docente import Docente
+from flaskps.models.Taller import Taller
 from flaskps.models.Configuracion import Configuracion
 from flaskps.models.Usuario import Usuario
 from flaskps.models.Informacion import Informacion
 from flaskps.helpers.auth import authenticated
 from flaskps.helpers.apiReferencias import tipos_documento, localidades
 from flaskps.helpers.mantenimiento import sitio_disponible
-from flaskps.forms import SignUpCicloLectivoForm, BusquedaCicloLectivoForm, EditarCicloLectivoForm
+from flaskps.forms import SignUpCicloLectivoForm, BusquedaCicloLectivoForm, EditarCicloLectivoForm, BusquedaTallerForm
 from flask_paginate import Pagination, get_page_parameter
 
 
@@ -90,9 +91,9 @@ def index_ciclo_lectivo():
 def registrar():
     
     # Reviso que tenga permiso
-    if 'admin' not in session['roles']:
-        flash('No tiene permiso para registrar ciclos lectivos.')
-        return redirect('/home')  
+    if 'ciclo_lectivo_new' not in session['permisos']:
+        flash('No tiene permiso para crear un ciclos lectivos' )
+        return redirect('/home') 
        
     form = SignUpCicloLectivoForm()
     semestres = []
@@ -108,18 +109,40 @@ def registrar():
         
         if form.validate_on_submit():
             
-            if (form.fecha_fin.data > form.fecha_ini.data):
-                Ciclo_lectivo.db = get_db()
-
-                ciclo_lectivo = Ciclo_lectivo(form.fecha_ini.data, form.fecha_fin.data, form.semestre.data)
-                    
-                Ciclo_lectivo.insert(ciclo_lectivo)
-                
-                flash("Ciclo lectivo registrado correctamente.")
-                exito = 1
-            else:
+            Ciclo_lectivo.db = get_db()
+            
+            # chequeo que no exista ya un ciclo lectivo creado para ese semestere y año
+            existe = Ciclo_lectivo.existe(form.semestre.data, form.fecha_ini.data.year)
+            if existe:
+                flash("Ya existe un ciclo lectivo creado para esas fechas y semestre.")
+                error = 1
+                return render_template("ciclos_lectivos/registrar.html", form=form, error=error, exito=exito)
+            
+            # SI NO EXISTE Y QUEIRO CREAR UN SEMESTRE 2, CHEQUEO SI HAY SEMESTRE 1, Y SI HAY, CHEQUEO QUE NO HAYA PROBLEMA CON LAS FECHAS
+            
+            if (form.semestre.data == '2'):
+                if Ciclo_lectivo.existe('1', form.fecha_ini.data.year):
+                    print("existe sem 1")
+                    # chequeo que no se superpongan las fechas
+                    if Ciclo_lectivo.se_superponen(form.fecha_ini.data):
+                        flash("La fecha de inicio del semestre 2 se superpone con la fecha de fin del semestre 1 registrado para ese año.")
+                        error = 1
+                        return render_template("ciclos_lectivos/registrar.html", form=form, error=error, exito=exito)
+            
+            
+            if (form.fecha_fin.data < form.fecha_ini.data):
                 error=1
-                flash("La fecha de fin el ciclo lectivo debe ser mayor a la fecha de inicio del mismo")             
+                flash("La fecha de fin del ciclo lectivo debe ser mayor a la fecha de inicio del mismo") 
+                return render_template("ciclos_lectivos/registrar.html", form=form, error=error, exito=exito)
+            
+            # ESTÁ BIEN, LO CREO
+            ciclo_lectivo = Ciclo_lectivo(form.fecha_ini.data, form.fecha_fin.data, form.semestre.data)
+                
+            Ciclo_lectivo.insert(ciclo_lectivo)
+            
+            flash("Ciclo lectivo registrado correctamente.")
+            exito = 1
+                            
         else: 
             flash("Debe completar todos los campos")
             error = 1
@@ -132,109 +155,75 @@ def registrar():
 def eliminar(id_ciclo_lectivo):
 
     # Reviso que tenga permiso
-    if 'admin' not in session['roles']:
-        flash('No tiene permiso para eliminar ciclos lectivos')
-        return redirect('/index/ciclo_lectivo')
+    if 'ciclo_lectivo_index' not in session['permisos']:
+        flash('No tiene permiso para eliminar un ciclo lectivo.' )
+        return redirect('/home')
    
     Ciclo_lectivo.db = get_db()
     if Ciclo_lectivo.eliminar(id_ciclo_lectivo):
-        flash('El ciclo lectivo se eliminó con éxito')
+        flash('El ciclo lectivo se eliminó con éxito.')
     
     return redirect('/index/ciclo_lectivo')
 
-#  EDITAR CICLO LECTIVO
-@mod.route("/ciclo_lectivo/editar/<id_ciclo_lectivo>", methods=['GET', 'POST'])
-def editar(id_ciclo_lectivo):
 
-    # Reviso que tenga permiso
-    if 'ciclo_lectivo_update' not in session['permisos']:
-        flash('No tiene permiso para editar ciclos lectivos. ')
-        return redirect('/home')  
-    else:  
-    
-
-        form = EditarCicloLectivoForm()
-        # para manejar los mensajes flash
-        error=0
-        exito=0
-
-        Ciclo_lectivo.db = get_db()
-        ciclo_lectivo = Ciclo_lectivo.get_ciclo_lectivo(id_ciclo_lectivo)
-
-        semestres = []
-        semestres.append(('1', 'Semestre 1'))
-        semestres.append(('2', 'Semestre 2'))
-        form.semestre.choices = semestres
-
-        if ciclo_lectivo:
-            
-            if request.method == 'POST':
-
-                if form.validate_on_submit():
-
-                    if (form.fecha_fin.data > form.fecha_ini.data):
-
-                        Ciclo_lectivo.editar(id_ciclo_lectivo, form.fecha_ini.data, form.fecha_fin.data, form.semestre.data)
-
-                        # vuelvo a consultar por los valores del ciclo lectivo
-                        ciclo_lectivo = Ciclo_lectivo.get_ciclo_lectivo(id_ciclo_lectivo)    
-                        flash("Ciclo lectivo editado correctamente.")
-                        exito = 1
-                    else:
-                        flash("La fecha de fin el ciclo lectivo debe ser mayor a la fecha de inicio del mismo")   
-                        error=1
-
-                else:
-                    flash("Debe completar todos los campos")
-                    error = 1
-            
-           
-            # vuelvo a setear el form con los valores actualizados del ciclo lectivo
-
-            form.process() #IMPORTANTE
-
-            form.fecha_ini.data = ciclo_lectivo['fecha_ini']
-            form.fecha_fin.data = ciclo_lectivo['fecha_fin']
-            form.semestre.data = ciclo_lectivo['semestre']
-
-
-            return render_template("ciclos_lectivos/editar.html", form=form, error=error, exito=exito)
-        else:
-            return redirect("/home")
-
-
-# SHOW CICLO LECTIVO
-@mod.route("/ciclo_lectivo/show/<id_ciclo_lectivo>")
-def show(id_ciclo_lectivo):
+# VER CICLO LECTIVO CON SUS TALLERES
+@mod.route("/ciclo_lectivo/show/<id_ciclo>")
+def show(id_ciclo):
     
     # Reviso que tenga permiso
-    if 'ciclo_lectivo_show' in session['permisos']:
+    if 'ciclo_lectivo_show' not in session['permisos']:
+        flash('No tiene permiso para ver la información de los ciclos lectivos.' )
+        return redirect('/home') 
+    
+    Ciclo_lectivo.db = get_db()
+    
+    ciclo = Ciclo_lectivo.get_ciclo_lectivo(id_ciclo)
+    
+    if ciclo:
+        # BUSCO LOS TALLERES PAGINADOS
+        
+        form = BusquedaTallerForm()
+        error_busqueda = 0
 
-        Ciclo_lectivo.db = get_db()
-        ciclo_lectivo = Ciclo_lectivo.get_ciclo_lectivo(id_ciclo_lectivo)
+        search = False
+        termino = request.args.get('termino')
+        
+        if termino:
+            search = True
 
-        if (ciclo_lectivo):
-
-            # Obtengo los talleres del ciclo lectivo
-            talleres = []
-            for t in Ciclo_lectivo.get_talleres(ciclo_lectivo['id']):
-                talleres.append(t['nombre'])
-
-
-            # Obtengo los estudiantes del ciclo lectivo
-            estudiantes = []
-            for e in Ciclo_lectivo.get_estudiantes(ciclo_lectivo['id']):
-                estudiantes.append(e['nombre'])
-
-            # Obtengo los estudiantes del ciclo lectivo
-            docentes = []
-            for d in Ciclo_lectivo.get_docentes(ciclo_lectivo['id']):
-                docentes.append(d['nombre'])      
-
-            return render_template("ciclos_lectivos/show.html", ciclo_lectivo=ciclo_lectivo, talleres=talleres, estudiantes=estudiantes, docentes=docentes)
+        # seteo el value del input si vino con algo
+        form.termino.data = termino
+        
+        # Setear variables de paginacion
+        Configuracion.db = get_db()
+        per_page = Configuracion.get_paginacion()['paginacion']
+        page = request.args.get(get_page_parameter(), type=int, default=1)
+        offset = (page - 1) * per_page
+        
+        Taller.db = get_db()
+        if search:
+            # Total registros
+            total = Taller.get_talleres_por_ciclo(id_ciclo, termino)
+            # Consulta usando offset y limit
+            talleres = Taller.get_talleres_por_ciclo_paginados(per_page, id_ciclo, offset, termino)
         else:
-            return redirect("/home")
+            # Total registros
+            total = Taller.get_talleres_por_ciclo(id_ciclo)
+            # Consulta usando offset y limit
+            talleres = Taller.get_talleres_por_ciclo_paginados(per_page,id_ciclo,offset)
 
-    else:
-        flash("No tiene permisos para realizar ésta acción")
-        return redirect("/home")
+        total = len(total)
+        if (total == 0 and search == True):
+            flash("La búsqueda no obtuvo resultados.")
+            error_busqueda = 1
+            
+        pagination = Pagination(page=page, 
+                                per_page=per_page, 
+                                total=total,
+                                search=search,
+                                found=total,
+                                record_name='ciclos_lectivos',
+                                css_framework='bootstrap4')
+        return render_template("ciclos_lectivos/show.html", form = form, ciclo = ciclo, pagination = pagination, talleres = talleres, error_busqueda = error_busqueda)
+    
+    return redirect('/home')

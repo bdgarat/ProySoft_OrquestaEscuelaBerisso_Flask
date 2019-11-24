@@ -1,36 +1,81 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 
 <div class="jumbotron">
-    <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-user" aria-hidden="true"></i> Ciclo lectivo del semestre {{ ciclo_lectivo.semestre }}
+    <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-book" aria-hidden="true"></i> Ciclo lectivo.
     </h1>
+    <h5>Semestre {{ ciclo.semestre }}, fecha inicio: {{ ciclo.fecha_ini }} y fecha fin: {{ ciclo.fecha_fin }}.</h5>
     <hr class="my-2">
     <br>
-    <h5 class="mb-4 mt-4 pt-4"><i class="fa fa-info-circle"></i> Información del Ciclo lectivo:</h5>
+    <h5 class="mb-4 mt-2 pt-2"><i class="fa fa-info-circle"></i> Talleres del ciclo lectivo:</h5>
+    <form class="form-horizontal my-2 my-lg-0" method="get">
+        {{ form.termino.label }}:
+        <div class="from-group">
+            <div class="">{{ form.termino(size=32) }}</div>
+            <div class="">{{ form.submit() }}</div>
+        </div>
+    </form>
+    <br>
 
-    <menu class="list-group list-group-flush">
-        <li class="list-group-item"><strong>Fecha de inicio: </strong>{{ ciclo_lectivo.fecha_ini }}</li>
-        <li class="list-group-item"><strong>Fecha de fin: </strong>{{ ciclo_lectivo.fecha_fin }}</li>
-        <li class="list-group-item"><strong>Semestre: </strong>{{ ciclo_lectivo.semestre }}</li>
-        <li class="list-group-item"><strong>Talleres: </strong>
-            <ol class="pt-2">
-                {% for t in talleres %}
-                <li>{{ t | capitalize }}</li>
+    <p>Total de talleres: <strong>{{ pagination.total }}</strong></p>
+    <div class="table-responsive">
+        <table class="table text-center">
+            <caption>Tabla con los talleres</caption>
+
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col" id="id" aria-label="id">ID</th>
+                    <th scope="col" id="fecha_inicio" aria-label="fecha de inicio del ciclo lectivo">Nombre</th>
+                    <th scope="col" id="fecha_fin" aria-label="fecha de fin del ciclo lectivo">Nombre corto</th>
+                    <th scope="col" id="operaciones" aria-label="operaciones">Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>{% for t in talleres %}
+                <tr>
+                    <th scope="row" id="tupla{{ loop.index }}">{{ t.id }}</th>
+                    <td headers="nombre">{{ t.nombre }}</td>
+                    <td headers="nombre_corto">{{ t.nombre_corto }}</td>
+                    <td headers="operaciones">
+                        <button type="button" class="btn btn-primary" title="Ver ciclo lectivo" style="margin: 5px">Agregar docente</button>
+                        <button type="button" class="btn btn-primary" title="Ver ciclo lectivo" style="margin: 5px">Agregar alumno</button>
+
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary eliminar" title="Quitar taller del ciclo lectivo" role="button" data-toggle="modal" data-target="#eliminarTaller{{ t.id }}"><i class="fa fa-trash"></i>
+                        </button>
+
+
+                        <!-- Modal Eliminar Ciclo Lectivo -->
+                        <!-- <div class="modal fade" id="eliminarCicloLectivoModal{{ t.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro que querés eliminar al ciclo lectivo del semestre {{ t.semestre }} que inicia el {{ t.fecha_ini }} y finaliza el {{ t.fecha_fin }}?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        No se podrá revertir el cambio.
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                        <button onclick="location.href='/ciclo_lectivo/eliminar/{{ t.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+
+                    </td>
+                </tr>
                 {% endfor %}
-            </ol>
-        <li class="list-group-item"><strong>Docentes: </strong>
-            <ol class="pt-2">
-                {% for d in docentes %}
-                <li>{{ d | capitalize }}</li>
-                {% endfor %}
-            </ol>
-        <li class="list-group-item"><strong>Estudiantes: </strong>
-            <ol class="pt-2">
-                {% for e in estudiantes %}
-                <li>{{ e | capitalize }}</li>
-                {% endfor %}
-            </ol>
-    </menu>
-    <p><a href="javascript:history.back()" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
+            </tbody>
+
+        </table>
+    </div>
+    <div class="text-center animated fadeIn" aria-label="Páginas de la tabla">
+        {{ pagination.links }}
+    </div>
+
+    <p><a href="javascript:history.back()" class="btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
 
 </div>
 

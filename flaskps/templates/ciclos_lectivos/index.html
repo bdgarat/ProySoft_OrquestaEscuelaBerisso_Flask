@@ -58,12 +58,12 @@
                     <td headers="semestre">{{ c.semestre }}</td>
                     <td headers="operaciones">
                         {% if 'ciclo_lectivo_show' in session['permisos'] %}
-                        <button type="button" onclick="location.href='/ciclo_lectivo/show/{{ c.id }}'" class="btn btn-primary" title="Ver ciclo lectivo" style="margin: 5px"><i class="fa fa-user-circle"></i></button>{% endif %}
-                        {% if 'ciclo_lectivo_destroy' in session['permisos'] %}
+                        <button type="button" onclick="location.href='/ciclo_lectivo/show/{{ c.id }}'" class="btn btn-primary" title="Ver ciclo lectivo" style="margin: 5px"><i class="fa fa-user-circle"></i></button>{% endif %} {% if 'ciclo_lectivo_destroy'
+                        in session['permisos'] %}
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary eliminar" title="Eliminar ciclo lectivo" role="button" data-toggle="modal" data-target="#eliminarCicloLectivoModal{{ c.id }}"><i class="fa fa-trash"></i>
-                        </button> {% endif %} {% if 'ciclo_lectivo_update' in session['permisos'] %}
-                        <button type="button" onclick="location.href='/ciclo_lectivo/editar/{{ c.id }}'" class="btn btn-primary" title="Editar ciclo lectivo" style="margin: 5px"><i class="fa fa-edit"></i></button> {% endif %}
+                        </button> {% endif %}
+
 
                         <!-- Modal Eliminar Ciclo Lectivo -->
                         <div class="modal fade" id="eliminarCicloLectivoModal{{ c.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
