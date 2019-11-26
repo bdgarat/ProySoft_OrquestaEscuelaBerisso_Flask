@@ -2,10 +2,10 @@
 -- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 18-11-2019 a las 06:38:35
+-- Servidor: localhost
+-- Tiempo de generación: 27-11-2019 a las 00:53:10
 -- Versión del servidor: 10.4.8-MariaDB
--- Versión de PHP: 7.3.10
+-- Versión de PHP: 7.3.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -403,7 +403,8 @@ INSERT INTO `genero` (`id`, `nombre`) VALUES
 CREATE TABLE `instrumento` (
   `id` int(11) NOT NULL,
   `nombre` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `tipo_id` int(11) NOT NULL
+  `tipo_id` int(11) NOT NULL,
+  `foto` blob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -490,7 +491,12 @@ INSERT INTO `permiso` (`id`, `nombre`) VALUES
 (24, 'ciclo_lectivo_new'),
 (25, 'ciclo_lectivo_destroy'),
 (26, 'ciclo_lectivo_update'),
-(27, 'ciclo_lectivo_show');
+(27, 'ciclo_lectivo_show'),
+(28, 'instrumento_new'),
+(29, 'instrumento_show'),
+(30, 'instrumento_update'),
+(31, 'instrumento_destroy'),
+(32, 'instrumento_index');
 
 -- --------------------------------------------------------
 
@@ -611,6 +617,11 @@ INSERT INTO `rol_tiene_permiso` (`rol_id`, `permiso_id`) VALUES
 (1, 25),
 (1, 26),
 (1, 27),
+(1, 28),
+(1, 29),
+(1, 30),
+(1, 31),
+(1, 32),
 (2, 1),
 (2, 3),
 (2, 4),
@@ -630,7 +641,9 @@ INSERT INTO `rol_tiene_permiso` (`rol_id`, `permiso_id`) VALUES
 (3, 6),
 (3, 10),
 (3, 23),
-(3, 27);
+(3, 27),
+(3, 29),
+(3, 32);
 
 -- --------------------------------------------------------
 
@@ -1003,7 +1016,7 @@ ALTER TABLE `nucleo`
 -- AUTO_INCREMENT de la tabla `permiso`
 --
 ALTER TABLE `permiso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT de la tabla `preceptor`
