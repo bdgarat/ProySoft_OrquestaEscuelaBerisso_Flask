@@ -29,7 +29,7 @@ class Responsable(object):
     # RECUPERAR UN RESPONSABLE DADO UN ID
     @classmethod
     def get_responsable(self, id):
-        sql = 'SELECT * FROM docente where id = %s'
+        sql = 'SELECT * FROM responsable where id = %s'
         cursor = self.db.cursor()
         cursor.execute(sql, (id))
 
@@ -134,3 +134,30 @@ class Responsable(object):
         self.db.commit()
 
         return ok
+
+    # RECUPERAR RESPONSABLE DADO UN ID CON INFORMACION
+    @classmethod
+    def get_responsable_show(self, id):
+        sql = """
+            SELECT r.id, r.apellido, r.nombre, r.fecha_nac, r.domicilio, r.numero,
+                    r.tel, g.nombre AS genero
+            FROM responsable r
+            INNER JOIN genero g ON (g.id = r.genero_id)
+            WHERE r.id = %s 
+        """
+        cursor = self.db.cursor()
+        cursor.execute(sql, (id))
+        return cursor.fetchone()
+    
+    # VER SI EXISTE TIPO_DOC+NUM
+    @classmethod
+    def existe_doc(self, tipo_doc_id, numero):
+        sql = """
+            SELECT id
+            FROM responsable
+            WHERE tipo_doc_id = %s
+            AND numero = %s
+        """
+        cursor = self.db.cursor()
+        cursor.execute(sql, (tipo_doc_id, numero))
+        return cursor.fetchone()

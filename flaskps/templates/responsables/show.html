@@ -1,6 +1,24 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 
 <div class="jumbotron">
+    <!-- Mostrar mensajes guardados en flash -->
+    {% if error_api == 1 %}
+    
+    {% with messages = get_flashed_messages() %} 
+    {% if messages %} 
+    {% for message in messages %} 
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+    {% endfor %} 
+    {% endif %} 
+    {% endwith %}
+
+    {% else %}
+    
     <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-user" aria-hidden="true"></i> {{ responsable.apellido }}, {{ responsable.nombre }}
     </h1>
     <hr class="my-2">
@@ -9,14 +27,15 @@
 
     <menu class="list-group list-group-flush">
         <li class="list-group-item"><strong>Fecha de nacimiento: </strong>{{ responsable.fecha_nac }}</li>
-        <li class="list-group-item"><strong>Localidad: </strong>{{ responsable.localidad_id }}</li>
+        <li class="list-group-item"><strong>Localidad: </strong>{{ localidad }}</li>
         <li class="list-group-item"><strong>Domicilio: </strong>{{ responsable.domicilio }}</li>
-        <li class="list-group-item"><strong>Genero: </strong>{{ responsable.genero_id }}</li>
-        <li class="list-group-item"><strong>Tipo de documento: </strong>{{ responsable.tipo_doc_id }}</li>
+        <li class="list-group-item"><strong>Genero: </strong>{{ responsable.genero }}</li>
+        <li class="list-group-item"><strong>Tipo de documento: </strong>{{ tipo_doc }}</li>
         <li class="list-group-item"><strong>Número de documento: </strong>{{ responsable.numero }}</li>
         <li class="list-group-item"><strong>Teléfono de contacto: </strong>{{ responsable.tel }}</li>
 
     </menu>
+    {% endif %}
     <p><a href="javascript:history.back()" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
 
 </div>

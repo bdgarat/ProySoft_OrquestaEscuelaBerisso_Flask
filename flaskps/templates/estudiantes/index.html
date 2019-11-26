@@ -57,11 +57,11 @@
                         {% if 'estudiante_show' in session['permisos'] %}
                         <button type="button" onclick="location.href='/estudiante/show/{{ e.id }}'" class="btn btn-primary" title="Ver perfil del estudiante" style="margin: 5px"><i class="fa fa-user-circle"></i></button>
                         {% endif %} 
-                        {% if 'estudiante_destroy' in session['permisos'] %}
+                        <!-- {% if 'estudiante_destroy' in session['permisos'] %} -->
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary eliminar" title="Eliminar estudiante" role="button" data-toggle="modal" data-target="#exampleModal{{ e.id }}"><i class="fa fa-trash"></i>
+                        <!-- <button type="button" class="btn btn-primary eliminar" title="Eliminar estudiante" role="button" data-toggle="modal" data-target="#exampleModal{{ e.id }}"><i class="fa fa-trash"></i>
                         </button> 
-                        {% endif %} 
+                        {% endif %}  -->
                         
                         {% if 'estudiante_update' in session['permisos'] %}
                         <button type="button" onclick="location.href='/estudiante/editar/{{ e.id }}'" class="btn btn-primary" title="Editar estudiante" style="margin: 5px"><i class="fa fa-edit"></i></button> 
@@ -75,7 +75,7 @@
                         {% endif %}
 
                         <!-- Modal eliminar -->
-                        <div class="modal fade" id="exampleModal{{ e.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <!-- <div class="modal fade" id="exampleModal{{ e.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -93,7 +93,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!-- Modal activar-->
                         <div class="modal fade" id="activarModal{{ e.id }}" tabindex="-1" role="dialog" aria-labelledby="activarModal{{ e.id }}" aria-hidden="true">

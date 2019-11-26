@@ -43,7 +43,7 @@
 
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col" id="id" aria-label="id">ID</th>
+                    <th scope="col" id="id" aria-label="documento">Número Documento</th>
                     <th scope="col" id="nombre_y_apellido" aria-label="nombre y apellido">Nombre y apellido</th>
                     <th scope="col" id="operaciones" aria-label="operaciones">Operaciones</th>
                 </tr>
@@ -51,20 +51,21 @@
             <tbody>
                 {% for r in responsables %}
                 <tr>
-                    <th scope="row" id="tupla{{ loop.index }}">{{ r.id }}</th>
+                    <th scope="row" id="tupla{{ loop.index }}">{{ r.numero }}</th>
                     <td headers="nombre_y_apellido">{{ r.apellido }},{{ r.nombre }}</td>
                     <td headers="operaciones">
 
                         {% if 'estudiante_show' in session['permisos'] %}
-                        <button type="button" onclick="location.href='/responsable/show/{{ r.id }}'" class="btn btn-primary" title="Ver perfil del responsable" style="margin: 5px"><i class="fa fa-user-circle"></i></button>{% endif %} {% if 'estudiante_destroy'
-                        in session['permisos'] %}
+                        <button type="button" onclick="location.href='/responsable/show/{{ r.id }}'" class="btn btn-primary" title="Ver perfil del responsable" style="margin: 5px"><i class="fa fa-user-circle"></i></button>{% endif %} 
+                        <!-- {% if 'estudiante_destroy' in session['permisos'] %} -->
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary eliminar" title="Eliminar responsable" role="button" data-toggle="modal" data-target="#eliminarDocenteModal{{ r.id }}"><i class="fa fa-trash"></i>
-                        </button> {% endif %} {% if 'estudiante_update' in session['permisos'] %}
+                        <!-- <button type="button" class="btn btn-primary eliminar" title="Eliminar responsable" role="button" data-toggle="modal" data-target="#eliminarDocenteModal{{ r.id }}"><i class="fa fa-trash"></i>
+                        </button> {% endif %}  -->
+                        {% if 'estudiante_update' in session['permisos'] %}
                         <button type="button" onclick="location.href='/responsable/editar/{{ r.id }}'" class="btn btn-primary" title="Editar responsable" style="margin: 5px"><i class="fa fa-edit"></i></button> {% endif %}
 
                         <!-- Modal -->
-                        <div class="modal fade" id="eliminarDocenteModal{{ r.id }}" tabindex="-1" role="dialog" aria-labelledby="eliminarDocenteModalLabel" aria-hidden="true">
+                        <!-- <div class="modal fade" id="eliminarDocenteModal{{ r.id }}" tabindex="-1" role="dialog" aria-labelledby="eliminarDocenteModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -82,7 +83,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </td>
                 </tr>
                 {% endfor %}
