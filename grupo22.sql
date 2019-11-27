@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 27-11-2019 a las 00:53:10
+-- Tiempo de generación: 27-11-2019 a las 02:04:27
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.11
 
@@ -403,6 +403,7 @@ INSERT INTO `genero` (`id`, `nombre`) VALUES
 CREATE TABLE `instrumento` (
   `id` int(11) NOT NULL,
   `nombre` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `numero_inventario` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `tipo_id` int(11) NOT NULL,
   `foto` blob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -999,6 +1000,12 @@ ALTER TABLE `estudiante`
 --
 ALTER TABLE `genero`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `instrumento`
+--
+ALTER TABLE `instrumento`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `nivel`

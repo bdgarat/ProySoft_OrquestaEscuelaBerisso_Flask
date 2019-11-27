@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, TextAreaField, SelectField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, TextAreaField, SelectField, FileField
 from wtforms.validators import DataRequired, Email
 from wtforms.fields.html5 import EmailField, DateField
 
@@ -130,3 +130,11 @@ class BusquedaCicloLectivoForm(FlaskForm):
 class BusquedaTallerForm(FlaskForm):
     termino = StringField('Buscar nombre de taller', render_kw={"class": "form-control"})
     submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})
+
+
+class InstrumentoForm(FlaskForm):
+    nombre = StringField('Nombre', validators=[DataRequired()], render_kw={"class": "form-control"})
+    numero_inventario = StringField('Número de inventario', validators=[DataRequired()], render_kw={"class": "form-control"})
+    tipo_instrumento = SelectField('Tipo de instrumento', validators=[DataRequired()], render_kw={"class": "form-control"})
+    foto = FileField('Foto', validators=[DataRequired()], render_kw={"class": "form-control"})
+    submit = SubmitField('Registrar', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
