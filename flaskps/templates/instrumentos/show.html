@@ -1,0 +1,22 @@
+{% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
+
+<div class="jumbotron">
+    <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-info-circle" aria-hidden="true"></i> {{ instrumento.nombre }}
+    </h1>
+    <h4>Número de Inventario: {{ instrumento.numero_inventario }}</h4>
+    <hr class="my-2">
+    <h5 class="mb-4 mt-4 pt-4"><i class="fa fa-info-circle"></i> Información:</h5>
+
+    <menu class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Tipo: </strong>{{ instrumento.tipo }}</li>
+        <li class="list-group-item"><strong>Foto: </strong>
+            <div class="container mt-4">
+                <img style="width:70%; height: 50%;" src='data:image/jpeg;base64,{{ instrumento.foto }}' alt="foto">
+            </div>
+        </li>
+    </menu>
+    <p><a href="javascript:history.back()" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
+
+</div>
+
+{% endblock %}

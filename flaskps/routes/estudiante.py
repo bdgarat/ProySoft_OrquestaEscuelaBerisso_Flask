@@ -243,7 +243,7 @@ def editar(id_estudiante):
 
                     # VALIDAR QUE NO EXISTA OTRO TIPO_DOC+NUMERO IGUAL
                     existe = Estudiante.existe_doc(form.tipo_doc.data, form.numero.data)
-                    if existe:
+                    if existe and int(existe['id']) != int(id_estudiante):
                         flash("Ya existe un estudiante con ese documento.")
                         error = 1
                     else:    

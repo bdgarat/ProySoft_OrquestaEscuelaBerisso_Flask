@@ -136,7 +136,7 @@ class InstrumentoForm(FlaskForm):
     nombre = StringField('Nombre', validators=[DataRequired()], render_kw={"class": "form-control"})
     numero_inventario = StringField('Número de inventario', validators=[DataRequired()], render_kw={"class": "form-control"})
     tipo_instrumento = SelectField('Tipo de instrumento', validators=[DataRequired()], render_kw={"class": "form-control"})
-    foto = FileField('Foto', validators=[DataRequired()], render_kw={"class": "form-control"})
+    foto = FileField('Foto', validators=[DataRequired()])
     submit = SubmitField('Registrar', render_kw={"class": "btn btn-lg btn-primary btn-block pb-20"})
 
 class BusquedaInstrumentoForm(FlaskForm):

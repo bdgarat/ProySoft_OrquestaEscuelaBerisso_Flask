@@ -196,7 +196,7 @@ def editar(id_responsable):
 
                     # VALIDAR QUE NO EXISTA OTRO TIPO_DOC+NUMERO IGUAL
                     existe = Responsable.existe_doc(form.tipo_doc.data, form.numero.data)
-                    if existe:
+                    if existe and int(existe['id']) != int(id_responsable):
                         flash("Ya existe un responsable con ese documento.")
                         error = 1
                     else:    

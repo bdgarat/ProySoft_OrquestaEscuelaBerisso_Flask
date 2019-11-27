@@ -50,7 +50,7 @@
 
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col" id="foto" aria-label="foto">Foto</th>
+                    <!-- <th scope="col" id="foto" aria-label="foto">Foto</th> -->
                     <th scope="col" id="id" aria-label="numero_inventario">Número Inventario</th>
                     <th scope="col" id="nombre" aria-label="nombre">Nombre</th>
                     <th scope="col" id="tipo" aria-label="tipo">Tipo</th>
@@ -61,9 +61,9 @@
             <tbody>
                 {% for i in instrumentos %}
                 <tr>
-                    <td headers="foto">
-                        <img style="width:50%; height: 50%;" src='data:image/jpeg;base64,{{ i.foto }}' alt="foto">
-                    </td>
+                    <!-- <td headers="foto">
+                        <img style="width:100%; height: 100%;" src='data:image/jpeg;base64,{{ i.foto }}' alt="foto">
+                    </td> -->
                     <th scope="row" id="tupla{{ loop.index }}">{{ i.numero_inventario }}</th>
                     <td headers="nombre">{{ i.nombre }}</td>
                     <td headers="tipo">{{ i.tipo }}</td>

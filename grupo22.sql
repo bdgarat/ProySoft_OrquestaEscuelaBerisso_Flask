@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 27-11-2019 a las 02:04:27
+-- Tiempo de generación: 27-11-2019 a las 19:36:53
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.11
 
@@ -405,7 +405,7 @@ CREATE TABLE `instrumento` (
   `nombre` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `numero_inventario` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `tipo_id` int(11) NOT NULL,
-  `foto` blob DEFAULT NULL
+  `foto` mediumblob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

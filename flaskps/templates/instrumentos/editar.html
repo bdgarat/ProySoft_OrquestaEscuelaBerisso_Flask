@@ -1,0 +1,49 @@
+{% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
+<form method="post" class="form-signin mb-20 jumbotron animated fadeIn" enctype="multipart/form-data" novalidate>
+
+    <div class="text-center">
+        <img class="mb-4 img_form rounded-lg" src="/static/images/OEBerisso_logo.png" alt="Logo de la Orquesta Escuela de Berisso">
+        <h1 class="h3 mb-3 font-weight-normal">Editar instrumento</h1>
+    </div>
+
+    <!-- Mostrar mensajes guardados en flash -->
+    {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error == 1 %}
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+    {% elif exito == 1 %}
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Nota:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+
+    {% endif %} {% endfor %} {% endif %} {% endwith %} {{ form.hidden_tag() }}
+
+    <p>
+        {{ form.nombre.label }}:<br> {{ form.nombre(size=32) }}
+    </p>
+    <p>
+        {{ form.numero_inventario.label }}:<br> {{ form.numero_inventario() }}
+    </p>
+    <p>
+        {{ form.tipo_instrumento.label }}:<br> {{ form.tipo_instrumento() }}
+    </p>
+    <p>
+        {{ form.foto.label }}:<br> {{ form.foto() }}
+    </p>
+    
+    <div class="row">
+        <p class="col">{{ form.submit() }}</p>
+        <p class="col"><a href="javascript:history.back()" class="col btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
+    </div>
+</form>
+
+
+{% endblock %}

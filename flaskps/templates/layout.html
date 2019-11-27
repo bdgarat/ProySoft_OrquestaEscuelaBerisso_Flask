@@ -87,7 +87,8 @@
 
                         </div>
                     </div>
-                    {% endif %} {% if "estudiante_index" in session['permisos'] or "estudiante_new" in session['permisos'] %}
+                    {% endif %} 
+                    {% if "estudiante_index" in session['permisos'] or "estudiante_new" in session['permisos'] %}
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-user-plus" aria-hidden="true"></i> Estudiantes
@@ -102,6 +103,22 @@
 
 
 
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if "instrumento_index" in session['permisos'] or "instrumento_new" in session['permisos'] %}
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-user-plus" aria-hidden="true"></i> Instrumentos
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                            {% if "instrumento_index" in session['permisos'] %}
+                            <a class="dropdown-item" href="/index/instrumento">Inventario</a>
+                            {% endif %} 
+                            {% if "instrumento_new" in session['permisos'] %}
+                            <a class="dropdown-item" href="/instrumento/registrar">Registrar instrumento</a>
+                            {% endif %}
                         </div>
                     </div>
                     {% endif %}
