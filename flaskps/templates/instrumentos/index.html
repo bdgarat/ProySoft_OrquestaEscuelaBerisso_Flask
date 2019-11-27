@@ -1,0 +1,128 @@
+{% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
+<div class="jumbotron">
+    <h2 class="display-4 animated fadeIn">Listado de instrumentos</h2>
+    <hr class="my-4"> 
+    
+    {% with messages = get_flashed_messages() %} 
+    {% if messages %} 
+    {% for message in messages %} 
+    {% if error_busqueda != 1%}
+    <div class="alert alert-warning alert-dismissible fade show animated fadeIn" role="alert">
+        <strong>Nota:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %} 
+    {% endfor %} 
+    {% endif %} 
+    {% endwith %}
+
+    <div class="text-right">
+        <button class="btn btn-primary" onclick="location.href='/instrumento/registrar'">
+            <i class="fa fa-plus"></i>
+            Agregar instrumento
+        </button>
+    </div>
+
+    <!-- No se permite tener el form dentro de la table -->
+    <form class="form-horizontal my-2 my-lg-0" method="get">
+        {{ form.termino.label }}:
+        <div class="from-group">
+            <div class="">{{ form.termino(size=32) }}</div>
+            <div class="">{{ form.submit() }}</div>
+        </div>
+    </form>
+    <br> 
+    {% if pagination.total == 0%}
+    <div class="alert alert-warning alert-dismissible fade show animated fadeIn" role="alert">
+        <strong>Nota:</strong> No hay instrumentos cargados.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+    {% endif %}
+
+    <p>Total de instrumentos: <strong>{{ pagination.total }}</strong></p>
+    <div class="table-responsive">
+        <table class="table text-center">
+            <caption>Tabla con los instrumentos registrados</caption>
+
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col" id="foto" aria-label="foto">Foto</th>
+                    <th scope="col" id="id" aria-label="numero_inventario">Número Inventario</th>
+                    <th scope="col" id="nombre" aria-label="nombre">Nombre</th>
+                    <th scope="col" id="tipo" aria-label="tipo">Tipo</th>
+
+                    <th scope="col" id="operaciones" aria-label="operaciones">Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in instrumentos %}
+                <tr>
+                    <td headers="foto">
+                        <img style="width:50%; height: 50%;" src='data:image/jpeg;base64,{{ i.foto }}' alt="foto">
+                    </td>
+                    <th scope="row" id="tupla{{ loop.index }}">{{ i.numero_inventario }}</th>
+                    <td headers="nombre">{{ i.nombre }}</td>
+                    <td headers="tipo">{{ i.tipo }}</td>
+                    <td headers="operaciones">
+
+                        {% if 'instrumento_show' in session['permisos'] %}
+                        <button type="button" onclick="location.href='/instrumento/show/{{ i.id }}'" class="btn btn-primary" title="Ver detalle del instrumento" style="margin: 5px"><i class="fa fa-eye"></i></button>
+                        {% endif %} 
+                        {% if 'instrumento_destroy' in session['permisos'] %}
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary eliminar" title="Eliminar instrumento" role="button" data-toggle="modal" data-target="#eliminarDocenteModal{{ i.id }}"><i class="fa fa-trash"></i>
+                        </button> 
+                        {% endif %}
+                        {% if 'instrumento_update' in session['permisos'] %}
+                        <button type="button" onclick="location.href='/instrumento/editar/{{ i.id }}'" class="btn btn-primary" title="Editar instrumento" style="margin: 5px"><i class="fa fa-edit"></i></button> 
+                        {% endif %}
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="eliminarDocenteModal{{ i.id }}" tabindex="-1" role="dialog" aria-labelledby="eliminarDocenteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="eliminarDocenteModalLabel">¿Estás seguro que querés eliminar el instrumento con número de inventario {{ i.numero_inventario }}?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        No se podrá revertir el cambio.
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                        <button onclick="location.href='/instrumento/eliminar/{{ i.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+    <div class="text-center animated fadeIn" aria-label="Páginas de la tabla">
+        {{ pagination.links }}
+    </div>
+    {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} 
+    {% if error_busqueda == 1%}
+    <div class="alert alert-warning alert-dismissible fade show animated fadeIn" role="alert">
+        <strong>Nota:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+    </div>
+
+    {% endif %}{% endfor %} {% endif %} {% endwith %}
+</div>
+
+
+
+{% endblock %}
