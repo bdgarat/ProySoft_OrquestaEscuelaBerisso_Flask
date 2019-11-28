@@ -240,10 +240,11 @@ def insertar_docente_en_taller():
     id_ciclo = request.args.get('ciclo', None)
     id_taller = request.args.get('taller', None)
     id_docente = request.args.get('docente', None)
-
-    if Taller.insertar_docente_en_taller(id_ciclo, id_taller, id_docente):
-        flash("El docente ha sido insertado correctamente")
-
+    if not Taller.existe_docente_en_taller(id_ciclo, id_taller, id_docente):
+        if Taller.insertar_docente_en_taller(id_ciclo, id_taller, id_docente):
+            flash("El docente ha sido insertado correctamente")
+    else:
+        flash("El docente ya ha sido insertado en el taller!")
     return redirect('/index/ciclo_lectivo')
 
 
@@ -258,9 +259,11 @@ def insertar_estudiante_en_taller():
     id_ciclo = request.args.get('ciclo', None)
     id_taller = request.args.get('taller', None)
     id_estudiante = request.args.get('estudiante', None)
-
-    if Taller.insertar_estudiante_en_taller(id_ciclo, id_taller, id_estudiante):
-        flash("El estudiante ha sido insertado correctamente")
+    if not Taller.existe_estudiante_en_taller(id_ciclo, id_taller, id_estudiante):
+        if Taller.insertar_estudiante_en_taller(id_ciclo, id_taller, id_estudiante):
+            flash("El estudiante ha sido insertado correctamente")
+    else:
+        flash('El estudiante ya ha sido insertado en el taller!' ) 
 
     return redirect('/index/ciclo_lectivo')
 
@@ -275,8 +278,11 @@ def insertar_taller_en_ciclo():
     Taller.db = get_db()
     id_ciclo = request.args.get('ciclo', None)
     id_taller = request.args.get('taller', None)
-
-    if Taller.insertar_taller_en_ciclo_lectivo(id_ciclo, id_taller):
-        flash("El taller ha sido insertado correctamente")
+    if not Taller.existe_taller_en_ciclo_lectivo(id_ciclo, id_taller):
+        if Taller.insertar_taller_en_ciclo_lectivo(id_ciclo, id_taller):
+            flash("El taller ha sido insertado correctamente")
+    else:
+        flash('El taller ya ha sido insertado en el ciclo lectivo!' ) 
+        print (Taller.existe_taller_en_ciclo_lectivo(id_ciclo, id_taller))
 
     return redirect('/index/ciclo_lectivo')

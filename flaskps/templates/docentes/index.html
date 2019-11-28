@@ -11,13 +11,14 @@
     </div>
 
     {% endif %}{% endfor %} {% endif %} {% endwith %}
-
-    <div class="text-right">
-        <button class="btn btn-primary" onclick="location.href='/docente/registrar'">
-            <i class="fa fa-plus"></i>
-            Agregar docente
-        </button>
-    </div>
+    {% if not insertar_docente %}
+        <div class="text-right">
+            <button class="btn btn-primary" onclick="location.href='/docente/registrar'">
+                <i class="fa fa-plus"></i>
+                Agregar docente
+            </button>
+        </div>
+    {% endif %}
     <!-- No se permite tener el form dentro de la table -->
     <form class="form-horizontal my-2 my-lg-0" method="get">
         {{ form.termino.label }}:
@@ -53,24 +54,27 @@
                     <th scope="row" id="tupla{{ loop.index }}">{{ d.numero }}</th>
                     <td headers="nombre_y_apellido">{{ d.apellido }},{{ d.nombre }}</td>
                     <td headers="operaciones">
-
-                        {% if 'docente_show' in session['permisos'] %}
-                        <button type="button" onclick="location.href='/docente/show/{{ d.id }}'" class="btn btn-primary" title="Ver perfil del docente" style="margin: 5px"><i class="fa fa-user-circle"></i></button>
-                        {% endif %} 
-                        <!-- {% if 'docente_destroy' in session['permisos'] %}
-                         Button trigger modal
-                        <button type="button" class="btn btn-primary eliminar" title="Eliminar docente" role="button" data-toggle="modal" data-target="#eliminarDocenteModal{{ d.id }}"><i class="fa fa-trash"></i>
-                        </button> 
-                        {% endif %}  -->
-                        
-                        {% if 'docente_update' in session['permisos'] %}
-                        <button type="button" onclick="location.href='/docente/editar/{{ d.id }}'" class="btn btn-primary" title="Editar docente" style="margin: 5px"><i class="fa fa-edit"></i></button> 
-                        {% if d.borrado_logico == 0 %}
-                        <button type="button" class="btn btn-primary" title="Desactivar docente" style="margin: 5px" data-toggle="modal" data-target="#desactivarModal{{ d.id }}">Desactivar</button>
+                        {% if insertar_docente %}
+                            <button type="button" onclick="location.href='/ciclo_lectivo/insertar_docente_en_taller?ciclo={{ ciclo }}&taller={{ taller }}&docente={{ d.id }}'" class="btn btn-primary" title="Seleccionar" style="margin: 5px"><i class="fa"></i>Seleccionar</button>
                         {% else %}
-                        <button type="button" class="btn btn-primary" title="Activar docente" style="margin: 5px" data-toggle="modal" data-target="#activarModal{{ d.id }}">Activar</button>
-                        {% endif %}
+                            {% if 'docente_show' in session['permisos'] %}
+                            <button type="button" onclick="location.href='/docente/show/{{ d.id }}'" class="btn btn-primary" title="Ver perfil del docente" style="margin: 5px"><i class="fa fa-user-circle"></i></button>
+                            {% endif %} 
+                            <!-- {% if 'docente_destroy' in session['permisos'] %}
+                            Button trigger modal
+                            <button type="button" class="btn btn-primary eliminar" title="Eliminar docente" role="button" data-toggle="modal" data-target="#eliminarDocenteModal{{ d.id }}"><i class="fa fa-trash"></i>
+                            </button> 
+                            {% endif %}  -->
+                            
+                            {% if 'docente_update' in session['permisos'] %}
+                            <button type="button" onclick="location.href='/docente/editar/{{ d.id }}'" class="btn btn-primary" title="Editar docente" style="margin: 5px"><i class="fa fa-edit"></i></button> 
+                            {% if d.borrado_logico == 0 %}
+                            <button type="button" class="btn btn-primary" title="Desactivar docente" style="margin: 5px" data-toggle="modal" data-target="#desactivarModal{{ d.id }}">Desactivar</button>
+                            {% else %}
+                            <button type="button" class="btn btn-primary" title="Activar docente" style="margin: 5px" data-toggle="modal" data-target="#activarModal{{ d.id }}">Activar</button>
+                            {% endif %}
 
+                            {% endif %}
                         {% endif %}
 
                         <!-- Modal eliminar -->

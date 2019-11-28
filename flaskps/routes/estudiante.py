@@ -69,6 +69,14 @@ def index_estudiante():
     if (total == 0 and search == True):
         flash("La búsqueda no obtuvo resultados.")
         error_busqueda = 1
+
+    insertar_estudiante = False
+    if (request.args.get('ciclo', None) and request.args.get('taller', None)):
+        insertar_estudiante = True
+
+    ciclo = request.args.get('ciclo', None)
+
+    taller = request.args.get('taller', None)
         
     pagination = Pagination(page=page, 
                             per_page=per_page, 
@@ -82,7 +90,10 @@ def index_estudiante():
                             pagination=pagination, 
                             estudiantes=estudiantes,
                             form=form, 
-                            error_busqueda=error_busqueda)
+                            error_busqueda=error_busqueda,
+                            insertar_estudiante=insertar_estudiante,
+                            ciclo=ciclo,
+                            taller=taller)
     
     
 # REGISTRAR ESTUDIANTE

@@ -63,7 +63,9 @@
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary eliminar" title="Eliminar ciclo lectivo" role="button" data-toggle="modal" data-target="#eliminarCicloLectivoModal{{ c.id }}"><i class="fa fa-trash"></i>
                         </button> {% endif %}
-
+                        {% if 'ciclo_lectivo_update' in session['permisos'] %}
+                        <button type="button" onclick="location.href='/index/taller?ciclo={{ c.id }}'" class="btn btn-primary" title="Agregar taller" style="margin: 5px"><i class="fa">Agregar Taller</i></button>
+                        {% endif %}
 
                         <!-- Modal Eliminar Ciclo Lectivo -->
                         <div class="modal fade" id="eliminarCicloLectivoModal{{ c.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

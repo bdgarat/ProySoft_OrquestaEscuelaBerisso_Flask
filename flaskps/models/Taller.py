@@ -48,6 +48,52 @@ class Taller(object):
         cursor.execute(sql, params)
 
         return cursor.fetchall()
+
+    # RECUPERAR TODOS LOS CICLOS LECTIVOS POR TERMINO DE BUSQUEDA
+    @classmethod
+    def get_talleres(self, termino = None):
+        params = []
+        sql = """
+                SELECT * FROM taller t 
+            """
+            
+        
+        if termino != None:
+            termino = '%'+termino+'%'
+            sql = sql + """ WHERE (t.nombre LIKE %s OR t.nombre_corto LIKE %s) """
+            params.append(termino)
+            params.append(termino)
+         
+        cursor = self.db.cursor()
+        cursor.execute(sql, params)
+
+        return cursor.fetchall()
+
+    # RECUPERAR TODOS LOS CICLOS LECTIVOS POR TERMINO DE BUSQUEDA Y PAGINADOS
+    @classmethod
+    def get_talleres_paginados(self, limit, offset = 1, termino = None):
+
+        sql = """
+                SELECT * FROM taller t
+        """
+        
+        if termino != None:
+            termino = '%'+termino+'%'
+            sql = sql + """ WHERE (t.nombre LIKE %s OR t.nombre_corto LIKE %s) """
+
+        sql = sql + """
+                    LIMIT %s OFFSET %s
+                    """
+
+        if termino != None:
+            params = (termino, termino, limit, offset)
+        else:
+            params = (limit, offset)
+
+        cursor = self.db.cursor()
+        cursor.execute(sql, params)
+
+        return cursor.fetchall()
     
     # RECUPERAR TODOS LOS CICLOS LECTIVOS POR TERMINO DE BUSQUEDA Y PAGINADOS
     @classmethod
@@ -130,3 +176,54 @@ class Taller(object):
         self.db.commit()
 
         return True
+
+    # EXISTE ESTUDIANTE EN UN TALLER DEL CICLO LECTIVO
+    @classmethod
+    def existe_docente_en_taller(self, id_ciclo, id_taller, id_docente):
+        sql = """
+            SELECT * FROM docente_responsable_taller drt
+            WHERE drt.ciclo_lectivo_id = %s AND drt.taller_id = %s AND drt.docente_id = %s
+        """
+
+        cursor = self.db.cursor()
+        cursor.execute(sql, (
+                             id_ciclo,
+                             id_taller,
+                             id_docente ))
+        self.db.commit()
+
+        return cursor.fetchall()
+
+    # EXISTE ESTUDIANTE EN UN TALLER DEL CICLO LECTIVO
+    @classmethod
+    def existe_estudiante_en_taller(self, id_ciclo, id_taller, id_estudiante):
+        sql = """
+            SELECT * FROM estudiante_taller et
+            WHERE et.ciclo_lectivo_id = %s AND et.taller_id = %s AND et.estudiante_id = %s
+        """
+
+        cursor = self.db.cursor()
+        cursor.execute(sql, (
+                             id_ciclo,
+                             id_taller,
+                             id_estudiante ))
+        self.db.commit()
+
+        return cursor.fetchall()
+
+
+    # EXISTE TALLER EN UN CICLO LECTIVO
+    @classmethod
+    def existe_taller_en_ciclo_lectivo(self, id_ciclo, id_taller):
+        sql = """
+            SELECT * FROM ciclo_lectivo_taller clt
+            WHERE clt.taller_id = %s AND clt.ciclo_lectivo_id = %s
+        """
+
+        cursor = self.db.cursor()
+        cursor.execute(sql, (
+                             id_taller,
+                             id_ciclo ))
+        self.db.commit()
+
+        return cursor.fetchall()
