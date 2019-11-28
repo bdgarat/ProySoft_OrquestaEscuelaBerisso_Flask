@@ -227,3 +227,56 @@ def show(id_ciclo):
         return render_template("ciclos_lectivos/show.html", form = form, ciclo = ciclo, pagination = pagination, talleres = talleres, error_busqueda = error_busqueda)
     
     return redirect('/home')
+
+
+@mod.route("/ciclo_lectivo/insertar_docente_en_taller", methods=['GET'])
+def insertar_docente_en_taller():
+    # Reviso que tenga permiso
+    if 'ciclo_lectivo_update' not in session['permisos']:
+        flash('No tiene permiso para agregar un docente al ciclo lectivo' )
+        return redirect('/home') 
+
+    Taller.db = get_db()
+    id_ciclo = request.args.get('ciclo', None)
+    id_taller = request.args.get('taller', None)
+    id_docente = request.args.get('docente', None)
+
+    if Taller.insertar_docente_en_taller(id_ciclo, id_taller, id_docente):
+        flash("El docente ha sido insertado correctamente")
+
+    return redirect('/index/ciclo_lectivo')
+
+
+@mod.route("/ciclo_lectivo/insertar_estudiante_en_taller", methods=['GET'])
+def insertar_estudiante_en_taller():
+    # Reviso que tenga permiso
+    if 'ciclo_lectivo_update' not in session['permisos']:
+        flash('No tiene permiso para agregar un docente al ciclo lectivo' )
+        return redirect('/home') 
+
+    Taller.db = get_db()
+    id_ciclo = request.args.get('ciclo', None)
+    id_taller = request.args.get('taller', None)
+    id_estudiante = request.args.get('estudiante', None)
+
+    if Taller.insertar_estudiante_en_taller(id_ciclo, id_taller, id_estudiante):
+        flash("El estudiante ha sido insertado correctamente")
+
+    return redirect('/index/ciclo_lectivo')
+
+
+@mod.route("/ciclo_lectivo/insertar_taller", methods=['GET'])
+def insertar_taller_en_ciclo():
+    # Reviso que tenga permiso
+    if 'ciclo_lectivo_update' not in session['permisos']:
+        flash('No tiene permiso para agregar un taller al ciclo lectivo' )
+        return redirect('/home') 
+
+    Taller.db = get_db()
+    id_ciclo = request.args.get('ciclo', None)
+    id_taller = request.args.get('taller', None)
+
+    if Taller.insertar_taller_en_ciclo_lectivo(id_ciclo, id_taller):
+        flash("El taller ha sido insertado correctamente")
+
+    return redirect('/index/ciclo_lectivo')

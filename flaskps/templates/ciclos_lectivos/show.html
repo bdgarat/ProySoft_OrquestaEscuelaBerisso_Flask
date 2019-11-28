@@ -35,8 +35,8 @@
                     <td headers="nombre">{{ t.nombre }}</td>
                     <td headers="nombre_corto">{{ t.nombre_corto }}</td>
                     <td headers="operaciones">
-                        <button type="button" class="btn btn-primary" title="Ver ciclo lectivo" style="margin: 5px">Agregar docente</button>
-                        <button type="button" class="btn btn-primary" title="Ver ciclo lectivo" style="margin: 5px">Agregar alumno</button>
+                        <button type="button" class="btn btn-primary" title="Agregar docente" style="margin: 5px">Agregar docente</button>
+                        <button type="button" class="btn btn-primary" title="Agregar alumno" style="margin: 5px">Agregar alumno</button>
 
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary eliminar" title="Quitar taller del ciclo lectivo" role="button" data-toggle="modal" data-target="#eliminarTaller{{ t.id }}"><i class="fa fa-trash"></i>
@@ -64,6 +64,8 @@
                             </div>
                         </div> -->
 
+
+                        
                     </td>
                 </tr>
                 {% endfor %}

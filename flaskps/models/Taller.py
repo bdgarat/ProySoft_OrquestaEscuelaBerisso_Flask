@@ -14,6 +14,16 @@ class Taller(object):
         return cursor.fetchall()
     
 
+    # RECUPERAR TALLER
+    @classmethod
+    def get_taller(self, id_taller):
+        sql = """SELECT * FROM taller
+               WHERE id = %s"""
+        cursor = self.db.cursor()
+        cursor.execute(sql, (id_taller))
+
+        return cursor.fetchall()
+
 
     # RECUPERAR TODOS LOS CICLOS LECTIVOS POR TERMINO DE BUSQUEDA
     @classmethod
@@ -67,3 +77,56 @@ class Taller(object):
         cursor.execute(sql, params)
 
         return cursor.fetchall()
+
+
+
+    # INSERTAR DOCENTE EN UN TALLER DEL CICLO LECTIVO
+    @classmethod
+    def insertar_docente_en_taller(self, id_ciclo, id_taller, id_docente):
+        sql = """
+            INSERT INTO docente_responsable_taller (ciclo_lectivo_id, taller_id, docente_id)
+            VALUES (%s, %s, %s)
+        """
+
+        cursor = self.db.cursor()
+        cursor.execute(sql, (
+                             id_ciclo,
+                             id_taller,
+                             id_docente ))
+        self.db.commit()
+
+        return True
+
+
+    # INSERTAR ESTUDIANTE EN UN TALLER DEL CICLO LECTIVO
+    @classmethod
+    def insertar_estudiante_en_taller(self, id_ciclo, id_taller, id_estudiante):
+        sql = """
+            INSERT INTO estudiante_taller (ciclo_lectivo_id, taller_id, estudiante_id)
+            VALUES (%s, %s, %s)
+        """
+
+        cursor = self.db.cursor()
+        cursor.execute(sql, (
+                             id_ciclo,
+                             id_taller,
+                             id_estudiante ))
+        self.db.commit()
+
+        return True
+
+    # INSERTAR TALLER EN UN CICLO LECTIVO
+    @classmethod
+    def insertar_taller_en_ciclo_lectivo(self, id_ciclo, id_taller):
+        sql = """
+            INSERT INTO ciclo_lectivo_taller (ciclo_lectivo_id, taller_id)
+            VALUES (%s, %s)
+        """
+
+        cursor = self.db.cursor()
+        cursor.execute(sql, (
+                             id_ciclo,
+                             id_taller ))
+        self.db.commit()
+
+        return True
