@@ -1,0 +1,62 @@
+{% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
+
+<div class="jumbotron">
+    <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-book" aria-hidden="true"></i> Talleres
+    </h1>
+    <hr class="my-2">
+    <br>
+    <form class="form-horizontal my-2 my-lg-0" method="get">
+            {{ form.termino.label }}:
+            <div class="from-group">
+                <div class="">{{ form.termino(size=32) }}</div>
+                <div class="">{{ form.submit() }}</div>
+            </div>
+        </form>
+        <br> {% if pagination.total == 0%}
+        <div class="alert alert-warning alert-dismissible fade show animated fadeIn" role="alert">
+            <strong>Nota:</strong> No hay talleres cargados.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        </div>
+        {% endif %}
+
+    <p>Total de talleres: <strong>{{ pagination.total }}</strong></p>
+    <div class="table-responsive">
+        <table class="table text-center">
+            <caption>Tabla con los talleres</caption>
+
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col" id="id" aria-label="id">ID</th>
+                    <th scope="col" id="nombre" aria-label="nombre">Nombre</th>
+                    <th scope="col" id="nombre_corto" aria-label="nombre corto">Nombre corto</th>
+                    <th scope="col" id="operaciones" aria-label="operaciones">Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>{% for t in talleres %}
+                <tr>
+                    <th scope="row" id="tupla{{ loop.index }}">{{ t.id }}</th>
+                    <td headers="nombre">{{ t.nombre }}</td>
+                    <td headers="nombre_corto">{{ t.nombre_corto }}</td>
+                    <td headers="operaciones">
+                            {% if insertar_taller %}
+                            <button type="button" onclick="location.href='/ciclo_lectivo/insertar_taller?ciclo={{ ciclo }}&taller={{ t.id }}'" class="btn btn-primary" title="Seleccionar" style="margin: 5px"><i class="fa"></i>Seleccionar</button>
+                            {% endif %}
+                        
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+    <div class="text-center animated fadeIn" aria-label="Páginas de la tabla">
+        {{ pagination.links }}
+    </div>
+
+    <p><a href="javascript:history.back()" class="btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
+
+</div>
+
+{% endblock %}
