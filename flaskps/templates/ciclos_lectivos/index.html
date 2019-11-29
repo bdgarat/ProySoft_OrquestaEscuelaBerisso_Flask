@@ -53,8 +53,8 @@
                 {% for c in ciclos_lectivos %}
                 <tr>
                     <th scope="row" id="tupla{{ loop.index }}">{{ c.id }}</th>
-                    <td headers="fecha_inicio">{{ c.fecha_ini }}</td>
-                    <td headers="fecha_fin">{{ c.fecha_fin }}</td>
+                    <td headers="fecha_inicio">{{ c.fecha_ini.strftime('%d-%m-%Y') }}</td>
+                    <td headers="fecha_fin">{{ c.fecha_fin.strftime('%d-%m-%Y') }}</td>
                     <td headers="semestre">{{ c.semestre }}</td>
                     <td headers="operaciones">
                         {% if 'ciclo_lectivo_show' in session['permisos'] %}
@@ -72,7 +72,7 @@
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro que querés eliminar al ciclo lectivo del semestre {{ c.semestre }} que inicia el {{ c.fecha_ini }} y finaliza el {{ c.fecha_fin }}?</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro que querés eliminar al ciclo lectivo del semestre {{ c.semestre }} que inicia el {{ c.fecha_ini.strftime('%d-%m-%Y') }} y finaliza el {{ c.fecha_fin.strftime('%d-%m-%Y') }}?</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>

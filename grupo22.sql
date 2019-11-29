@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 29-11-2019 a las 02:10:16
+-- Tiempo de generación: 29-11-2019 a las 02:40:36
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.11
 
@@ -92,6 +92,14 @@ CREATE TABLE `ciclo_lectivo` (
   `borrado_logico` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `ciclo_lectivo`
+--
+
+INSERT INTO `ciclo_lectivo` (`id`, `fecha_ini`, `fecha_fin`, `semestre`, `borrado_logico`) VALUES
+(1, '2019-11-05', '2019-11-16', 1, 1),
+(2, '2020-04-04', '2020-07-15', 1, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -150,7 +158,9 @@ CREATE TABLE `docente` (
 --
 
 INSERT INTO `docente` (`id`, `apellido`, `nombre`, `fecha_nac`, `localidad_id`, `domicilio`, `genero_id`, `tipo_doc_id`, `numero`, `tel`, `borrado_logico`) VALUES
-(1, 'Onofri', 'Melisa', '2019-11-07', 1, '1', 1, 1, 1, '1', 0);
+(2, 'Soria', 'Valeria', '1989-03-16', 4, 'Pergamino 1234', 2, 1, 35013548, '2221-411842', 0),
+(3, 'Pagano', 'Matías', '1982-03-16', 9, 'Azul 1124', 1, 1, 31013548, '2221-411843', 0),
+(4, 'Banchoff', 'Claudia', '1978-05-08', 11, 'Ensenada 8746', 2, 1, 29846134, '2221-418461', 0);
 
 -- --------------------------------------------------------
 
@@ -362,6 +372,16 @@ CREATE TABLE `estudiante` (
   `borrado_logico` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `estudiante`
+--
+
+INSERT INTO `estudiante` (`id`, `apellido`, `nombre`, `fecha_nac`, `localidad_id`, `nivel_id`, `domicilio`, `genero_id`, `escuela_id`, `tipo_doc_id`, `numero`, `tel`, `barrio_id`, `borrado_logico`) VALUES
+(6, 'Onofri', 'Melisa', '1999-11-05', 8, 4, 'City Bell', 2, 5, 1, '29846135', '2221-411514', 13, 0),
+(7, 'Garat', 'Braian', '1998-04-13', 10, 3, 'Chascomus 1945', 1, 16, 1, '24841235', '2221-411233', 5, 0),
+(8, 'Repetto', 'Lorenzo', '1994-04-28', 12, 12, 'San Martín 1430', 1, 30, 1, '37880905', '2221-411872', 25, 0),
+(9, 'Tufillaro', 'Pierina', '1999-04-28', 6, 2, 'Lomas 1452', 2, 7, 1, '29874513', '2221-411841', 16, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -543,6 +563,14 @@ CREATE TABLE `responsable` (
   `tel` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `responsable`
+--
+
+INSERT INTO `responsable` (`id`, `apellido`, `nombre`, `fecha_nac`, `localidad_id`, `domicilio`, `genero_id`, `tipo_doc_id`, `numero`, `tel`) VALUES
+(1, 'Responsable', 'Juan', '1987-02-19', 5, 'San Martín', 1, 1, 37880906, '2221-411872'),
+(2, 'Responsable', 'María', '1990-11-05', 3, 'Junín 1021', 2, 1, 39517834, '2221-4115148');
+
 -- --------------------------------------------------------
 
 --
@@ -554,6 +582,16 @@ CREATE TABLE `responsable_estudiante` (
   `estudiante_id` int(11) NOT NULL,
   `tipo_responsable_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `responsable_estudiante`
+--
+
+INSERT INTO `responsable_estudiante` (`responsable_id`, `estudiante_id`, `tipo_responsable_id`) VALUES
+(1, 6, 1),
+(1, 8, 3),
+(2, 7, 2),
+(2, 9, 3);
 
 -- --------------------------------------------------------
 
@@ -657,6 +695,18 @@ CREATE TABLE `taller` (
   `nombre` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `nombre_corto` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `taller`
+--
+
+INSERT INTO `taller` (`id`, `nombre`, `nombre_corto`) VALUES
+(1, 'Guitarra', 'GC'),
+(2, 'Percusión', 'PC'),
+(3, 'Coro', 'CC'),
+(4, 'Viento', 'VC'),
+(5, 'Orquesta', 'OC'),
+(6, 'Cuerda', 'CUC');
 
 -- --------------------------------------------------------
 
@@ -969,7 +1019,7 @@ ALTER TABLE `barrio`
 -- AUTO_INCREMENT de la tabla `ciclo_lectivo`
 --
 ALTER TABLE `ciclo_lectivo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `config`
@@ -981,7 +1031,7 @@ ALTER TABLE `config`
 -- AUTO_INCREMENT de la tabla `docente`
 --
 ALTER TABLE `docente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `escuela`
@@ -993,7 +1043,7 @@ ALTER TABLE `escuela`
 -- AUTO_INCREMENT de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `genero`
@@ -1035,7 +1085,7 @@ ALTER TABLE `preceptor`
 -- AUTO_INCREMENT de la tabla `responsable`
 --
 ALTER TABLE `responsable`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
@@ -1047,7 +1097,7 @@ ALTER TABLE `rol`
 -- AUTO_INCREMENT de la tabla `taller`
 --
 ALTER TABLE `taller`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_instrumento`

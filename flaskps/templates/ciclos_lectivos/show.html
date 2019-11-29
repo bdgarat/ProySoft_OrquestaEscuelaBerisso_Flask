@@ -13,7 +13,7 @@
     {% endif %}{% endfor %} {% endif %} {% endwith %}
     <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-book" aria-hidden="true"></i> Ciclo lectivo.
     </h1>
-    <h5>Semestre {{ ciclo.semestre }}, fecha inicio: {{ ciclo.fecha_ini }} y fecha fin: {{ ciclo.fecha_fin }}.</h5>
+    <h5>Semestre {{ ciclo.semestre }}, fecha inicio: {{ ciclo.fecha_ini.strftime('%d-%m-%Y') }} y fecha fin: {{ ciclo.fecha_fin.strftime('%d-%m-%Y') }}.</h5>
     <hr class="my-2">
     <br>
     <div class="text-right">
@@ -65,7 +65,7 @@
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro que querés eliminar al taller {{ t.nombre }} del ciclo lectivo del semestre {{ ciclo.semestre }} que inicia el {{ ciclo.fecha_ini }} y finaliza el {{ ciclo.fecha_fin }}?</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro que querés eliminar al taller {{ t.nombre }} del ciclo lectivo del semestre {{ ciclo.semestre }} que inicia el {{ ciclo.fecha_ini.strftime('%d-%m-%Y') }} y finaliza el {{ ciclo.fecha_fin.strftime('%d-%m-%Y') }}?</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
