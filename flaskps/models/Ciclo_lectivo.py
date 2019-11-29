@@ -123,7 +123,8 @@ class Ciclo_lectivo(object):
         sql = """ SELECT id
             FROM ciclo_lectivo
             WHERE semestre = %s
-            AND YEAR(fecha_ini) like %s """
+            AND YEAR(fecha_ini) like %s 
+            AND borrado_logico = 0 """
             
         cursor = self.db.cursor()
         cursor.execute(sql, (semestre, año))
@@ -138,13 +139,15 @@ class Ciclo_lectivo(object):
         sql = """ SELECT fecha_fin
             FROM ciclo_lectivo
             WHERE semestre = 1
-            AND YEAR(fecha_ini) like %s """
+            AND YEAR(fecha_ini) like %s
+            AND borrado_logico = 0 
+        """
             
         cursor = self.db.cursor()
         cursor.execute(sql, (año))
         fecha_fin = cursor.fetchone()['fecha_fin']
         
-        return fecha_fin > fecha_inicio_semestre
+        return fecha_fin >= fecha_inicio_semestre
 
 
     # INSERTAR CICLO LECTIVO
