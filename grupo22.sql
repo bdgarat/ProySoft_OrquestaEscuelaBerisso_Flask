@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 27-11-2019 a las 19:36:53
+-- Tiempo de generación: 29-11-2019 a las 02:10:16
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.11
 
@@ -86,8 +86,8 @@ INSERT INTO `barrio` (`id`, `nombre`) VALUES
 
 CREATE TABLE `ciclo_lectivo` (
   `id` int(11) NOT NULL,
-  `fecha_ini` datetime DEFAULT NULL,
-  `fecha_fin` datetime DEFAULT NULL,
+  `fecha_ini` date DEFAULT NULL,
+  `fecha_fin` date DEFAULT NULL,
   `semestre` tinyint(1) NOT NULL DEFAULT 1,
   `borrado_logico` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
