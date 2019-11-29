@@ -1,11 +1,27 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 
 <div class="jumbotron">
+    {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error_busqueda != 1%}
+
+    <div class="alert alert-warning alert-dismissible fade show animated fadeIn" role="alert">
+        <strong>Nota:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    {% endif %}{% endfor %} {% endif %} {% endwith %}
     <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-book" aria-hidden="true"></i> Ciclo lectivo.
     </h1>
     <h5>Semestre {{ ciclo.semestre }}, fecha inicio: {{ ciclo.fecha_ini }} y fecha fin: {{ ciclo.fecha_fin }}.</h5>
     <hr class="my-2">
     <br>
+    <div class="text-right">
+        <button class="btn btn-primary" onclick="location.href='/index/taller?ciclo={{ ciclo.id }}'">
+            <i class="fa fa-plus"></i>
+            Agregar taller
+        </button>
+    </div>
     <h5 class="mb-4 mt-2 pt-2"><i class="fa fa-info-circle"></i> Talleres del ciclo lectivo:</h5>
     <form class="form-horizontal my-2 my-lg-0" method="get">
         {{ form.termino.label }}:
@@ -35,20 +51,21 @@
                     <td headers="nombre">{{ t.nombre }}</td>
                     <td headers="nombre_corto">{{ t.nombre_corto }}</td>
                     <td headers="operaciones">
-                        <button type="button" onclick="location.href='/index/docente?ciclo={{ ciclo.id }}&taller={{ t.id }}'" class="btn btn-primary" title="Agregar docente" style="margin: 5px">Agregar docente</button>
-                        <button type="button" onclick="location.href='/index/estudiante?ciclo={{ ciclo.id }}&taller={{ t.id }}'" class="btn btn-primary" title="Agregar alumno" style="margin: 5px">Agregar alumno</button>
-
+                        <button type="button" onclick="location.href='/taller/show/{{ t.id }}?ciclo={{ ciclo.id }}'" class="btn btn-primary" title="Ver detalles taller" style="margin: 5px"><i class="fa fa-eye"></i></button>
+                        <button type="button" onclick="location.href='/index/docente?ciclo={{ ciclo.id }}&taller={{ t.id }}'" class="btn btn-primary" title="Agregar docente" style="margin: 5px">Gestión Docentes</button>
+                        <button type="button" onclick="location.href='/index/estudiante?ciclo={{ ciclo.id }}&taller={{ t.id }}'" class="btn btn-primary" title="Agregar alumno" style="margin: 5px">Gestión Alumnos</button>
+                        
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary eliminar" title="Quitar taller del ciclo lectivo" role="button" data-toggle="modal" data-target="#eliminarTaller{{ t.id }}"><i class="fa fa-trash"></i>
                         </button>
 
 
                         <!-- Modal Eliminar Ciclo Lectivo -->
-                        <!-- <div class="modal fade" id="eliminarCicloLectivoModal{{ t.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="eliminarTaller{{ t.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro que querés eliminar al ciclo lectivo del semestre {{ t.semestre }} que inicia el {{ t.fecha_ini }} y finaliza el {{ t.fecha_fin }}?</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro que querés eliminar al taller {{ t.nombre }} del ciclo lectivo del semestre {{ ciclo.semestre }} que inicia el {{ ciclo.fecha_ini }} y finaliza el {{ ciclo.fecha_fin }}?</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -58,11 +75,11 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                                        <button onclick="location.href='/ciclo_lectivo/eliminar/{{ t.id }}'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
+                                        <button onclick="location.href='/ciclo_lectivo/quitar_taller?ciclo={{ ciclo.id }}&taller={{ t.id }}&show=1'" type="button" class="btn btn-primary">Si, estoy seguro.</button>
                                     </div>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
                         
                     </td>
                 </tr>
@@ -75,7 +92,7 @@
         {{ pagination.links }}
     </div>
 
-    <p><a href="javascript:history.back()" class="btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
+    <p><a href="/index/ciclo_lectivo" class="btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
 
 </div>
 

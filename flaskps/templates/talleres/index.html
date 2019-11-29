@@ -1,6 +1,16 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 
 <div class="jumbotron">
+        {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error_busqueda != 1%}
+
+        <div class="alert alert-warning alert-dismissible fade show animated fadeIn" role="alert">
+            <strong>Nota:</strong> {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    
+        {% endif %}{% endfor %} {% endif %} {% endwith %}
     <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-book" aria-hidden="true"></i> Talleres
     </h1>
     <hr class="my-2">
@@ -9,6 +19,7 @@
             {{ form.termino.label }}:
             <div class="from-group">
                 <div class="">{{ form.termino(size=32) }}</div>
+                <div hidden>{{ form.ciclo(value=ciclo) }}</div>
                 <div class="">{{ form.submit() }}</div>
             </div>
         </form>
@@ -40,9 +51,13 @@
                     <td headers="nombre">{{ t.nombre }}</td>
                     <td headers="nombre_corto">{{ t.nombre_corto }}</td>
                     <td headers="operaciones">
-                            {% if insertar_taller %}
+                        {% if insertar_taller %}
+                            {% if t.id not in talleres_inscriptos %}
                             <button type="button" onclick="location.href='/ciclo_lectivo/insertar_taller?ciclo={{ ciclo }}&taller={{ t.id }}'" class="btn btn-primary" title="Seleccionar" style="margin: 5px"><i class="fa"></i>Seleccionar</button>
+                            {% else %}
+                            <button type="button" onclick="location.href='/ciclo_lectivo/quitar_taller?ciclo={{ ciclo }}&taller={{ t.id }}'" class="btn btn-primary" title="Quitar" style="margin: 5px"><i class="fa"></i>Quitar</button>
                             {% endif %}
+                        {% endif %}
                         
                     </td>
                 </tr>
@@ -54,9 +69,10 @@
     <div class="text-center animated fadeIn" aria-label="Páginas de la tabla">
         {{ pagination.links }}
     </div>
-
-    <p><a href="javascript:history.back()" class="btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
-
+    <div class="row">
+        <p><a href="javascript:history.back()" class="btn btn-lg btn-primary pb-0 boton_registrar mr-3 ml-2">Volver</a></p>
+        <p><a href="/index/ciclo_lectivo" class="btn btn-lg btn-primary pb-0 boton_registrar">Listado de ciclos lectivos</a></p>
+    </div>
 </div>
 
 {% endblock %}

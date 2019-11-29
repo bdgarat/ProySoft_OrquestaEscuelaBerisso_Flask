@@ -87,7 +87,7 @@ class Docente(object):
 
         if termino != None:
             termino = '%'+termino+'%'
-            sql = sql + """ WHERE AND (nombre LIKE %s OR apellido LIKE %s)"""
+            sql = sql + """ WHERE (nombre LIKE %s OR apellido LIKE %s)"""
             
         sql = sql + """
                     LIMIT %s OFFSET %s
@@ -128,10 +128,10 @@ class Docente(object):
             WHERE id = %s
         """
 
-        o = cursor.execute(sql, (id_docente))
+        ok = cursor.execute(sql, (id_docente))
         self.db.commit()
 
-        return o
+        return ok
 
     # ACTIVAR / DESACTIVAR UN DOCENTE
     @classmethod

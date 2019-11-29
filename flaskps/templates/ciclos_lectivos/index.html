@@ -58,13 +58,13 @@
                     <td headers="semestre">{{ c.semestre }}</td>
                     <td headers="operaciones">
                         {% if 'ciclo_lectivo_show' in session['permisos'] %}
-                        <button type="button" onclick="location.href='/ciclo_lectivo/show/{{ c.id }}'" class="btn btn-primary" title="Ver ciclo lectivo" style="margin: 5px"><i class="fa fa-user-circle"></i></button>{% endif %} {% if 'ciclo_lectivo_destroy'
+                        <button type="button" onclick="location.href='/ciclo_lectivo/show/{{ c.id }}'" class="btn btn-primary" title="Ver ciclo lectivo" style="margin: 5px"><i class="fa fa-eye"></i></button>{% endif %} {% if 'ciclo_lectivo_destroy'
                         in session['permisos'] %}
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary eliminar" title="Eliminar ciclo lectivo" role="button" data-toggle="modal" data-target="#eliminarCicloLectivoModal{{ c.id }}"><i class="fa fa-trash"></i>
                         </button> {% endif %}
                         {% if 'ciclo_lectivo_update' in session['permisos'] %}
-                        <button type="button" onclick="location.href='/index/taller?ciclo={{ c.id }}'" class="btn btn-primary" title="Agregar taller" style="margin: 5px"><i class="fa">Agregar Taller</i></button>
+                        <button type="button" onclick="location.href='/index/taller?ciclo={{ c.id }}'" class="btn btn-primary" title="Agregar taller" style="margin: 5px"><i class="fa fa-plus"></i> Agregar Taller</button>
                         {% endif %}
 
                         <!-- Modal Eliminar Ciclo Lectivo -->
@@ -108,6 +108,8 @@
     </div>
 
     {% endif %}{% endfor %} {% endif %} {% endwith %}
+
+    <p><a href="javascript:history.back()" class="btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
 </div>
 
 

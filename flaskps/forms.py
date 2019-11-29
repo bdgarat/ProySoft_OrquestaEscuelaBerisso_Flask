@@ -116,23 +116,24 @@ class BusquedaUsuarioForm(FlaskForm):
     submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary pb-20", "style": "margin: 20px"})
     
 class BusquedaEstudianteForm(FlaskForm):
+    ciclo = StringField()
+    taller = StringField()
     termino = StringField('Buscar por nombre o apellido', render_kw={"class": "form-control"})
     submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})
 
 class BusquedaTallerForm(FlaskForm):
+    ciclo = StringField()
     termino = StringField('Buscar por nombre o nombre corto', render_kw={"class": "form-control"})
     submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})
     
 class BusquedaDocenteForm(FlaskForm):
+    ciclo = StringField()
+    taller = StringField()
     termino = StringField('Buscar por nombre o apellido', render_kw={"class": "form-control"})
     submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})
 
 class BusquedaCicloLectivoForm(FlaskForm):
     termino = StringField('Buscar por año', render_kw={"class": "form-control"})
-    submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})
-    
-class BusquedaTallerForm(FlaskForm):
-    termino = StringField('Buscar nombre de taller', render_kw={"class": "form-control"})
     submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})
 
 

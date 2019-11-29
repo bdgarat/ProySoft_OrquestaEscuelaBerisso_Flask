@@ -4,6 +4,7 @@ from flask import render_template, flash, redirect, session, abort, request
 from flaskps.models.Docente import Docente
 from flaskps.models.Configuracion import Configuracion
 from flaskps.models.Usuario import Usuario
+from flaskps.models.Taller import Taller
 from flaskps.models.Informacion import Informacion
 from flaskps.helpers.auth import authenticated
 from flaskps.helpers.apiReferencias import tipos_documento, localidades
@@ -68,15 +69,15 @@ def index_docente():
     if (total == 0 and search == True):
         flash("La búsqueda no obtuvo resultados.")
         error_busqueda = 1
-        
-    insertar_docente = False
-    if (request.args.get('ciclo', None) and request.args.get('taller', None)):
-        insertar_docente = True
 
+    docentes_inscriptos = None    
     ciclo = request.args.get('ciclo', None)
-
     taller = request.args.get('taller', None)
-    
+    insertar_docente = False
+    if (ciclo and taller) and (ciclo != 'None' and taller != 'None'):
+        insertar_docente = True
+        Taller.db = get_db()
+        docentes_inscriptos = Taller.docentes_ciclo_taller(ciclo, taller)    
 
     pagination = Pagination(page=page, 
                             per_page=per_page, 
@@ -92,6 +93,7 @@ def index_docente():
                             form=form, 
                             error_busqueda=error_busqueda,
                             insertar_docente=insertar_docente,
+                            docentes_inscriptos=docentes_inscriptos,
                             ciclo=ciclo,
                             taller=taller)
     

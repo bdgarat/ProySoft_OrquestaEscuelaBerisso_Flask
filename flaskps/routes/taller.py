@@ -27,7 +27,7 @@ def before_request():
     
 # LISTADOS
 @mod.route("/index/taller")
-def index_docente():
+def index_taller():
 
     form = BusquedaTallerForm()
     error_busqueda = 0
@@ -65,13 +65,15 @@ def index_docente():
         flash("La búsqueda no obtuvo resultados.")
         error_busqueda = 1
         
-    insertar_taller = False
-    if (request.args.get('ciclo', None)):
-        insertar_taller = True
-
     ciclo = request.args.get('ciclo', None)
+    talleres_inscriptos = None
+    insertar_taller = False
+    if ciclo and (ciclo != 'None' and ciclo != ''):
+        insertar_taller = True
+        talleres_inscriptos = Taller.talleres_ciclo(ciclo)
 
 
+    # form.ciclo_lectivo.data = ciclo
     pagination = Pagination(page=page, 
                             per_page=per_page, 
                             total=total,
@@ -86,4 +88,23 @@ def index_docente():
                             form=form, 
                             error_busqueda=error_busqueda,
                             insertar_taller=insertar_taller,
+                            talleres_inscriptos=talleres_inscriptos,
                             ciclo=ciclo)
+
+# SHOW
+@mod.route("/taller/show/<id_taller>")
+def show_taller(id_taller):
+     # Reviso que tenga permiso
+    if 'ciclo_lectivo_show' not in session['permisos']:
+        flash('No tiene permiso para visualizar un taller en un ciclo lectivo' )
+        return redirect('/home')
+    id_ciclo = request.args.get('ciclo', None)
+    Taller.db = get_db()
+    taller = Taller.get_taller_show(id_taller, id_ciclo)
+    estudiantes = Taller.get_estudiantes_show(id_taller, id_ciclo)
+    docentes = Taller.get_docentes_show(id_taller, id_ciclo)
+
+    print(taller)
+    print(estudiantes)
+    print(docentes)
+    return render_template('talleres/show.html', taller=taller, estudiantes=estudiantes, docentes=docentes)

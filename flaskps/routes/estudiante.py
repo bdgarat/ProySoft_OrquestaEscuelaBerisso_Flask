@@ -5,6 +5,7 @@ from flaskps.models.Estudiante import Estudiante
 from flaskps.models.Informacion import Informacion
 from flaskps.models.Configuracion import Configuracion
 from flaskps.models.Usuario import Usuario
+from flaskps.models.Taller import Taller
 from flaskps.helpers.auth import authenticated
 from flaskps.helpers.apiReferencias import tipos_documento, localidades
 from flaskps.helpers.mantenimiento import sitio_disponible
@@ -69,14 +70,17 @@ def index_estudiante():
     if (total == 0 and search == True):
         flash("La búsqueda no obtuvo resultados.")
         error_busqueda = 1
+    
+    ciclo = request.args.get('ciclo', None)
+    taller = request.args.get('taller', None)
 
     insertar_estudiante = False
-    if (request.args.get('ciclo', None) and request.args.get('taller', None)):
+    estudiantes_inscriptos = []
+    if (ciclo and taller) and (ciclo != 'None' and taller != 'None'):
         insertar_estudiante = True
+        Taller.db = get_db()
+        estudiantes_inscriptos = Taller.estudiantes_ciclo_taller(ciclo, taller)
 
-    ciclo = request.args.get('ciclo', None)
-
-    taller = request.args.get('taller', None)
         
     pagination = Pagination(page=page, 
                             per_page=per_page, 
@@ -93,7 +97,8 @@ def index_estudiante():
                             error_busqueda=error_busqueda,
                             insertar_estudiante=insertar_estudiante,
                             ciclo=ciclo,
-                            taller=taller)
+                            taller=taller,
+                            estudiantes_inscriptos=estudiantes_inscriptos)
     
     
 # REGISTRAR ESTUDIANTE

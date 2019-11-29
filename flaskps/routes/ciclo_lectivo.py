@@ -233,7 +233,7 @@ def show(id_ciclo):
 def insertar_docente_en_taller():
     # Reviso que tenga permiso
     if 'ciclo_lectivo_update' not in session['permisos']:
-        flash('No tiene permiso para agregar un docente al ciclo lectivo' )
+        flash('No tiene permiso para agregar un docente al taller' )
         return redirect('/home') 
 
     Taller.db = get_db()
@@ -245,14 +245,16 @@ def insertar_docente_en_taller():
             flash("El docente ha sido insertado correctamente")
     else:
         flash("El docente ya ha sido insertado en el taller!")
-    return redirect('/index/ciclo_lectivo')
+
+    path = '/index/docente?ciclo='+id_ciclo+'&taller='+id_taller
+    return redirect(path)
 
 
 @mod.route("/ciclo_lectivo/insertar_estudiante_en_taller", methods=['GET'])
 def insertar_estudiante_en_taller():
     # Reviso que tenga permiso
     if 'ciclo_lectivo_update' not in session['permisos']:
-        flash('No tiene permiso para agregar un docente al ciclo lectivo' )
+        flash('No tiene permiso para agregar un estudiante al taller' )
         return redirect('/home') 
 
     Taller.db = get_db()
@@ -265,8 +267,76 @@ def insertar_estudiante_en_taller():
     else:
         flash('El estudiante ya ha sido insertado en el taller!' ) 
 
-    return redirect('/index/ciclo_lectivo')
+    path = '/index/estudiante?ciclo='+id_ciclo+'&taller='+id_taller
 
+    return redirect(path)
+
+
+@mod.route("/ciclo_lectivo/quitar_estudiante_en_taller", methods=['GET'])
+def quitar_estudiante_en_taller():
+    # Reviso que tenga permiso
+    if 'ciclo_lectivo_update' not in session['permisos']:
+        flash('No tiene permiso para quitar un estudiante del taller' )
+        return redirect('/home') 
+
+    Taller.db = get_db()
+    id_ciclo = request.args.get('ciclo', None)
+    id_taller = request.args.get('taller', None)
+    id_estudiante = request.args.get('estudiante', None)
+    
+    if Taller.existe_estudiante_en_taller(id_ciclo, id_taller, id_estudiante):
+        if Taller.eliminar_estudiante_en_taller(id_ciclo, id_taller, id_estudiante):
+            flash("El estudiante ha sido eliminado correctamente")
+    else:
+        flash('El estudiante no ha sido insertado en el taller!' ) 
+
+    path = '/index/estudiante?ciclo='+id_ciclo+'&taller='+id_taller
+
+    return redirect(path)
+
+@mod.route("/ciclo_lectivo/quitar_docente_en_taller", methods=['GET'])
+def quitar_docente_en_taller():
+    # Reviso que tenga permiso
+    if 'ciclo_lectivo_update' not in session['permisos']:
+        flash('No tiene permiso para quitar un docente del taller' )
+        return redirect('/home') 
+
+    Taller.db = get_db()
+    id_ciclo = request.args.get('ciclo', None)
+    id_taller = request.args.get('taller', None)
+    id_docente = request.args.get('docente', None)
+    
+    if Taller.existe_docente_en_taller(id_ciclo, id_taller, id_docente):
+        if Taller.eliminar_docente_en_taller(id_ciclo, id_taller, id_docente):
+            flash("El docente ha sido eliminado correctamente")
+    else:
+        flash('El docente no ha sido insertado en el taller!' ) 
+
+    path = '/index/docente?ciclo='+id_ciclo+'&taller='+id_taller
+
+    return redirect(path)   
+
+@mod.route("/ciclo_lectivo/quitar_taller", methods=['GET'])
+def quitar_taller_en_ciclo():
+    # Reviso que tenga permiso
+    if 'ciclo_lectivo_update' not in session['permisos']:
+        flash('No tiene permiso para quitar el taller' )
+        return redirect('/home') 
+
+    Taller.db = get_db()
+    id_ciclo = request.args.get('ciclo', None)
+    id_taller = request.args.get('taller', None)
+    if Taller.existe_taller_en_ciclo_lectivo(id_ciclo, id_taller):
+        if Taller.eliminar_taller_en_ciclo_lectivo(id_ciclo, id_taller):
+            flash("El taller ha sido eliminado del ciclo correctamente")
+    else:
+        flash('El taller no ha sido insertado en el ciclo lectivo!' ) 
+
+    if request.args.get('show', None):
+        return redirect('/ciclo_lectivo/show/'+id_ciclo)
+    else:   
+        path = '/index/taller?ciclo='+id_ciclo+'&taller='+id_taller
+        return redirect(path)  
 
 @mod.route("/ciclo_lectivo/insertar_taller", methods=['GET'])
 def insertar_taller_en_ciclo():
@@ -283,6 +353,6 @@ def insertar_taller_en_ciclo():
             flash("El taller ha sido insertado correctamente")
     else:
         flash('El taller ya ha sido insertado en el ciclo lectivo!' ) 
-        print (Taller.existe_taller_en_ciclo_lectivo(id_ciclo, id_taller))
 
-    return redirect('/index/ciclo_lectivo')
+    path = '/index/taller?ciclo='+id_ciclo+'&taller='+id_taller
+    return redirect(path)  

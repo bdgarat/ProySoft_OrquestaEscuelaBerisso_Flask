@@ -24,6 +24,8 @@
         {{ form.termino.label }}:
         <div class="from-group">
             <div class="">{{ form.termino(size=32) }}</div>
+            <div hidden>{{ form.ciclo(value=ciclo) }}</div>
+            <div hidden>{{ form.taller(value=taller) }}</div>
             <div class="">{{ form.submit() }}</div>
         </div>
     </form>
@@ -55,7 +57,12 @@
                     <td headers="nombre_y_apellido">{{ d.apellido }},{{ d.nombre }}</td>
                     <td headers="operaciones">
                         {% if insertar_docente %}
+                            {% if d.id not in docentes_inscriptos %}
                             <button type="button" onclick="location.href='/ciclo_lectivo/insertar_docente_en_taller?ciclo={{ ciclo }}&taller={{ taller }}&docente={{ d.id }}'" class="btn btn-primary" title="Seleccionar" style="margin: 5px"><i class="fa"></i>Seleccionar</button>
+                            {% else %}
+                            <button type="button" onclick="location.href='/ciclo_lectivo/quitar_docente_en_taller?ciclo={{ ciclo }}&taller={{ taller }}&docente={{ d.id }}'" class="btn btn-primary" title="Quitar" style="margin: 5px"><i class="fa"></i>Quitar</button>
+                            {% endif %}
+
                         {% else %}
                             {% if 'docente_show' in session['permisos'] %}
                             <button type="button" onclick="location.href='/docente/show/{{ d.id }}'" class="btn btn-primary" title="Ver perfil del docente" style="margin: 5px"><i class="fa fa-user-circle"></i></button>
@@ -153,6 +160,12 @@
     </div>
 
     {% endif %}{% endfor %} {% endif %} {% endwith %}
+
+    {% if insertar_docente %}
+        <p><a href="/ciclo_lectivo/show/{{ ciclo }}" class="btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
+    {% else %}
+        <p><a href="javascript:history.back()" class="btn btn-lg btn-primary pb-0 boton_registrar">Volver</a></p>
+    {% endif %}
 </div>
 
 
