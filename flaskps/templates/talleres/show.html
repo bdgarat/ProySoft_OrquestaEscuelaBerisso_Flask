@@ -1,21 +1,20 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
 
 <div class="jumbotron">
-   
-    <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-book" aria-hidden="true"></i> {{ taller.nombre }}
+
+    <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-book" aria-hidden="true"></i> {{ taller.nombre }} <small>({{ taller.nombre_corto }})</small>
     </h1>
     <hr class="my-2">
-    <h2 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-book" aria-hidden="true"></i> {{ taller.nombre_corto }}</h2>
-    
+
     <h5 class="mb-4 mt-4 pt-4"><i class="fa fa-graduation-cap"></i> Docentes:</h5>
     <menu class="list-group list-group-flush">
         {% for d in docentes %}
         <li class="list-group-item">
-            {{ d.apellido | upper}}, {{ d.nombre | upper}} - 
+            {{ d.apellido | upper}}, {{ d.nombre | upper}} -
             <strong>Teléfono: </strong>{{ d.tel }}
         </li>
-        
-        {% endfor %}    
+
+        {% endfor %}
     </menu>
 
     <h5 class="mb-4 mt-4 pt-4"><i class="fa fa-graduation-cap"></i> Estudiantes:</h5>
@@ -23,12 +22,12 @@
         {% for e in estudiantes %}
         <li class="list-group-item">
             {{ e.apellido | upper }}, {{ e.nombre | upper }} -
-            
+
             <strong>Escuela: </strong>{{ e.escuela }},
             <strong>Barrio: </strong>{{ e.barrio }},
             <strong>Teléfono: </strong>{{ e.tel }}
         </li>
-        
+
         {% endfor %}
     </menu>
 

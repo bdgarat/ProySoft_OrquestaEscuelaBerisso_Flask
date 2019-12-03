@@ -373,6 +373,25 @@ class Taller(object):
             lista.append( (l['docente_id']))
         
         return lista
+    
+    # DOCENTE POR TALLER+CICLO DEVOLVIENDO EL ITERABLE
+    @classmethod
+    def get_docentes_ciclo_taller(self, id_ciclo, id_taller):
+        sql = """
+            SELECT d.id, d.nombre, d.apellido
+            FROM docente_responsable_taller drt
+            INNER JOIN docente d ON drt.docente_id = d.id
+            WHERE ciclo_lectivo_id = %s
+            AND taller_id = %s  
+        """
+        cursor = self.db.cursor()
+        cursor.execute(sql, (id_ciclo, id_taller))
+        res = cursor.fetchall()
+        lista = []
+        for l in res:
+            lista.append( (l['id'], l['apellido'].upper()+ " "+l['nombre'].upper()) )
+          
+        return lista
 
     # TALLERES POR CICLO
     @classmethod
@@ -391,3 +410,45 @@ class Taller(object):
             lista.append( (l['taller_id']))
         
         return lista
+    
+    # AGREGAR HORARIO A CICLO + TALLER + PROFE + NUCLEO + HORARIO + DIA
+    @classmethod
+    def agregar_horario(self, id_ciclo, id_taller, id_docente, id_nucleo, hora_inicio, hora_fin, dia):
+        sql = """
+            INSERT INTO taller_docente_nucleo_horario(id_docente, id_nucleo, id_taller, id_ciclo, hora_inicio, hora_fin, dia)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """
+        cursor = self.db.cursor()
+        ok = cursor.execute(sql, (id_ciclo, id_taller, id_docente, id_nucleo, hora_inicio, hora_fin, dia))
+        
+        self.db.commit()
+        return ok
+    
+    # CHEQUEO SI EXISTE UN CICLO + TALLER + PROFE + NUCLEO + HORARIO + DIA
+    @classmethod
+    def existe_horario(self, id_ciclo, id_taller, id_docente, id_nucleo, hora_inicio, hora_fin, dia):
+        sql = """
+            SELECT *
+            FROM taller_docente_nucleo_horario
+            WHERE (id_docente = %s AND id_nucleo = %s AND id_taller = %s AND id_ciclo = %s AND hora_inicio = %s AND hora_fin = %s AND dia = %s)
+        """
+        cursor = self.db.cursor()
+        cursor.execute(sql, (id_ciclo, id_taller, id_docente, id_nucleo, hora_inicio, hora_fin, dia))
+        
+        self.db.commit()
+        return cursor.fetchall()
+    
+    
+    # CHEQUEO SI UN TALLER PARA UN CICLO TIENE DOCENTE(S) ASIGNADO(S)
+    @classmethod
+    def tiene_docente(self, id_ciclo, id_taller):
+        sql = """
+            SELECT *
+            FROM docente_responsable_taller
+            WHERE (ciclo_lectivo_id = %s AND taller_id = %s)
+        """
+        cursor = self.db.cursor()
+        cursor.execute(sql, (id_ciclo, id_taller))
+        
+        self.db.commit()
+        return cursor.fetchall()

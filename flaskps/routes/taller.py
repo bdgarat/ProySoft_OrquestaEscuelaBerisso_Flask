@@ -6,10 +6,11 @@ from flaskps.models.Configuracion import Configuracion
 from flaskps.models.Usuario import Usuario
 from flaskps.models.Informacion import Informacion
 from flaskps.models.Taller import Taller
+from flaskps.models.Ciclo_lectivo import Ciclo_lectivo
 from flaskps.helpers.auth import authenticated
 from flaskps.helpers.apiReferencias import tipos_documento, localidades
 from flaskps.helpers.mantenimiento import sitio_disponible
-from flaskps.forms import BusquedaTallerForm
+from flaskps.forms import BusquedaTallerForm, AsignarHorarioTallerForm
 from flask_paginate import Pagination, get_page_parameter
 
 
@@ -95,7 +96,7 @@ def index_taller():
 @mod.route("/taller/show/<id_taller>")
 def show_taller(id_taller):
      # Reviso que tenga permiso
-    if 'ciclo_lectivo_show' not in session['permisos']:
+    if 'taller_show' not in session['permisos']:
         flash('No tiene permiso para visualizar un taller en un ciclo lectivo' )
         return redirect('/home')
     id_ciclo = request.args.get('ciclo', None)
@@ -108,3 +109,60 @@ def show_taller(id_taller):
     print(estudiantes)
     print(docentes)
     return render_template('talleres/show.html', taller=taller, estudiantes=estudiantes, docentes=docentes)
+
+# ASIGNAR HORARIO
+@mod.route("/taller/asignar_horario/<id_ciclo>/<id_taller>", methods=['GET', 'POST'] )
+def asignar_horario(id_ciclo, id_taller):
+    
+    if 'taller_update' not in session['permisos']:
+        flash('No tiene permiso para editar un taller en un ciclo lectivo' )
+        return redirect('/home')
+    
+    
+    Taller.db = get_db()
+    Ciclo_lectivo.db = get_db()
+    Informacion.db = get_db()
+    
+    if (len(Taller.tiene_docente(id_ciclo, id_taller)) == 0):
+        flash('No se puede realizar ésta acción porque el taller no tiene asignado ningún docente' )
+        return redirect('/home')
+    
+    form = AsignarHorarioTallerForm()
+    exito = 0
+    error = 0
+    
+    taller = Taller.get_taller(id_taller)
+    ciclo = Ciclo_lectivo.get_ciclo_lectivo(id_ciclo)
+    
+    form.profesor.choices = Taller.get_docentes_ciclo_taller(ciclo['id'], taller[0]['id'])
+    form.nucleo.choices = Informacion.all('nucleo')
+    
+    form.dia.choices = [(1, 'LUNES'), (2, 'MARTES'), (3, 'MIERCOLES'), (4, 'JUEVES'), (5, 'VIERNES'), (6, 'SABADO'), (7, 'DOMINGO')]
+        
+    if request.method == 'POST':
+        
+        form.profesor.data = int(form.profesor.data)
+        form.nucleo.data = int(form.nucleo.data)
+        form.dia.data = int(form.dia.data)
+
+        if form.validate_on_submit():
+            
+            # chequeo que haya ingresado bien los horarios
+            if form.hora_inicio.data < form.hora_fin.data:
+                
+                if not Taller.existe_horario(ciclo['id'], taller[0]['id'], form.profesor.data, form.nucleo.data, form.hora_inicio.data, form.hora_fin.data, form.dia.data):
+                    Taller.agregar_horario(ciclo['id'], taller[0]['id'], form.profesor.data, form.nucleo.data, form.hora_inicio.data, form.hora_fin.data, form.dia.data)
+                    exito=1
+                    flash("Se agregó el horario correctamente.")
+                else:
+                    flash("Ya existe un horario asignado para el taller, docente, nucleo, dia y horario seleccionados.")
+                    error = 1
+                
+            else:
+                flash("La hora de inicio del taller debe ser menor a la hora de fin del mismo.")
+                error = 1
+        else:
+            flash("Debe completar todos los campos.")
+            error = 1
+        
+    return render_template('talleres/asignar_horario.html', taller = taller, ciclo = ciclo, form = form, exito=exito, error=error)

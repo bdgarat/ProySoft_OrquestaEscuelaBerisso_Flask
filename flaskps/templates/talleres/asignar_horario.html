@@ -1,0 +1,77 @@
+{% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
+
+<div class="jumbotron">
+
+    <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-book" aria-hidden="true"></i> Taller {{taller.nombre}} <small>({{taller.nombre_corto}})</small></h1>
+    <h2 class="display-6 mt-2 mb-2 pt-2 pb-2"> Ciclo {{ciclo.fecha_ini}} - {{ciclo.fecha_fin}} <small>(Semestre {{ciclo.semestre}})</small></h2>
+    <hr class="my-2">
+
+    <h5 class="mb-4 mt-4 pt-4"><i class="fa fa-clock"></i> Asignar horarios:</h5>
+
+    <form method="post" novalidate>
+        <!-- Mostrar mensajes guardados en flash -->
+        {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if error == 1 %}
+
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error:</strong> {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        </div>
+        {% elif exito == 1 %}
+
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Nota:</strong> {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        </div>
+
+        {% endif %} {% endfor %} {% endif %} {% endwith %} {{ form.hidden_tag() }}
+
+        <div class="row">
+            <div class="col">
+                <p>
+                    {{ form.profesor.label }}:<br> {{ form.profesor() }}
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    {{ form.nucleo.label }}:<br> {{ form.nucleo() }}
+                </p>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <p>
+                    {{ form.hora_inicio.label }}:<br> {{ form.hora_inicio() }}
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    {{ form.hora_fin.label }}:<br> {{ form.hora_fin() }}
+                </p>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    {{ form.dia.label }}:<br> {{ form.dia() }}
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <p class="col">{{ form.submit() }}</p>
+
+        </div>
+    </form>
+
+
+</div>
+
+{% endblock %}

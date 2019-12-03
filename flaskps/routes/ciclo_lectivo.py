@@ -216,6 +216,11 @@ def show(id_ciclo):
         if (total == 0 and search == True):
             flash("La búsqueda no obtuvo resultados.")
             error_busqueda = 1
+        
+        docentes_en_talleres = {}
+        for t in talleres:     
+            docentes = len(Taller.tiene_docente(id_ciclo, t['taller_id']))
+            docentes_en_talleres[t['taller_id']] = docentes
             
         pagination = Pagination(page=page, 
                                 per_page=per_page, 
@@ -224,7 +229,7 @@ def show(id_ciclo):
                                 found=total,
                                 record_name='ciclos_lectivos',
                                 css_framework='bootstrap4')
-        return render_template("ciclos_lectivos/show.html", form = form, ciclo = ciclo, pagination = pagination, talleres = talleres, error_busqueda = error_busqueda)
+        return render_template("ciclos_lectivos/show.html", docentes_en_talleres=docentes_en_talleres, form = form, ciclo = ciclo, pagination = pagination, talleres = talleres, error_busqueda = error_busqueda)
     
     return redirect('/home')
 

@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, TextAreaField, SelectField, FileField
 from wtforms.validators import DataRequired, Email
-from wtforms.fields.html5 import EmailField, DateField
+from wtforms.fields.html5 import EmailField, DateField, TimeField
 
 
 class LoginForm(FlaskForm):
@@ -147,3 +147,11 @@ class InstrumentoForm(FlaskForm):
 class BusquedaInstrumentoForm(FlaskForm):
     termino = StringField('Buscar número de inventario', render_kw={"class": "form-control"})
     submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})
+    
+class AsignarHorarioTallerForm(FlaskForm):
+    profesor =SelectField('Profesor', validators=[DataRequired()], render_kw={"class": "form-control"})
+    nucleo =SelectField('Nucleo', validators=[DataRequired()], render_kw={"class": "form-control"})
+    hora_inicio =TimeField('Hora inicio', validators=[DataRequired()], render_kw={"class": "form-control"})
+    hora_fin =TimeField('Hora fin', validators=[DataRequired()], render_kw={"class": "form-control"})
+    dia =SelectField('Día', validators=[DataRequired()], render_kw={"class": "form-control"})
+    submit = SubmitField('Asignar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})

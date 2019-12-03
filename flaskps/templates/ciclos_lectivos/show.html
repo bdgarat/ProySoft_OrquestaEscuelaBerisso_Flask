@@ -39,22 +39,21 @@
 
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col" id="id" aria-label="id">ID</th>
                     <th scope="col" id="fecha_inicio" aria-label="fecha de inicio del ciclo lectivo">Nombre</th>
-                    <th scope="col" id="fecha_fin" aria-label="fecha de fin del ciclo lectivo">Nombre corto</th>
+                    <th scope="col" id="cantidad de docentes" aria-label="cantidad de docentes del ciclo lectivo">Cantidad de docentes</th>
                     <th scope="col" id="operaciones" aria-label="operaciones">Operaciones</th>
                 </tr>
             </thead>
             <tbody>{% for t in talleres %}
                 <tr>
-                    <th scope="row" id="tupla{{ loop.index }}">{{ t.id }}</th>
-                    <td headers="nombre">{{ t.nombre }}</td>
-                    <td headers="nombre_corto">{{ t.nombre_corto }}</td>
+                    <td headers="nombre">{{ t.nombre }} ({{ t.nombre_corto }})</td>
+                    <td headers="nombre">{{ docentes_en_talleres[t.id] }}</td>
                     <td headers="operaciones">
                         <button type="button" onclick="location.href='/taller/show/{{ t.id }}?ciclo={{ ciclo.id }}'" class="btn btn-primary" title="Ver detalles taller" style="margin: 5px"><i class="fa fa-eye"></i></button>
-                        <button type="button" onclick="location.href='/index/docente?ciclo={{ ciclo.id }}&taller={{ t.id }}'" class="btn btn-primary" title="Agregar docente" style="margin: 5px">Gestión Docentes</button>
-                        <button type="button" onclick="location.href='/index/estudiante?ciclo={{ ciclo.id }}&taller={{ t.id }}'" class="btn btn-primary" title="Agregar alumno" style="margin: 5px">Gestión Alumnos</button>
-                        
+                        <button type="button" onclick="location.href='/index/docente?ciclo={{ ciclo.id }}&taller={{ t.id }}'" class="btn btn-primary" title="Agregar docente" style="margin: 5px"><i class="fa fa-plus"></i> docentes</button>
+                        <button type="button" onclick="location.href='/index/estudiante?ciclo={{ ciclo.id }}&taller={{ t.id }}'" class="btn btn-primary" title="Agregar alumno" style="margin: 5px"><i class="fa fa-plus"></i> alumnos</button> {% if docentes_en_talleres[t.id]
+                        > 0 %}
+                        <button type="button" onclick="location.href='/taller/asignar_horario/{{ ciclo.id }}/{{ t.id }}'" class="btn btn-primary" title="Asignar horario" style="margin: 5px">Asignar horario</button> {% endif %}
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary eliminar" title="Quitar taller del ciclo lectivo" role="button" data-toggle="modal" data-target="#eliminarTaller{{ t.id }}"><i class="fa fa-trash"></i>
                         </button>
@@ -65,13 +64,12 @@
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro que querés eliminar al taller {{ t.nombre }} del ciclo lectivo del semestre {{ ciclo.semestre }} que inicia el {{ ciclo.fecha_ini.strftime('%d-%m-%Y') }} y finaliza el {{ ciclo.fecha_fin.strftime('%d-%m-%Y') }}?</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro que querés eliminar al taller {{ t.nombre }} del ciclo lectivo del semestre {{ ciclo.semestre }} que inicia el {{ ciclo.fecha_ini.strftime('%d-%m-%Y') }} y finaliza el {{ ciclo.fecha_fin.strftime('%d-%m-%Y')
+                                            }}?
+                                        </h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        No se podrá revertir el cambio.
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
@@ -80,7 +78,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </td>
                 </tr>
                 {% endfor %}

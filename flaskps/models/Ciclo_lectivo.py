@@ -148,21 +148,3 @@ class Ciclo_lectivo(object):
         fecha_fin = cursor.fetchone()['fecha_fin']
         
         return fecha_fin >= fecha_inicio_semestre
-
-
-    # INSERTAR CICLO LECTIVO
-    @classmethod
-    def insert(self, ciclo_lectivo):
-        sql = """
-            INSERT INTO ciclo_lectivo (fecha_ini, fecha_fin, semestre, borrado_logico)
-            VALUES (%s, %s, %s, 0)
-        """
-
-        cursor = self.db.cursor()
-        cursor.execute(sql, (
-                             ciclo_lectivo.fecha_ini, 
-                             ciclo_lectivo.fecha_fin, 
-                             ciclo_lectivo.semestre ))
-        self.db.commit()
-
-        return True
