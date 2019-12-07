@@ -31,7 +31,7 @@ def home():
     return render_template('home.html', config=config)
 
 
-from flaskps.routes import auth, usuario, configuracion, estudiante, docente, ciclo_lectivo, responsable, instrumento, taller
+from flaskps.routes import auth, usuario, configuracion, estudiante, docente, ciclo_lectivo, responsable, instrumento, taller, nucleo
 app.register_blueprint(auth.mod)
 app.register_blueprint(usuario.mod)
 app.register_blueprint(configuracion.mod)
@@ -41,5 +41,7 @@ app.register_blueprint(ciclo_lectivo.mod)
 app.register_blueprint(responsable.mod)
 app.register_blueprint(instrumento.mod)
 app.register_blueprint(taller.mod)
+app.register_blueprint(nucleo.mod)
+
 
 

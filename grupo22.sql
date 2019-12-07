@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 29-11-2019 a las 02:40:36
+-- Tiempo de generación: 07-12-2019 a las 17:39:49
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.11
 
@@ -707,6 +707,22 @@ INSERT INTO `taller` (`id`, `nombre`, `nombre_corto`) VALUES
 (4, 'Viento', 'VC'),
 (5, 'Orquesta', 'OC'),
 (6, 'Cuerda', 'CUC');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `taller_docente_nucleo_horario`
+--
+
+CREATE TABLE `taller_docente_nucleo_horario` (
+  `id_docente` int(11) NOT NULL,
+  `id_nucleo` int(11) NOT NULL,
+  `id_taller` int(11) NOT NULL,
+  `id_ciclo` int(11) NOT NULL,
+  `hora_inicio` time(6) NOT NULL,
+  `hora_fin` time(6) NOT NULL,
+  `dia` varchar(255) COLLATE utf8_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
