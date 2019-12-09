@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 07-12-2019 a las 17:39:49
+-- Tiempo de generación: 10-12-2019 a las 00:20:35
 -- Versión del servidor: 10.4.8-MariaDB
--- Versión de PHP: 7.3.11
+-- Versión de PHP: 7.1.32
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -467,8 +467,17 @@ CREATE TABLE `nucleo` (
   `id` int(11) NOT NULL,
   `nombre` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `direccion` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `telefono` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+  `telefono` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `coordenadas` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `nucleo`
+--
+
+INSERT INTO `nucleo` (`id`, `nombre`, `direccion`, `telefono`, `coordenadas`) VALUES
+(1, 'Escuela Primaria Nº6', 'Calle 7 y 158', '221949594', '-34.87622,-57.892960'),
+(2, 'Escuela Primaria Nº7', '151 e/ 8 y 9', '2214445754', '-34.88381,-57.89844');
 
 -- --------------------------------------------------------
 
@@ -991,6 +1000,12 @@ ALTER TABLE `taller`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `taller_docente_nucleo_horario`
+--
+ALTER TABLE `taller_docente_nucleo_horario`
+  ADD PRIMARY KEY (`id_docente`,`id_nucleo`,`id_taller`,`id_ciclo`,`hora_inicio`,`hora_fin`,`dia`);
+
+--
 -- Indices de la tabla `tipo_instrumento`
 --
 ALTER TABLE `tipo_instrumento`
@@ -1083,7 +1098,7 @@ ALTER TABLE `nivel`
 -- AUTO_INCREMENT de la tabla `nucleo`
 --
 ALTER TABLE `nucleo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `permiso`
