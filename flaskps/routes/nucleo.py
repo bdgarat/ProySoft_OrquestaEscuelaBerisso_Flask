@@ -3,6 +3,7 @@ from flaskps.db import get_db
 from flask import render_template, flash, redirect, session, abort, request
 from flaskps.helpers.auth import authenticated
 from flaskps.helpers.mantenimiento import sitio_disponible
+from flaskps.models.Nucleo import Nucleo
 
 
 mod = Blueprint('nucleo', __name__)
@@ -19,4 +20,6 @@ def before_request():
 # Mapa
 @mod.route("/nucleo/mapa")
 def mapa():
-    return render_template('nucleos/mapa.html')
+    Nucleo.db = get_db()
+    nucleos = Nucleo.all()
+    return render_template('nucleos/mapa.html', nucleos=nucleos)
