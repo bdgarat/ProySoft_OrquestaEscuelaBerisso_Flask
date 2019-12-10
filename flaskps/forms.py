@@ -148,6 +148,10 @@ class BusquedaInstrumentoForm(FlaskForm):
     termino = StringField('Buscar número de inventario', render_kw={"class": "form-control"})
     submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})
     
+class BusquedaAsistenciaForm(FlaskForm):
+    termino = StringField('Buscar por nombre de taller', render_kw={"class": "form-control"})
+    submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})
+    
 class AsignarHorarioTallerForm(FlaskForm):
     profesor =SelectField('Profesor', validators=[DataRequired()], render_kw={"class": "form-control"})
     nucleo =SelectField('Nucleo', validators=[DataRequired()], render_kw={"class": "form-control"})
