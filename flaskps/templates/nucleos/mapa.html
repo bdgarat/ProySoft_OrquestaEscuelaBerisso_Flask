@@ -1,9 +1,10 @@
 {% extends "layout.html" %} {% block content %} {% block carrusel %}{% endblock %}
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
     crossorigin=""/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
-<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
+<!-- <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"> -->
     <link rel="stylesheet" href="https://xguaita.github.io/mtig-js/libs/awesome-markers/leaflet.awesome-markers.css">
 
 <div class="jumbotron">
@@ -12,6 +13,8 @@
     </h1>
     <hr class="my-2">
 
+    <p class="lead">Podés seleccionar un núcleo particular y localizarlo en el mapa. Además, podes hacer click en un punto del mapa, elegir un punto de inicio, uno de destino y calcular rutas.</p>
+   
     <select name="select-location" id="select-location" class="form-control">
         <option value="-1">Selecciona un núcleo</option>
         {% for n in nucleos %}

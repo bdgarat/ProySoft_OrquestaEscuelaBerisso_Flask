@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-12-2019 a las 00:20:35
+-- Tiempo de generación: 12-12-2019 a las 02:04:49
 -- Versión del servidor: 10.4.8-MariaDB
--- Versión de PHP: 7.1.32
+-- Versión de PHP: 7.3.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -477,7 +477,15 @@ CREATE TABLE `nucleo` (
 
 INSERT INTO `nucleo` (`id`, `nombre`, `direccion`, `telefono`, `coordenadas`) VALUES
 (1, 'Escuela Primaria Nº6', 'Calle 7 y 158', '221949594', '-34.87622,-57.892960'),
-(2, 'Escuela Primaria Nº7', '151 e/ 8 y 9', '2214445754', '-34.88381,-57.89844');
+(2, 'Escuela Primaria Nº7', '151 e/ 8 y 9', '2214445754', '-34.88381,-57.89844'),
+(3, 'Escuela Primaria N°8', 'Calle 6 y 125', '222154981', '-34.906447,-57.921743'),
+(4, 'Escuela Primaria N°14', 'Calle 37 y 125', '2214549464', '-34.92994,-57.88569'),
+(5, 'Escuela Primaria N°17', 'Calle 164 y 27', '22145487641', '-34.88091,-57.86987'),
+(6, 'Escuela Primaria N°20', 'Ruta 11 km 13', '221432212', '-34.9509,-57.8357'),
+(7, 'Escuela Primaria N°22', 'Calle 32 y 173', '221454846', '-34.87634,-57.85621'),
+(8, 'Escuela Primaria N°25', 'Calle 126 e/ 29 y 30 ', '2214345466', '-34.92589,-57.89336'),
+(9, 'Club Español', 'Calle 6 e/ 53 y 54', '221454514', '-34.91547,-57.94637'),
+(10, 'Teatro Argentino', 'Calle 53 e/ 9 y 10', '222154564', '-34.91818,-57.95102');
 
 -- --------------------------------------------------------
 
@@ -526,7 +534,13 @@ INSERT INTO `permiso` (`id`, `nombre`) VALUES
 (29, 'instrumento_show'),
 (30, 'instrumento_update'),
 (31, 'instrumento_destroy'),
-(32, 'instrumento_index');
+(32, 'instrumento_index'),
+(33, 'taller_new'),
+(34, 'taller_show'),
+(35, 'taller_index'),
+(36, 'taller_update'),
+(37, 'taller_destroy'),
+(38, 'asistencia');
 
 -- --------------------------------------------------------
 
@@ -670,6 +684,12 @@ INSERT INTO `rol_tiene_permiso` (`rol_id`, `permiso_id`) VALUES
 (1, 30),
 (1, 31),
 (1, 32),
+(1, 33),
+(1, 34),
+(1, 35),
+(1, 36),
+(1, 37),
+(1, 38),
 (2, 1),
 (2, 3),
 (2, 4),
@@ -681,6 +701,9 @@ INSERT INTO `rol_tiene_permiso` (`rol_id`, `permiso_id`) VALUES
 (2, 10),
 (2, 11),
 (2, 15),
+(2, 34),
+(2, 35),
+(2, 38),
 (3, 1),
 (3, 2),
 (3, 3),
@@ -691,7 +714,10 @@ INSERT INTO `rol_tiene_permiso` (`rol_id`, `permiso_id`) VALUES
 (3, 23),
 (3, 27),
 (3, 29),
-(3, 32);
+(3, 32),
+(3, 34),
+(3, 35),
+(3, 38);
 
 -- --------------------------------------------------------
 
@@ -1098,13 +1124,13 @@ ALTER TABLE `nivel`
 -- AUTO_INCREMENT de la tabla `nucleo`
 --
 ALTER TABLE `nucleo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `permiso`
 --
 ALTER TABLE `permiso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de la tabla `preceptor`
