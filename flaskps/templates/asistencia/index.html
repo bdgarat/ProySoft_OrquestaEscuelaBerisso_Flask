@@ -11,7 +11,7 @@
     </div>
 
     {% endif %}{% endfor %} {% endif %} {% endwith %}
-    <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-book" aria-hidden="true"></i> Talleres
+    <h1 class="display-6 mt-2 mb-2 pt-2 pb-2"><i class="fa fa-book" aria-hidden="true"></i> Registro de Asistencia
     </h1>
     <hr class="my-2">
     <br>
@@ -54,8 +54,10 @@
                     <td headers="dia">{{ t.dia }}</td>
                     <td headers="nucleo">{{ t.nombre_nucleo }}</td>
                     <td headers="operaciones">
-                        <button type="button" onclick="location.href='/asistencia/pasar?ciclo={{ ciclo }}&taller={{ t.id }}'" class="btn btn-primary" title="Pasar asistencia" style="margin: 5px"><i class="fa"></i>Pasar asistencia</button>
-
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" title="Pasar asistencia" onclick="location.href='/asistencia/pasar/{{ t.id_ciclo }}/{{ t.id_taller }}'">
+                            Pasar asistencia
+                        </button>
                     </td>
                 </tr>
                 {% endfor %}

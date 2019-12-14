@@ -124,6 +124,8 @@ ul {
 button {
     margin: 5px;
 }
+
+
 /* =======================================================================
 
                         MANTENIMIENTO DEL SITIO
@@ -185,30 +187,25 @@ li.list-group-item {
     background-color: #e9ecef !important;
 }
 
-
 @media only screen and (max-width: 770px) {
-    
-    table{
+    table {
         overflow: auto;
         display: inherit;
     }
-
     /* /* section{
         width: 80%;
         /* margin: fixed;
     } 
     */
-    div{
-        text-align: unset;   
+    div {
+        text-align: unset;
     }
-
     .row {
         display: block !important;
     }
     /* form{
         text-align: unset;
     } */
-
 }
 
 
@@ -218,7 +215,7 @@ li.list-group-item {
                         
 ========================================================================= */
 
-#mapid { 
+#mapid {
     height: 800px;
     position: sticky !important;
 }

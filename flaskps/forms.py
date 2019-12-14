@@ -152,6 +152,11 @@ class BusquedaAsistenciaForm(FlaskForm):
     termino = StringField('Buscar por nombre de taller', render_kw={"class": "form-control"})
     submit = SubmitField('Buscar', render_kw={"class": "btn btn-primary", "style": "margin-top: 20px"})
     
+class PasarAsistenciaForm(FlaskForm):
+    estado = SelectField('Presente/Ausente',render_kw={"class": "form-control"})
+    id = StringField('id', render_kw={"style": "display: none"})
+    submit = SubmitField('Pasar', render_kw={"class": "btn btn-primary"})
+    
 class AsignarHorarioTallerForm(FlaskForm):
     profesor =SelectField('Profesor', validators=[DataRequired()], render_kw={"class": "form-control"})
     nucleo =SelectField('Nucleo', validators=[DataRequired()], render_kw={"class": "form-control"})

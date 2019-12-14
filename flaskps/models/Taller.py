@@ -419,7 +419,7 @@ class Taller(object):
             VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
         cursor = self.db.cursor()
-        ok = cursor.execute(sql, (id_ciclo, id_taller, id_docente, id_nucleo, hora_inicio, hora_fin, dia))
+        ok = cursor.execute(sql, (id_docente, id_nucleo,id_taller,id_ciclo,hora_inicio, hora_fin, dia))
         
         self.db.commit()
         return ok
